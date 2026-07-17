@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Bricolage+Grotesque:wght@700;800&display=swap" rel="stylesheet">
+  <script type="importmap">
+  { "imports": { "three": "https://unpkg.com/three@0.143.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.143.0/examples/jsm/" } }
+  </script>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:#05050A;color:#fff;font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    a:hover{color:#00C2FF}
+    button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+    ::selection{background:#9D4DFF;color:#fff}
+    @keyframes tcmMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    @keyframes tcmPulse{0%,100%{box-shadow:0 0 40px 4px rgba(0,194,255,.45),0 0 90px 12px rgba(157,77,255,.3);transform:scale(1)}50%{box-shadow:0 0 70px 14px rgba(0,194,255,.65),0 0 140px 30px rgba(157,77,255,.45);transform:scale(1.05)}}
+    @keyframes tcmFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+    @keyframes tcmGrad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+    @keyframes tcmFlow{0%{background-position:0% center}100%{background-position:200% center}}
+    @keyframes tcmFadeIn{from{opacity:0}to{opacity:1}}
+    @keyframes tcmPopIn{from{opacity:0;transform:scale(1.8)}to{opacity:1;transform:scale(1)}}
+    @keyframes tcmLogoPop{from{opacity:0;transform:translateY(-150px) scale(.5)}to{opacity:1;transform:translateY(0) scale(1)}}
+    @keyframes tcmRiseIn{from{opacity:0;transform:translateY(34px)}to{opacity:1;transform:translateY(0)}}
+    @media (max-width:768px){
+      .r-sec{padding-left:20px !important;padding-right:20px !important;padding-top:64px !important;padding-bottom:64px !important}
+      .r-hero-h1{font-size:38px !important;max-width:100% !important}
+      .r-hero-logo{font-size:17px !important}
+      .r-hero-sub{font-size:15.5px !important}
+      .r-grid-2, .r-grid-4, .r-grid-row{grid-template-columns:1fr !important;direction:ltr !important;gap:24px !important}
+      .r-grid-stats{grid-template-columns:1fr !important;width:100% !important}
+      .r-grid-stats > div{text-align:center !important}
+      .r-about-copy{text-align:center !important}
+      .r-about-copy h2{font-size:30px !important;overflow-wrap:break-word !important}
+      .r-about-copy p{overflow-wrap:break-word !important;margin-left:auto !important;margin-right:auto !important}
+      .r-about-copy [data-rv]{justify-content:center !important}
+      .r-nav-links{display:none !important}
+      .r-cov{height:300px !important}
+      .r-cov-card{width:72vw !important}
+      .r-tabpanel{grid-template-columns:1fr !important;gap:28px !important}
+      .r-tabbox{padding:24px !important}
+      .r-cta-btn{padding:18px 28px !important;font-size:16px !important}
+      .r-pills{gap:10px !important}
+      .r-pills > span{padding:12px 20px !important;font-size:14px !important}
+    }
+    @media (min-width:769px) and (max-width:1024px){
+      .r-grid-4{grid-template-columns:repeat(2,1fr) !important}
+    }
+  </style>
+</helmet>
+
+<div style="position:relative">
+
+  <!-- FIXED WORMHOLE BACKGROUND -->
+  <div ref="{{ tunnelContainerRef }}" style="position:fixed;inset:0;z-index:0;pointer-events:none;transform:translateZ(0);will-change:transform">
+    <canvas ref="{{ tunnelCanvasRef }}" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>
+    <div style="position:absolute;inset:0;pointer-events:none;background:rgba(1,1,10,.6)"></div>
+  </div>
+
+  <!-- ============ SECTION 1 · HERO ============ -->
+  <section id="hero" data-screen-label="Hero" style="position:relative;min-height:100vh;display:flex;flex-direction:column;overflow:hidden">
+    
+    <nav style="position:relative;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:1360px;width:100%;margin:0 auto;padding:26px 32px;background:rgba(6,3,22,.82);border-radius:0 0 20px 20px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <img src="assets/tcm-logo.jpg" alt="TCM logo" style="width:40px;height:40px;border-radius:10px;object-fit:cover">
+        <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:19px;letter-spacing:-0.01em;-webkit-text-stroke:.5px rgba(43,240,255,.55);text-shadow:0 0 16px rgba(43,240,255,.5),0 0 40px rgba(157,77,255,.35)">Top Creation Media</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:26px;font-size:14.5px;font-weight:500;color:rgba(255,255,255,.85)">
+        <a class="r-nav-links" href="#about">About</a>
+        <a class="r-nav-links" href="#work">Work</a>
+        <a class="r-nav-links" href="#services">Services</a>
+        <a href="https://wa.me/60127816121?text=Hi%2C%20I%27d%20like%20a%20customized%20package!" target="_blank" rel="noopener" style="padding:10px 22px;border-radius:999px;background:linear-gradient(135deg,#00C2FF,#9D4DFF);color:#fff;font-weight:600;font-size:14px;transition:transform .15s" style-active="transform:scale(.98)">WhatsApp Us</a>
+      </div>
+    </nav>
+
+    <div class="r-sec" style="position:relative;z-index:10;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 32px 120px">
+      <div class="r-hero-logo" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(20px,2.2vw,30px);letter-spacing:.18em;background:linear-gradient(90deg,#22d3ee,#3b82f6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 15px rgba(0,255,255,.9));margin-bottom:26px;will-change:transform,opacity;animation:tcmLogoPop .7s cubic-bezier(.3,1.6,.4,1) .2s both">TOP CREATION MEDIA</div>
+      <h1 class="r-hero-h1" style="font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:clamp(56px,8.5vw,128px);line-height:.98;letter-spacing:-0.03em;max-width:14ch;will-change:transform,opacity;animation:tcmPopIn .9s cubic-bezier(.34,1.56,.45,1) .1s both"><span style="background-image:linear-gradient(to right,#9D00FF,#0055FF,#00FFFF,#FF00FF,#9D00FF);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;-webkit-text-stroke:1px rgba(0,0,0,.5);animation:tcmFlow 4s linear infinite;filter:drop-shadow(0px 0px 25px rgba(157,0,255,.5));will-change:background-position">Strategy. Execution. Growth.</span></h1>
+      <p class="r-hero-sub" style="margin-top:28px;max-width:56ch;font-size:18px;font-weight:500;line-height:1.75;color:#fff;text-shadow:0 0 15px rgba(255,255,255,.9);animation:tcmRiseIn .9s cubic-bezier(.2,1.2,.3,1) .45s both">Malaysia's most comprehensive digital marketing agency. From A to Z, Meta to Google — we build and scale your brand across every platform that matters.</p>
+      <div class="r-pills" style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:44px">
+        <sc-for list="{{ trustPills }}" as="pill" hint-placeholder-count="3">
+          <span style="position:relative;display:inline-flex;align-items:center;gap:10px;padding:16px 32px;border-radius:999px;border:1.5px solid transparent;background-image:linear-gradient(rgba(10,5,30,.6),rgba(10,5,30,.6)),linear-gradient(135deg,rgba(0,194,255,.85),rgba(157,77,255,.85));background-origin:border-box;background-clip:padding-box,border-box;backdrop-filter:blur(14px);font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;letter-spacing:.01em;box-shadow:0 0 24px -4px rgba(0,194,255,.35),0 0 36px -6px rgba(157,77,255,.3);transition:transform .35s cubic-bezier(.2,1.2,.3,1),box-shadow .35s ease;animation:tcmFadeIn .8s ease {{ pill.inDelay }} both,tcmFloat {{ pill.dur }} ease-in-out {{ pill.delay }} infinite" style-hover="transform:translateY(-6px);box-shadow:0 14px 44px -8px rgba(0,194,255,.55),0 10px 34px -6px rgba(157,77,255,.5)">
+            <span style="width:7px;height:7px;border-radius:999px;background:linear-gradient(135deg,#00C2FF,#9D4DFF)"></span>
+            {{ pill.label }}
+          </span>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="position:relative;z-index:10;margin:0 24px 10px;padding:18px 0;overflow:hidden;border:1px solid rgba(157,77,255,.45);border-radius:18px;background:rgba(5,2,20,.72);box-shadow:0 0 30px -6px rgba(157,77,255,.4), inset 0 0 30px -12px rgba(157,77,255,.35)">
+      <div style="font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.35);text-align:center;margin-bottom:14px">Trusted by</div>
+      <div style="display:flex;width:max-content;animation:tcmMarquee 32s linear infinite;will-change:transform;transform:translateZ(0)">
+        <div style="display:flex;gap:20px;padding-right:20px">
+          <sc-for list="{{ clientLogos }}" as="c" hint-placeholder-count="12">
+            <span title="{{ c.name }}" style="display:flex;align-items:center;justify-content:center;width:150px;height:48px;background-image:{{ c.bg }};background-size:contain;background-repeat:no-repeat;background-position:center;border-radius:12px;transition:transform .3s,filter .3s" style-hover="transform:scale(1.06);filter:drop-shadow(0 0 12px rgba(43,240,255,.5))"></span>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:20px;padding-right:20px">
+          <sc-for list="{{ clientLogos }}" as="c" hint-placeholder-count="12">
+            <span title="{{ c.name }}" style="display:flex;align-items:center;justify-content:center;width:150px;height:48px;background-image:{{ c.bg }};background-size:contain;background-repeat:no-repeat;background-position:center;border-radius:12px;transition:transform .3s,filter .3s" style-hover="transform:scale(1.06);filter:drop-shadow(0 0 12px rgba(43,240,255,.5))"></span>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 2 · PROFILE & SERVICES ============ -->
+  <section id="about" data-screen-label="About & Services" class="r-sec" style="position:relative;padding:140px 32px 100px">
+    <div style="max-width:1360px;margin:0 auto">
+      <div class="r-grid-2" style="display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:center;margin-bottom:110px">
+        <div class="r-about-copy">
+          <div data-rv style="display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#00C2FF;margin-bottom:22px"><span style="width:24px;height:1px;background:linear-gradient(90deg,#00C2FF,#9D4DFF)"></span>The Company</div>
+          <h2 data-rv style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(36px,4.5vw,60px);line-height:1.04;letter-spacing:-0.02em">8+ Years of Digital Marketing <span style="background:linear-gradient(135deg,#00C2FF,#9D4DFF);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">&amp; Branding Excellence</span></h2>
+          <p data-rv style="margin-top:26px;max-width:52ch;font-size:17px;line-height:1.7;color:rgba(255,255,255,.75)">Combining <span style="font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:1.35em;background:linear-gradient(90deg,#22d3ee,#a855f7);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 15px rgba(43,240,255,.8))">15+</span> years of traditional business management with <span style="font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:1.35em;background:linear-gradient(90deg,#22d3ee,#a855f7);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 15px rgba(43,240,255,.8))">8+</span> years of full-platform digital marketing expertise.</p>
+          <p data-rv style="margin-top:16px;max-width:52ch;font-size:17px;line-height:1.7;color:#fff;text-shadow:0 0 16px rgba(255,255,255,.7),0 0 42px rgba(255,255,255,.35)">From Malaysia to Singapore and beyond — one accountable, creator-led team in every market.</p>
+        </div>
+        <div data-rv-group="aboutStats" ref="{{ statsGridRef }}" class="r-grid-stats" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <sc-for list="{{ aboutStats }}" as="st" hint-placeholder-count="4">
+            <div style="padding:30px 26px;border-radius:20px;background:rgba(12,10,28,.8);border:1px solid rgba(255,255,255,.09)">
+              <div style="font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:44px;letter-spacing:-0.02em;background:linear-gradient(135deg,#00C2FF,#9D4DFF);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 20px rgba(43,240,255,.8))">{{ st.display }}</div>
+              <div style="margin-top:8px;font-size:13.5px;color:rgba(255,255,255,.55)">{{ st.label }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div id="services" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-bottom:44px">
+        <h3 data-rv style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(30px,3.5vw,46px);letter-spacing:-0.02em">Core Expertise</h3>
+        <span data-rv style="font-size:14px;color:rgba(255,255,255,.45)">Eight disciplines, one team.</span>
+      </div>
+      <div data-rv-group="services" class="r-grid-4" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+        <sc-for list="{{ services }}" as="svc" hint-placeholder-count="8">
+          <div style="position:relative;display:flex;flex-direction:column;gap:14px;padding:30px 26px;border-radius:20px;background:rgba(9,7,24,.85);border:1px solid rgba(255,255,255,.1);transition:border-color .3s,transform .3s,box-shadow .3s" style-hover="border-color:rgba(43,240,255,.65);transform:translateY(-6px) scale(1.02);box-shadow:0 20px 50px -18px rgba(157,77,255,.55)">
+            <span style="display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:#2bf0ff;filter:drop-shadow(0 0 10px rgba(43,240,255,.55))"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{ svc.icon }}"></path></svg></span>
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;letter-spacing:-0.01em;background:linear-gradient(135deg,#00C2FF,#9D4DFF);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">{{ svc.name }}</div>
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <sc-for list="{{ svc.bullets }}" as="b" hint-placeholder-count="3">
+                <span style="display:flex;align-items:center;gap:9px;font-size:13.5px;color:rgba(255,255,255,.72)">
+                  <span style="flex-shrink:0;display:grid;place-items:center;width:16px;height:16px;border-radius:999px;background:linear-gradient(135deg,#00C2FF,#9D4DFF);box-shadow:0 0 8px rgba(43,240,255,.6)"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+                  {{ b }}
+                </span>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 2.5 · DATA-DRIVEN RESULTS ============ -->
+  <section id="results" data-screen-label="Data-Driven Results" class="r-sec" style="position:relative;padding:100px 32px">
+    <div style="max-width:1360px;margin:0 auto">
+      <div data-rv style="display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#00C2FF;margin-bottom:22px"><span style="width:24px;height:1px;background:linear-gradient(90deg,#00C2FF,#9D4DFF)"></span>Data-Driven Results</div>
+      <h2 data-rv style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(34px,4vw,54px);letter-spacing:-0.02em;margin-bottom:64px">Real dashboards. Real numbers.</h2>
+      <div style="display:flex;flex-direction:column;gap:72px">
+        <sc-for list="{{ resultRows }}" as="row" hint-placeholder-count="3">
+          <div data-rv-group="resultRow" class="r-grid-row" style="display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;direction:{{ row.dir }}">
+            <div style="direction:ltr;width:100%;border-radius:16px;border:2px solid rgba(34,211,238,.6);background:rgba(5,2,20,.85);padding:8px;box-shadow:0 0 30px rgba(34,211,238,.5);will-change:transform;transform:translateZ(0)"><div style="width:100%;aspect-ratio:16/9;background-image:{{ row.img }};background-size:contain;background-repeat:no-repeat;background-position:center;border-radius:10px"></div></div>
+            <div style="direction:ltr">
+              <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:linear-gradient(90deg,#00C2FF,#9D4DFF);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">{{ row.tag }}</div>
+              <h3 style="margin-top:14px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(26px,2.8vw,38px);letter-spacing:-0.02em">{{ row.heading }}</h3>
+              <div style="display:flex;flex-direction:column;gap:16px;margin-top:24px">
+                <sc-for list="{{ row.bullets }}" as="b" hint-placeholder-count="3">
+                  <span style="display:flex;align-items:center;gap:12px;font-size:15.5px;color:rgba(255,255,255,.78)">
+                    <span style="flex-shrink:0;display:grid;place-items:center;width:20px;height:20px;border-radius:999px;background:linear-gradient(135deg,#22d3ee,#9D4DFF);box-shadow:0 0 8px rgba(34,211,238,.8);filter:drop-shadow(0 0 8px rgba(34,211,238,.8))"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+                    {{ b }}
+                  </span>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 3 · PROCESS & PORTFOLIO ============ -->
+  <section id="work" data-screen-label="Process & Portfolio" class="r-sec" style="position:relative;overflow-x:clip;padding:100px 32px;background:linear-gradient(180deg,transparent,rgba(157,77,255,.05),transparent)">
+    <div style="max-width:1360px;margin:0 auto">
+      <div data-rv style="display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#00C2FF;margin-bottom:22px"><span style="width:24px;height:1px;background:linear-gradient(90deg,#00C2FF,#9D4DFF)"></span>How We Work</div>
+      <h2 data-rv style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(34px,4vw,54px);letter-spacing:-0.02em;margin-bottom:60px">Three steps. Zero friction.</h2>
+
+      <div data-rv-group="process" class="r-grid-4" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:110px">
+        <sc-for list="{{ process }}" as="step" hint-placeholder-count="3">
+          <div style="position:relative;padding:34px 30px;border-radius:22px;background:rgba(12,10,28,.8);border:1px solid rgba(255,255,255,.09)">
+            <div style="display:flex;align-items:baseline;gap:18px">
+              <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:68px;line-height:1;background:linear-gradient(135deg,#00C2FF,#9D4DFF);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 18px rgba(43,240,255,.5))">{{ step.n }}</span>
+              <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;letter-spacing:-0.01em">{{ step.title }}</span>
+            </div>
+            <p style="margin-top:18px;font-size:14.5px;line-height:1.65;color:rgba(255,255,255,.55)">{{ step.desc }}</p>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-bottom:50px">
+        <h3 data-rv style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(30px,3.5vw,46px);letter-spacing:-0.02em">Selected Work</h3>
+        <div data-rv style="display:flex;gap:10px">
+          <button onClick="{{ covPrev }}" style="width:46px;height:46px;display:grid;place-items:center;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);transition:border-color .25s" style-hover="border-color:#00C2FF" style-active="transform:scale(.96)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg></button>
+          <button onClick="{{ covNext }}" style="width:46px;height:46px;display:grid;place-items:center;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);transition:border-color .25s" style-hover="border-color:#00C2FF" style-active="transform:scale(.96)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+        </div>
+      </div>
+
+      <div ref="{{ covRef }}" data-rv class="r-cov" style="position:relative;height:420px;perspective:1400px;animation:tcmFloat 8s ease-in-out infinite;will-change:transform;cursor:grab;touch-action:pan-y;user-select:none">
+        <sc-for list="{{ covCards }}" as="card" hint-placeholder-count="5">
+          <div onClick="{{ card.onClick }}" class="r-cov-card" style="position:absolute;left:50%;top:0;width:min(533px,72vw);aspect-ratio:4/3;border-radius:16px;overflow:hidden;cursor:pointer;background-color:rgba(0,0,0,.4);background-image:{{ card.bgImg }};background-size:contain;background-repeat:no-repeat;background-position:center;border:1px solid rgba(255,255,255,.1);transform:{{ card.transform }};opacity:{{ card.opacity }};z-index:{{ card.z }};filter:{{ card.filter }};transition:transform .65s cubic-bezier(.22,1,.36,1),opacity .65s ease,filter .65s ease,border-color .3s,box-shadow .3s;box-shadow:0 0 15px rgba(0,255,255,.15),0 30px 80px -20px rgba(0,0,0,.7)" style-hover="border-color:rgba(34,211,238,.6);box-shadow:0 0 30px rgba(0,255,255,.5),0 30px 80px -20px rgba(0,0,0,.7)">
+            <div style="position:absolute;inset:0;display:grid;place-items:center;opacity:0;transition:opacity .3s ease" style-hover="opacity:1">
+              <span style="display:grid;place-items:center;width:72px;height:72px;border-radius:999px;background:rgba(5,2,20,.5);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(8px);box-shadow:0 0 30px rgba(43,240,255,.5)"><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"></path></svg></span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;justify-content:center;gap:8px;margin-top:30px">
+        <sc-for list="{{ covDots }}" as="d" hint-placeholder-count="5">
+          <button onClick="{{ d.onClick }}" style="width:{{ d.w }};height:6px;border-radius:999px;background:{{ d.bg }};transition:all .3s;padding:0"></button>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 4 · SERVICE DEEP DIVE (TABS) ============ -->
+  <section id="deepdive" data-screen-label="Deep Dive" class="r-sec" style="position:relative;padding:100px 32px 140px">
+    <div style="max-width:1160px;margin:0 auto">
+      <div data-rv style="display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#00C2FF;margin-bottom:22px"><span style="width:24px;height:1px;background:linear-gradient(90deg,#00C2FF,#9D4DFF)"></span>Service Deep Dive</div>
+      <h2 data-rv style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(34px,4vw,54px);letter-spacing:-0.02em;margin-bottom:44px">Every platform, mastered.</h2>
+
+      <div data-rv style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px">
+        <sc-for list="{{ tabButtons }}" as="tb" hint-placeholder-count="3">
+          <button onClick="{{ tb.onClick }}" style="{{ tb.style }}">{{ tb.label }}</button>
+        </sc-for>
+      </div>
+
+      <div data-rv class="r-tabbox" style="border-radius:26px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);padding:44px;background-color:rgba(10,8,26,.85)">
+        <div class="r-tabpanel" style="display:grid;grid-template-columns:.95fr 1.05fr;gap:48px;align-items:start">
+          <div>
+            <div style="font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;background:linear-gradient(135deg,#00C2FF,#9D4DFF);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">{{ activeTab.eyebrow }}</div>
+            <h3 style="margin-top:14px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:34px;letter-spacing:-0.02em;line-height:1.1">{{ activeTab.title }}</h3>
+            <p style="margin-top:18px;font-size:15.5px;line-height:1.7;color:rgba(255,255,255,.6)">{{ activeTab.desc }}</p>
+            <div style="display:flex;align-items:center;gap:24px;margin-top:44px;padding:20px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(4px);width:fit-content">
+              <div style="font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;background:linear-gradient(90deg,#22d3ee,#3b82f6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">{{ activeTab.stat }}</div>
+              <div style="font-size:14px;color:rgba(255,255,255,.55);font-weight:500;line-height:1.4">{{ activeTab.statLabel }}</div>
+            </div>
+            <a href="https://wa.me/60127816121?text=Hi%2C%20I%27d%20like%20to%20book%20a%20strategy%20call!" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;margin-top:28px;padding:13px 26px;border-radius:999px;background:#fff;color:#05050A;font-weight:600;font-size:15px;transition:transform .3s;width:fit-content" style-hover="transform:scale(1.05)" style-active="transform:scale(.98)">
+              Book a Strategy Call
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+            </a>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <sc-for list="{{ activeTab.points }}" as="pt" hint-placeholder-count="5">
+              <div style="display:flex;gap:14px;align-items:flex-start;padding:16px 20px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)">
+                <span style="flex-shrink:0;display:grid;place-items:center;width:22px;height:22px;border-radius:999px;background:linear-gradient(135deg,#00C2FF,#9D4DFF);margin-top:1px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+                <div>
+                  <div style="font-weight:600;font-size:15px">{{ pt.t }}</div>
+                  <div style="margin-top:3px;font-size:13.5px;line-height:1.55;color:rgba(255,255,255,.55)">{{ pt.d }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 4.5 · FAQ ============ -->
+  <section id="faq" data-screen-label="FAQ" class="r-sec" style="position:relative;padding:100px 32px 120px">
+    <div style="max-width:920px;margin:0 auto">
+      <div data-rv style="display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#00C2FF;margin-bottom:22px"><span style="width:24px;height:1px;background:linear-gradient(90deg,#00C2FF,#9D4DFF)"></span>FAQ</div>
+      <h2 data-rv style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(34px,4vw,54px);letter-spacing:-0.02em;margin-bottom:44px">Questions, answered.</h2>
+      <div data-rv-group="faq" style="display:flex;flex-direction:column;gap:14px">
+        <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="7">
+          <div style="border-radius:14px;background:rgba(12,10,28,.8);border:1px solid rgba(255,255,255,.1);border-left:2px solid {{ f.leftBorder }};overflow:hidden;transition:border-color .3s,background .3s" style-hover="border-left-color:#22d3ee;background:rgba(255,255,255,.08)">
+            <button onClick="{{ f.toggle }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:18px;padding:22px 26px;text-align:left;cursor:pointer">
+              <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16.5px;letter-spacing:.02em;background:linear-gradient(90deg,#22d3ee,#a855f7,#ec4899);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;transition:filter .3s" style-hover="filter:drop-shadow(0 0 12px rgba(192,132,252,.8))">{{ f.q }}</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;filter:drop-shadow(0 0 8px rgba(34,211,238,.8));transform:{{ f.chevron }};transition:transform .3s"><path d="M6 9l6 6 6-6"></path></svg>
+            </button>
+            <div style="max-height:{{ f.maxH }};opacity:{{ f.aOpacity }};overflow:hidden;transition:max-height .45s cubic-bezier(.22,1,.36,1),opacity .35s ease">
+              <p style="padding:0 26px 24px;font-size:15px;line-height:1.75;color:#d1d5db">{{ f.a }}</p>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 5 · GRAND FINALE CTA ============ -->
+  <section id="contact" data-screen-label="CTA" class="r-sec" style="position:relative;min-height:88vh;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center;padding:120px 32px">
+    <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 50% 55%, rgba(43,240,255,.1), transparent 70%)"></div>
+    <div style="position:relative;z-index:10;display:flex;flex-direction:column;align-items:center">
+      <h2 data-rv style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(44px,6.5vw,96px);line-height:1;letter-spacing:-0.03em;max-width:16ch;text-shadow:0 0 60px rgba(157,77,255,.4)">Ready to <span style="background:linear-gradient(135deg,#00C2FF,#9D4DFF,#00C2FF);background-size:250% 250%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:tcmGrad 6s ease-in-out infinite">dominate</span> your market?</h2>
+      <p data-rv style="margin-top:26px;max-width:50ch;font-size:17px;line-height:1.65;color:rgba(255,255,255,.6)">One call. One customized plan. One team running every channel that moves your numbers.</p>
+      <a data-rv href="https://wa.me/60127816121?text=Hi%2C%20I%27d%20like%20a%20customized%20package!" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:14px;margin-top:52px;padding:24px 52px;border-radius:999px;background:linear-gradient(135deg,#00C2FF,#9D4DFF);color:#fff;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;letter-spacing:-0.01em;animation:tcmPulse 2.6s ease-in-out infinite" style-active="transform:scale(.98)">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.53 15.23L2 22l4.9-1.42A10 10 0 1 0 12 2Zm5.07 14.13c-.22.62-1.28 1.2-1.78 1.24-.48.05-.93.23-3.12-.65-2.64-1.06-4.32-3.75-4.45-3.92-.13-.18-1.07-1.42-1.07-2.71 0-1.29.68-1.92.92-2.19.24-.26.52-.33.7-.33h.5c.16 0 .38-.06.59.45.22.52.74 1.8.8 1.93.07.13.11.29.02.46-.09.18-.13.28-.26.44-.13.15-.28.35-.4.47-.13.13-.27.28-.12.54.15.26.68 1.12 1.46 1.81 1 .9 1.85 1.17 2.11 1.3.26.13.42.11.57-.07.16-.17.66-.77.84-1.03.17-.26.35-.22.59-.13.24.09 1.52.71 1.78.84.26.13.43.2.5.31.06.11.06.64-.15 1.24Z"></path></svg>
+        WhatsApp Us for a Customized Package
+      </a>
+      <div data-rv style="margin-top:60px;display:flex;flex-wrap:wrap;gap:28px;justify-content:center;font-size:13px;color:rgba(255,255,255,.4)">
+        <span>Malaysia · Singapore · USA</span>
+        <span>·</span>
+        <span>In-house livestream studio</span>
+        <span>·</span>
+        <span>English · 中文 · Bahasa</span>
+      </div>
+    </div>
+  </section>
+
+  <sc-if value="{{ lightboxOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeLightbox }}" style="position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:4vh 4vw;background:rgba(0,0,0,.94)">
+      <button onClick="{{ closeLightbox }}" style="position:absolute;top:24px;right:28px;width:44px;height:44px;display:grid;place-items:center;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:#fff"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 4l16 16M20 4 4 20"></path></svg></button>
+      <div onClick="{{ stopProp }}" style="width:min(1100px,92vw);aspect-ratio:16/9;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.2);box-shadow:0 0 80px rgba(43,240,255,.25);background:#000">
+        <iframe src="{{ lightboxUrl }}" style="width:100%;height:100%;border:0" allow="autoplay; fullscreen" allowfullscreen="true"></iframe>
+      </div>
+    </div>
+  </sc-if>
+
+  <footer style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.08);background:rgba(6,3,22,.85);padding:34px 32px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;font-size:13px;color:rgba(255,255,255,.4)">
+    <div style="display:flex;align-items:center;gap:10px">
+      <img src="assets/tcm-logo.jpg" alt="TCM logo" style="width:26px;height:26px;border-radius:7px;object-fit:cover">
+      <span>© 2026 Top Creation Media Sdn Bhd</span>
+    </div>
+    <div style="display:flex;gap:22px">
+      <a href="https://facebook.com/topcreationmedia" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://instagram.com/topcreationmedia" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://tiktok.com/@topcreationmedia" target="_blank" rel="noopener">TikTok</a>
+      <a href="https://wa.me/60127816121" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { heroReady: false, cov: 0, tab: 0, lightbox: -1, statP: 0, faqOpen: 0 };
+
+  faqData() {
+    return [
+      { q: 'Why choose us over other digital marketing agencies in Malaysia and Singapore?', a: "With years of proven industry experience, we don't just run ads; we build full-funnel marketing ecosystems. From high-converting Facebook and Instagram strategies to global Google SEO, we combine creative video production with hard data to guarantee measurable ROI for clients across Malaysia, Singapore, and beyond." },
+      { q: 'Do you offer global Google SEO and SEM targeting the USA, Europe, and China?', a: 'Absolutely. Our search engine optimization (SEO) and search engine marketing (SEM) strategies are designed for global scaling. Whether you want to dominate Google search results in the USA and Europe, or navigate specific digital landscapes in China and Indonesia, we execute hyper-localized keyword strategies that drive top-tier international traffic.' },
+      { q: 'How do your Meta (Facebook & Instagram) and Social Media strategies drive high ROAS?', a: "We treat Social Media marketing as a revenue engine, not just a branding tool. By combining scroll-stopping video production with advanced Facebook and Instagram ad algorithms (CBO/ABO), we pinpoint your ideal customers. We've successfully scaled campaigns for diverse markets, ensuring maximum Return on Ad Spend (ROAS)." },
+      { q: 'Does your team handle professional Video Production and Event Marketing?', a: "Yes! We are a full-service agency. Our in-house team handles high-end video production, from short-form social media reels to corporate brand films. Furthermore, we specialize in Event Marketing—capturing offline events and amplifying them online through targeted SEM and Social Media campaigns to maximize your brand's global exposure." },
+      { q: 'How many years of experience does your digital marketing team have?', a: 'Our core team possesses deep, multi-year experience in navigating the ever-changing digital landscape. We have spent years mastering algorithms across Meta, Google, and global platforms, consistently delivering top-ranking SEO results and multi-million dollar ad management for clients ranging from local Indonesian startups to large-scale European enterprises.' },
+      { q: 'How do you integrate Video content with Google SEO and SEM?', a: "Video is the future of search. We don't just produce visually stunning videos; we optimize them for search engines. By embedding SEO-rich metadata and running targeted SEM video campaigns, we ensure your brand captures high-intent traffic across all platforms, bridging the gap between engaging content and search visibility." },
+      { q: 'Can you help local brands expand into international markets like the USA or Europe?', a: 'Yes, cross-border digital marketing is our expertise. We utilize a combination of robust Google SEO, localized SEM, and globally targeted Instagram and Facebook campaigns to introduce your brand to new demographics. From Indonesia to the USA, we build the digital infrastructure you need to scale globally.' },
+    ];
+  }
+
+  injectFaqSchema() {
+    if (document.getElementById('tcm-faq-schema')) return;
+    const el = document.createElement('script');
+    el.type = 'application/ld+json';
+    el.id = 'tcm-faq-schema';
+    el.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: this.faqData().map((f) => ({
+        '@type': 'Question', name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    });
+    document.head.appendChild(el);
+  }
+
+  animateStats() {
+    if (this._statsRun) return;
+    this._statsRun = true;
+    const start = Date.now(), dur = 1600;
+    this._statTimer = setInterval(() => {
+      const p = Math.min(1, (Date.now() - start) / dur);
+      this.setState({ statP: 1 - Math.pow(1 - p, 3) });
+      if (p >= 1) clearInterval(this._statTimer);
+    }, 30);
+  }
+  revealed = new Set();
+
+  componentDidMount() {
+    setTimeout(() => this.setState({ heroReady: true }), 80);
+    this.injectFaqSchema();
+    this.setupReveal();
+    this.setupTunnel();
+    this._auto = setInterval(() => {
+      if (this.state.lightbox >= 0 || Date.now() - (this._dragged || 0) < 6000) return;
+      this.setState({ cov: (this.state.cov + 1) % 15 });
+    }, 4500);
+  }
+
+  componentWillUnmount() {
+    if (this.io) this.io.disconnect();
+    if (this._auto) clearInterval(this._auto);
+    if (this._tunnel) this._tunnel.dispose();
+    if (this._statTimer) clearInterval(this._statTimer);
+    if (this._statsObs) this._statsObs.disconnect();
+  }
+
+  async setupTunnel(attempt) {
+    attempt = attempt || 0;
+    if (!this.tunnelCanvas || !this.tunnelEl) {
+      if (attempt > 40) { console.error('tunnel: refs never resolved'); return; }
+      setTimeout(() => this.setupTunnel(attempt + 1), 100);
+      return;
+    }
+    try {
+      const url = new URL('tunnel-cosmic.js', window.location.href).href;
+      const mod = await import(url);
+      this._tunnel = await mod.createTunnel(this.tunnelCanvas, this.tunnelEl);
+    } catch (e) {
+      console.error('tunnel init failed:', e && (e.stack || e.message || String(e)));
+    }
+  }
+
+  makeStars(container, canvas, count) {
+    if (!container || !canvas) return null;
+    const ctx = canvas.getContext('2d');
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let w = 1, h = 1, stars = [];
+    const resize = () => {
+      w = container.clientWidth || 1; h = container.clientHeight || 1;
+      canvas.width = w * dpr; canvas.height = h * dpr;
+      stars = Array.from({ length: count }, () => ({
+        x: Math.random() * w, y: Math.random() * h,
+        r: Math.random() * 1.4 + 0.3,
+        tw: Math.random() * Math.PI * 2,
+        sp: 0.15 + Math.random() * 0.5,
+        hue: Math.random() < 0.25 ? (Math.random() < 0.5 ? '0,194,255' : '157,77,255') : '255,255,255',
+      }));
+    };
+    resize();
+    const ro = new ResizeObserver(resize);
+    ro.observe(container);
+    let raf = 0, disposed = false;
+    const tick = (t) => {
+      if (disposed) return;
+      raf = requestAnimationFrame(tick);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+      for (const s of stars) {
+        s.y -= s.sp * 0.12; if (s.y < -2) s.y = h + 2;
+        const a = 0.25 + 0.55 * (0.5 + 0.5 * Math.sin(t * 0.001 * s.sp * 4 + s.tw));
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${s.hue},${a})`;
+        ctx.fill();
+      }
+    };
+    raf = requestAnimationFrame(tick);
+    return { dispose() { disposed = true; cancelAnimationFrame(raf); ro.disconnect(); } };
+  }
+
+  setupReveal() {
+    const EASE = 'opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1)';
+    const hide = (el) => { el.style.opacity = '0'; el.style.transform = 'translateY(34px)'; el.style.transition = EASE; };
+    const show = (el, d = 0) => { el.style.transitionDelay = d + 'ms'; el.style.opacity = '1'; el.style.transform = 'none'; };
+    let k = 0;
+    document.querySelectorAll('[data-rv], [data-rv-group]').forEach((el) => {
+      el.setAttribute('data-rv-key', 'k' + (k++));
+      if (el.hasAttribute('data-rv')) hide(el); else Array.from(el.children).forEach(hide);
+    });
+    this.io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        this.revealed.add(el.getAttribute('data-rv-key'));
+        if (el.hasAttribute('data-rv')) show(el); else Array.from(el.children).forEach((c, i) => show(c, i * 100));
+        this.io.unobserve(el);
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('[data-rv], [data-rv-group]').forEach((el) => this.io.observe(el));
+    this._rvSafety = setTimeout(() => {
+      document.querySelectorAll('[data-rv], [data-rv-group]').forEach((el) => {
+        if (this.revealed.has(el.getAttribute('data-rv-key'))) return;
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight * 1.15) {
+          this.revealed.add(el.getAttribute('data-rv-key'));
+          if (el.hasAttribute('data-rv')) show(el); else Array.from(el.children).forEach((c, i) => show(c, i * 100));
+        }
+      });
+    }, 1400);
+  }
+
+  componentDidUpdate() {
+    // PERF: reuse the cached node list instead of re-querying the whole DOM
+    // on every state change (autoplay ticks + stat counter were doing this at 30ms).
+    if (!this._rvEls) this._rvEls = Array.from(document.querySelectorAll('[data-rv], [data-rv-group]'));
+    this._rvEls.forEach((el) => {
+      if (!this.revealed.has(el.getAttribute('data-rv-key'))) return;
+      const show = (c) => { c.style.opacity = '1'; c.style.transform = 'none'; };
+      if (el.hasAttribute('data-rv')) show(el); else Array.from(el.children).forEach(show);
+    });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const heroIn = s.heroReady ? 1 : 0;
+    const rise = s.heroReady ? 'none' : 'translateY(34px)';
+
+    const trustPills = [
+      { label: '500+ Clients', dur: '6s', delay: '0s', inDelay: '.6s' },
+      { label: '3,000+ Videos', dur: '7s', delay: '.8s', inDelay: '.75s' },
+      { label: 'Omni-Channel Mastery', dur: '6.5s', delay: '1.6s', inDelay: '.9s' },
+    ];
+
+    const portfolioVideos = [
+      { id: 1, thumbId: '1c9Hv7y2g-ToOAJzCW4QK9nXNM19fSQwP', videoId: '1Ty-LZuJjQtZOWxmzonxD0yxITzRKPxSh' },
+      { id: 2, thumbId: '1QjgHN5wtQrwgiAICEtYhPXuZpwUILGyT', videoId: '1AIzBUTbEfXdvnCavm7ZvhScY3rUD93Sg' },
+      { id: 3, thumbId: '1W9vw0f0eblulrzguykCulbxX9uHAcn7V', videoId: '1SvmH1l3jeTb-LqXkCdXGydT2EMNEV6bP' },
+      { id: 4, thumbId: '1V3jWuCXdGTNwYd6aajXcMSctBP1Jw4y9', videoId: '1TOVDmNekJaqW8W3NvhbVr0vW_s3ggaj0' },
+      { id: 5, thumbId: '1rsu4a8sG8J_96kOz_EhMVqIIchzZ51ep', videoId: '1sg0BvCMg9dG06Q7GmgJbXZv9gMOhwXL9' },
+      { id: 6, thumbId: '15eQtE6Txe7JD3Ql6aCwyf6B0h5MtkEVi', videoId: '1DFUPUcqCcqD_sx37gCxlynC_3prWrF6b' },
+      { id: 7, thumbId: '1EA9zExnNeEaPP4CgheXOSIF8jrAtce1O', videoId: '1-c37q5wlcpH_k2srd8gF0RsYuOYSV-N3' },
+      { id: 8, thumbId: '1OMMDkhvSRUXvlvKI3isX7wKUvzXvu5Sz', videoId: '1bBietGo_NAcehlakaW-4TuskE0yQNzMn' },
+      { id: 9, thumbId: '1ywOaqWZs5Tk5sizyexR6ynGP-pXAG38L', videoId: '1ssZ2tW9awvhQM-wAIOKLQQjuMmMR8REU' },
+      { id: 10, thumbId: '16RKEKhPVyUTBk9k3-G_dIK576VMsiYyA', videoId: '1A-hUcTIR8xdjBrnS8Q6QlrgIw9vNYdem' },
+      { id: 11, thumbId: '1b5BtjW8rUZT2_7Ns5s_r8FtGt3qZvgsT', videoId: '1aOQy5d4iiKFi25jfMY_fRze_hw-swrkL' },
+      { id: 12, thumbId: '1p9azCWx6TpYyaMLSDq-cgcEA26F5OOgM', videoId: '1Fn6Ee_SIf8CzHIgy9DnzrHyn9DINr-tp' },
+      { id: 13, thumbId: '12aOLaL3S7-mtPQs7nOO5aqFBA_z6oREe', videoId: '1ToM2cy8Y07o2I9Q0eUl5xN4rFn2s4VPs' },
+      { id: 14, thumbId: '1jpNh9M25rCNBnVLvJ5jV0EjkkEBpoVDE', videoId: '1_XELLEYZQag8Maeip_AWVgWaKSQa42qJ' },
+      { id: 15, thumbId: '1dhR8VyqeZAsr2RIqWFmXcD6EwO68clKm', videoId: '1vUaPoibc1qNdlP_9PoSRqk7HZcycOA7l' },
+    ];
+    const covItems = portfolioVideos.map((v) => ({
+      thumb: `https://drive.google.com/thumbnail?id=${v.thumbId}&sz=w1200`,
+      video: `https://drive.google.com/file/d/${v.videoId}/preview`,
+    }));
+    const n = covItems.length;
+    const covCards = covItems.map((c, i) => {
+      let off = i - s.cov;
+      if (off > n / 2) off -= n; if (off < -n / 2) off += n;
+      const abs = Math.abs(off);
+      // PERF: virtualization — off-screen cards (abs>2) get no background image,
+      // so the browser only decodes/paints the ~5 visible slides, not all 15.
+      return {
+        bgImg: abs > 2 ? 'none' : `url("${c.thumb}")`,
+        transform: `translateX(-50%) translateX(${off * 46}%) translateZ(${-abs * 190}px) rotateY(${off * -26}deg) scale(${abs === 0 ? 1 : Math.max(0.7, 1 - abs * 0.15)})`,
+        opacity: abs > 2 ? 0 : abs === 0 ? 1 : Math.max(0.35, 1 - abs * 0.4),
+        z: abs === 0 ? 10 : 10 - abs,
+        filter: abs === 0 ? 'drop-shadow(0 24px 50px rgba(0,255,255,.25))' : `brightness(${1 - abs * 0.25})`,
+        onClick: () => {
+          if (Date.now() - (this._dragged || 0) < 350) return;
+          if (i === this.state.cov) this.setState({ lightbox: i });
+          else this.setState({ cov: i });
+        },
+      };
+    });
+    const covDots = covItems.map((_, i) => ({
+      w: i === s.cov ? '26px' : '8px',
+      bg: i === s.cov ? 'linear-gradient(90deg,#00C2FF,#9D4DFF)' : 'rgba(255,255,255,.2)',
+      onClick: () => this.setState({ cov: i }),
+    }));
+
+    const tabs = [
+      {
+        label: 'Meta — FB & IG', eyebrow: 'Meta · Facebook & Instagram',
+        title: 'Full-funnel Meta, from scroll to sale.',
+        desc: 'We run Facebook and Instagram as one engine — strategy first, then creative built to convert, then ads tuned relentlessly.',
+        points: [
+          { t: 'Strategy & funnel design', d: 'Audience research, offer architecture, and a content calendar built around business goals.' },
+          { t: 'Video production', d: 'Scroll-stopping short video shot and edited in-house at our studio.' },
+          { t: 'High-converting posters', d: 'Static creatives engineered around hooks, proof, and a single clear CTA.' },
+          { t: 'Carousel designs', d: 'Swipe-through storytelling for product lines, offers, and social proof.' },
+          { t: 'Advanced Meta Ads', d: 'CBO/ABO structures, creative testing matrices, and retargeting that compounds.' },
+        ],
+      },
+      {
+        label: 'TikTok — Video & Live', eyebrow: 'TikTok · Content & Commerce',
+        title: 'Built to go viral. Wired to sell live.',
+        desc: 'From trend-driven short video to full livestream operations, we run the entire TikTok flywheel end to end.',
+        points: [
+          { t: 'Short video creation', d: 'Trend-native scripts, hooks, and edits produced at volume without losing craft.' },
+          { t: 'Malay KOC network', d: 'A curated network of Malay key opinion consumers seeding authentic product content.' },
+          { t: 'Live stream operations', d: 'End-to-end: studio, hosts, ops, pixel setup, and real-time offer management.' },
+          { t: 'TikTok Shop integration', d: 'Catalog, affiliate, and live-selling mechanics tied into one revenue loop.' },
+        ],
+      },
+      {
+        label: 'Google — Search & AI', eyebrow: 'Google · Search Ecosystem',
+        title: 'Own the search results — human and AI.',
+        desc: 'Four disciplines, one goal: when anyone (or any AI) asks, your brand is the answer.',
+        points: [
+          { t: 'SEO — Search Engine Optimization', d: 'Technical health, content strategy, and authority building for page-one rankings.' },
+          { t: 'SEM — Search Engine Marketing', d: 'Google Ads with keyword, bid, and landing-page optimization for maximum ROAS.' },
+          { t: 'AEO — Answer Engine Optimization', d: 'Structured content that wins featured snippets and voice-assistant answers.' },
+          { t: 'GEO — Generative Engine Optimization', d: 'Positioning your brand inside AI-generated answers on ChatGPT, Gemini, and beyond.' },
+        ],
+      },
+    ];
+    const baseTabStyle = {
+      fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: '15px',
+      padding: '13px 26px', borderRadius: '999px', transition: 'all .25s',
+      border: '1px solid rgba(255,255,255,.16)', background: 'rgba(255,255,255,.05)', color: 'rgba(255,255,255,.7)',
+    };
+    const activeTabStyle = { ...baseTabStyle, background: 'linear-gradient(135deg,#00C2FF,#9D4DFF)', color: '#fff', border: '1px solid transparent' };
+    const tabButtons = tabs.map((t, i) => ({
+      label: t.label,
+      style: { ...(i === s.tab ? activeTabStyle : baseTabStyle), willChange: 'transform' },
+      onClick: () => this.setState({ tab: i }),
+    }));
+
+    return {
+      trustPills,
+      clientLogos: [
+        { src: 'assets/logos/3cat.jpeg', name: '3cat' },
+        { src: 'assets/logos/fnc.jpeg', name: 'FnC' },
+        { src: 'assets/logos/mobil.jpg', name: 'Mobil' },
+        { src: 'assets/logos/tcl.png', name: 'TCL' },
+        { src: 'assets/logos/nescafe.jpg', name: 'Nescafé' },
+        { src: 'assets/logos/nomi.png', name: 'NOMI' },
+        { src: 'assets/logos/tp-link.png', name: 'TP-Link' },
+        { src: 'assets/logos/polo-club.jpeg', name: 'Royal County of Berkshire Polo Club' },
+        { src: 'assets/logos/golden-tropics.jpeg', name: 'Golden Tropics' },
+        { src: 'assets/logos/joy-paradise.jpg', name: 'Joy Paradise' },
+        { src: 'assets/logos/lau-homecook.png', name: 'Lau Homecook' },
+        { src: 'assets/logos/sofei.png', name: 'SOFEI' },
+        { src: 'assets/logos/haroma.jpg', name: 'Haroma Signature' },
+      ].map((c) => ({ ...c, bg: `url("${c.src}")` })),
+      // rows expose `ready:true` so the <img> only mounts once values resolve (avoids literal-hole src request)
+      aboutStats: [
+        { n: 8, suf: '+', label: 'Years of excellence' },
+        { n: 3000, suf: '+', label: 'Videos produced' },
+        { n: 500, suf: '+', label: 'Clients served' },
+        { n: 5, suf: '', label: 'Markets · MY / SG / CN / US / ID' },
+      ].map((st) => ({ ...st, display: Math.round(st.n * s.statP).toLocaleString() + st.suf })),
+      resultRows: [
+        { dir: 'ltr', img: 'url("assets/google-dashboard.png")', tag: 'Google Ecosystem', heading: 'Dominating Search Intent', bullets: ['+108% organic clicks', 'Massive 58M+ impressions', 'High-converting SEM traffic'] },
+        { dir: 'rtl', img: 'url("assets/meta-dashboard.png")', tag: 'Meta Ads Mastery', heading: 'Scaling Conversions', bullets: ['Optimized cost per result', 'Massive WhatsApp lead generation', 'Advanced retargeting funnels'] },
+        { dir: 'ltr', img: 'url("assets/tiktok-dashboard.png")', tag: 'TikTok Growth Engine', heading: 'Viral Reach & Live Sales', bullets: ['High-volume Live Stream traffic', 'Rapid follower growth', 'Unbeatable brand awareness'] },
+      ],
+      statsGridRef: (el) => {
+        if (!el || this._statsObs) return;
+        this._statsObs = new IntersectionObserver((entries) => {
+          if (entries.some((e) => e.isIntersecting)) { this.animateStats(); this._statsObs.disconnect(); }
+        }, { threshold: 0.3 });
+        this._statsObs.observe(el);
+        setTimeout(() => { if (!this._statsRun && el.getBoundingClientRect().top < window.innerHeight * 1.1) this.animateStats(); }, 1500);
+      },
+      services: [
+        { name: 'Meta Ads', icon: 'M3 11l18-5v12L3 14v-3zM11.6 16.8a3 3 0 1 1-5.8-1.6', bullets: ['Full-funnel campaigns', 'High-converting creatives', 'ROAS optimization'] },
+        { name: 'TikTok', icon: 'M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z', bullets: ['Short video production', 'Live selling ops', 'Creator networks'] },
+        { name: 'Xiaohongshu', icon: 'M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z', bullets: ['Authentic content', 'Chinese market reach', 'Trend-jacking'] },
+        { name: 'Google SEO/SEM', icon: 'M21 21l-4.35-4.35M17 11a6 6 0 1 1-12 0 6 6 0 0 1 12 0z', bullets: ['Page 1 rankings', 'High-intent traffic', 'Answer Engine Ops'] },
+        { name: 'Branding', icon: 'M12 19l7-7 3 3-7 7-3-3zM18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5zM2 2l7.586 7.586M11 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4z', bullets: ['Visual identity', 'Market positioning', 'Brand guidelines'] },
+        { name: 'KOC & KOL', icon: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75', bullets: ['Influencer matching', 'Campaign management', 'Trust at scale'] },
+        { name: 'Event Organizing', icon: 'M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z', bullets: ['Offline launches', 'Brand activations', 'End-to-end production'] },
+        { name: 'AI Marketing', icon: 'M4 4h16v16H4zM9 9h6v6H9zM9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3', bullets: ['Automated targeting', 'AI-generated assets', 'Data-driven growth'] },
+      ],
+      process: [
+        { n: '1', title: 'Strategy & Discussion', desc: 'We audit your market, define the offer, and align on goals — before a single asset is made.' },
+        { n: '2', title: 'Planning & Approval', desc: 'Content calendars, creative direction, and media plans — mapped, budgeted, and signed off with you.' },
+        { n: '3', title: 'Execution & Growth', desc: 'Our studio ships, campaigns launch, and we optimize weekly — scaling what works and killing what doesn\u2019t.' },
+      ],
+      covCards, covDots,
+      covPrev: () => this.setState({ cov: (s.cov - 1 + n) % n }),
+      covNext: () => this.setState({ cov: (s.cov + 1) % n }),
+      tabButtons,
+      activeTab: { ...tabs[s.tab], ...[{ stat: '3.5x', statLabel: 'Average ROAS Achieved for Clients' }, { stat: '8K+', statLabel: 'Peak Live Viewers in One Session' }, { stat: '+108%', statLabel: 'Organic Clicks Growth Delivered' }][s.tab] },
+      faqs: this.faqData().map((f, i) => {
+        const open = s.faqOpen === i;
+        return {
+          ...f, open,
+          leftBorder: open ? '#22d3ee' : 'transparent',
+          chevron: open ? 'rotate(180deg)' : 'rotate(0deg)',
+          maxH: open ? '400px' : '0px',
+          aOpacity: open ? 1 : 0,
+          toggle: () => this.setState({ faqOpen: open ? -1 : i }),
+        };
+      }),
+      lightboxOpen: s.lightbox >= 0,
+      lightboxUrl: s.lightbox >= 0 ? covItems[s.lightbox].video : '',
+      closeLightbox: () => this.setState({ lightbox: -1 }),
+      stopProp: (e) => e.stopPropagation(),
+      covRef: (el) => {
+        if (!el || this._covBound) return;
+        this._covBound = true;
+        let startX = null, moved = 0;
+        el.addEventListener('pointerdown', (e) => { startX = e.clientX; moved = 0; el.style.cursor = 'grabbing'; });
+        window.addEventListener('pointermove', (e) => { if (startX == null) return; moved = e.clientX - startX; });
+        window.addEventListener('pointerup', () => {
+          if (startX == null) return;
+          el.style.cursor = 'grab';
+          if (Math.abs(moved) > 50) {
+            const steps = Math.max(1, Math.round(Math.abs(moved) / 220));
+            const dir = moved < 0 ? 1 : -1;
+            this._dragged = Date.now();
+            this.setState({ cov: ((this.state.cov + dir * steps) % 15 + 15) % 15 });
+          } else if (Math.abs(moved) > 8) { this._dragged = Date.now(); }
+          startX = null; moved = 0;
+        });
+      },
+      tunnelContainerRef: (el) => { this.tunnelEl = el; },
+      tunnelCanvasRef: (el) => { this.tunnelCanvas = el; },
+    };
+  }
+}
+</script>
+</body>
+</html>
