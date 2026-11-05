@@ -1,0 +1,20 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-11-05T15:34:56.729Z",
+        "reason": "Existing TCM brand body font, already on the live site before this work; kept to preserve identity. Not explicitly confirmed by the user."
+      },
+      {
+        "rule": "overused-font",
+        "value": "space grotesk",
+        "createdAt": "2026-11-05T15:34:56.747Z",
+        "reason": "Existing TCM brand heading font, already on the live site before this work; kept to preserve identity. Not explicitly confirmed by the user."
+      }
+    ]
+  }
+}
