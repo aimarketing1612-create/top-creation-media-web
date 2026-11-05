@@ -113,6 +113,13 @@ src="https://www.facebook.com/tr?id=1157108977284418&ev=PageView&noscript=1"
     .nav-links{display:flex;align-items:center;gap:28px;font-size:14px;color:var(--ink-2)}
     .nav-links a:not(.btn):hover{color:var(--ink)}
 
+    .badge{display:inline-block;margin-left:6px;padding:2px 7px;border-radius:999px;background:var(--cyan);color:#05050A !important;font-size:11px;font-weight:700;letter-spacing:.02em;line-height:1.4;vertical-align:2px}
+    .subnav{display:none;border-top:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+    .subnav::-webkit-scrollbar{display:none}
+    .subnav-in{display:flex;gap:22px;padding:0 16px;min-width:max-content;font-size:14px;color:var(--ink-2)}
+    .subnav a{padding:12px 0;white-space:nowrap}
+    .subnav a[aria-current="page"]{color:var(--ink);box-shadow:inset 0 -2px 0 var(--cyan)}
+
     /* ---------- Hero ---------- */
     .hero{position:relative;min-height:calc(100vh - 57px);min-height:calc(100svh - 57px);display:flex;flex-direction:column;overflow:hidden}
     .hero-main{position:relative;z-index:10;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:72px 24px 48px}
@@ -185,7 +192,7 @@ src="https://www.facebook.com/tr?id=1157108977284418&ev=PageView&noscript=1"
     /* ---------- FAQ ---------- */
     .faq{border-top:1px solid var(--line)}
     .faq-item{border-bottom:1px solid var(--line)}
-    .faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:24px;padding:26px 0;text-align:left;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(18px,1.9vw,22px);line-height:1.25;letter-spacing:-.02em;color:var(--ink)}
+    .faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:24px;padding:26px 0;text-align:left;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(18px,1.9vw,22px);line-height:1.35;letter-spacing:-.02em;color:var(--ink)}
     .faq-q:hover{color:var(--cyan)}
     .faq-q svg{flex-shrink:0;color:var(--ink-3);transition:transform .5s var(--ease)}
     .faq-a{overflow:hidden;transition:max-height .5s var(--ease),opacity .4s ease}
@@ -208,6 +215,7 @@ src="https://www.facebook.com/tr?id=1157108977284418&ev=PageView&noscript=1"
       .r-sec{padding-left:20px !important;padding-right:20px !important;padding-top:72px !important;padding-bottom:72px !important}
       .nav-in{padding:0 16px;height:52px}
       .r-nav-links{display:none !important}
+      .subnav{display:block}
       .hero-main{padding:48px 20px 36px}
       .hero h1{font-size:46px;max-width:100%}
       .trust-item{padding:0 14px}
@@ -220,7 +228,7 @@ src="https://www.facebook.com/tr?id=1157108977284418&ev=PageView&noscript=1"
       .r-cov{height:300px !important}
       .r-cov-card{width:72vw !important}
       .faq-a p{padding-right:0}
-      .btn-lg{min-height:56px;padding:0 28px;font-size:17px}
+      .btn-lg{min-height:56px;padding:14px 24px;font-size:17px;white-space:normal;text-align:center;line-height:1.25}
       .cta{min-height:auto}
     }
 
@@ -248,12 +256,22 @@ src="https://www.facebook.com/tr?id=1157108977284418&ev=PageView&noscript=1"
         <span>Top Creation Media</span>
       </a>
       <div class="nav-links">
-        <a class="r-nav-links" href="#about">About</a>
-        <a class="r-nav-links" href="#work">Work</a>
         <a class="r-nav-links" href="#services">Services</a>
+        <a class="r-nav-links" href="ai-classes.html">AI Classes<span class="badge">New</span></a>
+        <a class="r-nav-links" href="marketing-classes.html">Marketing Classes</a>
+        <a class="r-nav-links" href="portfolio.html">Portfolio</a>
+        <a class="r-nav-links" href="#contact">Contact</a>
         <a class="btn btn-primary btn-sm" href="https://wa.me/60127816121?text=Hi%2C%20I%27d%20like%20a%20customized%20package!" onclick="if (window.gtag) gtag('event', 'conversion', {'send_to':'AW-18334047674/RhA_CIXz2OIcELq7raZE'});" target="_blank" rel="noopener">WhatsApp Us</a>
       </div>
     </div>
+    <div class="subnav"><div class="subnav-in">
+      <a href="#hero" aria-current="page">Home</a>
+      <a href="#services">Services</a>
+      <a href="ai-classes.html">AI Classes<span class="badge">New</span></a>
+      <a href="marketing-classes.html">Marketing Classes</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="#contact">Contact</a>
+    </div></div>
   </nav>
 
   <!-- ============ SECTION 1 · HERO ============ -->
@@ -391,6 +409,7 @@ src="https://www.facebook.com/tr?id=1157108977284418&ev=PageView&noscript=1"
           <button aria-label="Show project" onClick="{{ d.onClick }}" style="width:{{ d.w }};background:{{ d.bg }}"></button>
         </sc-for>
       </div>
+      <div class="hero-cta" style="margin-top:48px"><a class="btn btn-ghost" href="portfolio.html">View the full portfolio</a></div>
     </div>
   </section>
 
