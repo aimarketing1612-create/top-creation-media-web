@@ -4,11 +4,16 @@
 
    ---------------------------------------------------------------------
    1) VIDEOS  (16:9). Fill in ONE of the three options per video:
+        mp4:       '/assets/video/home.mp4'   BEST: a file you upload to deploy/assets/video/
+                                              (H.264 MP4, 1080p, under ~10 MB)
         youtubeId: 'dQw4w9WgXcQ'    the code after watch?v= in a YouTube link
-        driveId:   'FILE_ID'        Google Drive: share as "Anyone with the link",
-                                    code from drive.google.com/file/d/FILE_ID/view
-        mp4:       '/assets/video/home.mp4'   a file you upload to the site
-      Optional: poster: '/assets/video/home-cover.jpg'  (cover image)
+        driveId:   'FILE_ID'        Google Drive (click-to-play only, cannot autoplay)
+      Optional: poster: '/assets/video/home-cover.jpg'  (cover image shown while loading)
+
+      AUTOPLAY: MP4 and YouTube videos play automatically when the visitor
+      reaches them, MUTED (browsers block autoplay with sound). A "Sound on"
+      button lets visitors turn the sound on. To turn autoplay off for one
+      video, add  autoplay: false
       Leave all empty ('') and the page shows a "Video coming soon" frame.
 
    2) TESTIMONIALS. Only add REAL client reviews (with permission).

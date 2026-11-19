@@ -65,29 +65,71 @@
   var media = window.TCM_MEDIA || { videos: {}, testimonials: [] };
 
   // ---- Video slots: <div class="video" data-video="home"> (configured in site-media.js)
+  // Browsers only allow autoplay when muted, so autoplay starts muted with an "unmute" button.
+  // Reduced-motion visitors get a play button instead.
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var SOUND_OFF = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6"/></svg>';
+  var SOUND_ON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5zM15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>';
+
+  function ytSrc(id, auto) {
+    var q = auto ? 'autoplay=1&mute=1&loop=1&playlist=' + encodeURIComponent(id) + '&playsinline=1&rel=0' : 'autoplay=1&rel=0&playsinline=1';
+    return 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) + '?' + q;
+  }
+
+  function mountMp4(box, v, auto) {
+    var el = document.createElement('video');
+    el.src = v.mp4; el.playsInline = true; el.setAttribute('playsinline', '');
+    if (v.poster) el.poster = v.poster;
+    box.textContent = '';
+    box.appendChild(el);
+    if (!auto) { el.controls = true; el.play(); return; }
+    el.muted = true; el.loop = true; el.autoplay = true; el.preload = 'auto';
+    var snd = document.createElement('button');
+    snd.type = 'button'; snd.className = 'video-sound'; snd.setAttribute('aria-label', 'Turn sound on'); snd.innerHTML = SOUND_OFF + '<span>Sound on</span>';
+    snd.addEventListener('click', function () {
+      el.muted = !el.muted;
+      if (!el.muted) el.play();
+      snd.innerHTML = (el.muted ? SOUND_OFF + '<span>Sound on</span>' : SOUND_ON + '<span>Sound off</span>');
+      snd.setAttribute('aria-label', el.muted ? 'Turn sound on' : 'Turn sound off');
+    });
+    box.appendChild(snd);
+    // Pause when scrolled away, resume when back, to save data and battery.
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) el.play().catch(function () {}); else el.pause(); }); }, { threshold: 0.25 }).observe(box);
+    } else el.play().catch(function () {});
+  }
+
+  function mountIframe(box, src, title) {
+    var f = document.createElement('iframe');
+    f.src = src; f.title = title; f.allow = 'autoplay; fullscreen; picture-in-picture'; f.allowFullscreen = true;
+    box.textContent = '';
+    box.appendChild(f);
+  }
+
   Array.prototype.forEach.call(document.querySelectorAll('[data-video]'), function (box) {
     var v = (media.videos || {})[box.getAttribute('data-video')] || {};
     var btn = box.querySelector('.video-btn');
     var title = box.getAttribute('aria-label') || 'Video';
-    var src = v.youtubeId ? 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(v.youtubeId) + '?autoplay=1&rel=0'
-      : v.driveId ? 'https://drive.google.com/file/d/' + encodeURIComponent(v.driveId) + '/preview' : '';
-    if (!src && !v.mp4) return;
+    if (!v.youtubeId && !v.driveId && !v.mp4) return;
+    var auto = v.autoplay !== false && !reduce && !v.driveId;
     btn.classList.remove('video-soon');
     btn.querySelector('.video-cap').textContent = 'Play video';
     if (v.poster) box.style.background = 'center/cover no-repeat url("' + v.poster.replace(/"/g, '%22') + '")';
-    btn.addEventListener('click', function () {
-      var el;
-      if (v.mp4) {
-        el = document.createElement('video');
-        el.src = v.mp4; el.controls = true; el.autoplay = true; el.playsInline = true;
-        if (v.poster) el.poster = v.poster;
-      } else {
-        el = document.createElement('iframe');
-        el.src = src; el.title = title; el.allow = 'autoplay; fullscreen; picture-in-picture'; el.allowFullscreen = true;
-      }
-      box.textContent = '';
-      box.appendChild(el);
-    });
+
+    function start(autoMode) {
+      if (v.mp4) mountMp4(box, v, autoMode);
+      else if (v.youtubeId) mountIframe(box, ytSrc(v.youtubeId, autoMode), title);
+      else mountIframe(box, 'https://drive.google.com/file/d/' + encodeURIComponent(v.driveId) + '/preview', title);
+    }
+    btn.addEventListener('click', function () { start(false); });
+    if (!auto) return;
+    // Load the video only when it is about to be seen.
+    if ('IntersectionObserver' in window) {
+      var io2 = new IntersectionObserver(function (es) {
+        if (es.some(function (e) { return e.isIntersecting; })) { io2.disconnect(); start(true); }
+      }, { rootMargin: '200px' });
+      io2.observe(box);
+    } else start(true);
   });
 
   // ---- Testimonials: hidden until real ones are added in site-media.js

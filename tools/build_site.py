@@ -107,7 +107,7 @@ def nav(cur):
     return f'''<a class="skip" href="#main">Skip to content</a>
   <header class="nav">
     <div class="nav-in">
-      <a class="brand" href="/" aria-label="Top Creation Media, home"><img src="/assets/tcm-wordmark.png" alt="TCM Top Creation Media" width="480" height="207"></a>
+      <a class="brand" href="/" aria-label="Top Creation Media, home"><img src="/assets/tcm-wordmark.webp" alt="TCM Top Creation Media" width="480" height="207"></a>
       <nav class="nav-links" aria-label="Main">
         {main}
         <a class="btn btn-primary btn-sm" href="{wa("Hi, I'd like a customized package!")}" onclick="{CONV}" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="{WA_PATH}"/></svg>WhatsApp Us</a>
@@ -210,10 +210,11 @@ def ticks(items):
     return '<ul class="ticks">' + ''.join(f'<li>{esc(t)}</li>' for t in items) + '</ul>'
 
 
-def hero(crumbs, h1, lede, buttons='', extra=''):
+def hero(crumbs, h1, lede, buttons='', extra='', eyebrow=''):
     crumb = ' / '.join(f'<a href="{h}">{esc(t)}</a>' if h else esc(t) for t, h in crumbs)
     return f'''    <section class="page-hero">
       <div class="crumbs rise">{crumb}</div>
+      {f'<div class="eyebrow rise">{eyebrow}</div>' if eyebrow else ''}
       <h1 class="h1 rise" style="animation-delay:.05s">{h1}</h1>
       <p class="lede rise" style="animation-delay:.2s">{lede}</p>
       {buttons}
@@ -249,7 +250,7 @@ def faq_ld(items):
 def faq_section(items, cls='tile-dark', title='Questions, answered.'):
     return f'''    <section class="tile {cls}">
       <div style="max-width:900px;margin:0 auto">
-        <div class="sec-head" style="margin-bottom:48px"><h2 class="h2" data-rv>{title}</h2></div>
+        {head(title, 'FAQ', style='margin-bottom:48px')}
         {faq_html(items)}
       </div>
     </section>'''
@@ -275,14 +276,15 @@ def guarantee(subject):
     </section>'''
 
 
-def cards(rows, cls='grid'):
+def cards(rows, cls='grid', ics=None):
     out = []
-    for row in rows:
+    for n, row in enumerate(rows):
         t, d = row[0], row[1]
         links = ''
         if len(row) > 2 and row[2]:
             links = '<div class="card-links">' + ''.join(f'<a href="{h}">{esc(l)} &rarr;</a>' for l, h in row[2]) + '</div>'
-        ico = icon(row[3]) if len(row) > 3 and row[3] else ''
+        name = row[3] if len(row) > 3 and row[3] else (ics[n] if ics else '')
+        ico = icon(name) if name else ''
         out.append(f'<div class="card" data-rv>{ico}<div class="card-t">{esc(t)}</div><p class="card-d">{esc(d)}</p>{links}</div>')
     return f'<div class="{cls}">' + '\n          '.join(out) + '</div>'
 
@@ -333,7 +335,7 @@ CLIENTS_HTML = '<div class="clients" data-rv>' + ''.join(
     f'<div class="client" role="img" aria-label="{esc(n)}" title="{esc(n)}" style="background-image:url(\'/assets/logos/{f}\')"></div>' for f, n in CLIENTS) + '</div>'
 
 
-DIMS = {'meta-dashboard.png': (1665, 945), 'tiktok-dashboard.png': (1672, 941), 'google-dashboard.png': (1692, 930)}
+DIMS = {'meta-dashboard.webp': (1665, 945), 'tiktok-dashboard.webp': (1672, 941), 'google-dashboard.webp': (1692, 930)}
 
 
 def result(img, alt, tag, heading, bullets, flip=False):
@@ -344,11 +346,11 @@ def result(img, alt, tag, heading, bullets, flip=False):
         </div>'''
 
 
-RES_META = ('meta-dashboard.png', 'Meta Ads Manager dashboard showing campaign results', 'Meta ads', 'Scaling conversions',
+RES_META = ('meta-dashboard.webp', 'Meta Ads Manager dashboard showing campaign results', 'Meta ads', 'Scaling conversions',
             ['Optimised cost per result', 'High-volume WhatsApp lead generation', 'Retargeting funnels that compound'])
-RES_TT = ('tiktok-dashboard.png', 'TikTok analytics dashboard showing live and video results', 'TikTok', 'Viral reach and live sales',
+RES_TT = ('tiktok-dashboard.webp', 'TikTok analytics dashboard showing live and video results', 'TikTok', 'Viral reach and live sales',
           ['High-volume livestream traffic', 'Rapid follower growth', 'Strong brand awareness'])
-RES_GG = ('google-dashboard.png', 'Google Search Console dashboard showing organic growth', 'Google search', 'Winning search intent',
+RES_GG = ('google-dashboard.webp', 'Google Search Console dashboard showing organic growth', 'Google search', 'Winning search intent',
           ['+108% organic clicks', '58M+ impressions', 'High-converting search ad traffic'])
 
 # =================================================================== HOME
@@ -440,13 +442,17 @@ home_body = f'''    <section class="hero">
       </div>
     </section>
 
-    <section class="tile tile-dark" id="mission">
+    <section class="tile mvp" id="mvp">
       <div class="wrap">
-        {head('What drives us', 'Mission · Vision · Performance', style='margin-bottom:16px')}
+        <div class="mvp-head" data-rv>
+          <div class="eyebrow">Mission · Vision · Performance</div>
+          <h2 class="mvp-title">Our <span class="accent">MVP</span></h2>
+          <p class="lede">Three promises behind everything we teach and everything we run for you.</p>
+        </div>
         <div class="split">
         {photo('mission.jpg', 'Top Creation Media team guiding participants during a hands-on class')}
-          <div data-rv>
-            <div class="split-k">Our mission</div>
+          <div class="mvp-text" data-letter="M" data-rv>
+            <div class="split-k mvp-num"><b>01</b>Our mission</div>
             <h3 class="h2">We guide you until you can do it yourself.</h3>
             <p class="lede">We coach every participant to learn AI and marketing hands-on. You set up the account, make the video and launch the ad with your own hands, with us beside you.</p>
             {ticks(['Learn by doing, on your own business', 'Step-by-step guidance, starting from zero', 'Templates and prompts you keep for good'])}
@@ -454,8 +460,8 @@ home_body = f'''    <section class="hero">
         </div>
         <div class="split flip">
         {photo('vision.jpg', 'Behind the scenes at a Top Creation Media shoot')}
-          <div data-rv>
-            <div class="split-k">Our vision</div>
+          <div class="mvp-text" data-letter="V" data-rv>
+            <div class="split-k mvp-num"><b>02</b>Our vision</div>
             <h3 class="h2">Every beginner can become a professional marketer.</h3>
             <p class="lede">Anyone who finds this website, with no experience and no coding, should be able to become a professional marketer. Every class and service we build is held to that standard.</p>
             {ticks(['No experience or coding needed', 'Skills for your own business, or to freelance', 'Learn the right way first and skip costly mistakes'])}
@@ -463,8 +469,8 @@ home_body = f'''    <section class="hero">
         </div>
         <div class="split">
         {photo('performance.jpg', 'Top Creation Media livestream session in the studio')}
-          <div data-rv>
-            <div class="split-k">Our performance</div>
+          <div class="mvp-text" data-letter="P" data-rv>
+            <div class="split-k mvp-num"><b>03</b>Our performance</div>
             <h3 class="h2">Sales that sell out. Brands that last.</h3>
             <p class="lede">We measure ourselves in results: orders, leads and a brand people remember. Not likes for the sake of likes.</p>
             {ticks(['Sell-out campaigns and livestreams', 'Leads and sales you can count', 'A brand people trust and come back to'])}
@@ -521,15 +527,8 @@ home_body = f'''    <section class="hero">
 
     <section class="tile tile-raise" id="testimonials" hidden>
       <div class="wrap">
-        <div class="sec-head"><h2 class="h2">What clients say.</h2></div>
+        {head('What clients say', 'Testimonials')}
         <div class="quotes"></div>
-      </div>
-    </section>
-
-    <section class="tile tile-dark">
-      <div class="wrap">
-        {head('Three steps. Zero confusion.', 'Our process')}
-{STEPS3}
       </div>
     </section>
 
@@ -553,11 +552,11 @@ PLATFORMS = [
 
 social_body = f'''{hero([("Home", "/"), ("Social Media", "")], 'Social media marketing, <span class="accent">two ways.</span>',
        'Facebook, Instagram, TikTok, Google and Xiaohongshu. Let our team run it for you, or learn to run it yourself the right way, from day one.',
-       extra=switch('social') + video('social', 'Social media marketing: two ways to work with us'))}
+       extra=switch('social') + video('social', 'Social media marketing: two ways to work with us'), eyebrow='Social media marketing')}
 
     <section class="tile tile-raise">
       <div class="wrap">
-        <div class="sec-head"><h2 class="h2" data-rv>Pick the way that fits you.</h2></div>
+        {head('Pick the way that fits you', 'Two options')}
         <div class="ways">
           <div class="way" data-rv>
             <div class="way-k">Option 1 · Done-For-You</div>
@@ -579,7 +578,7 @@ social_body = f'''{hero([("Home", "/"), ("Social Media", "")], 'Social media mar
 
     <section class="tile tile-dark">
       <div class="wrap">
-        <div class="sec-head"><h2 class="h2" data-rv>The difference, side by side.</h2></div>
+        {head('The difference, side by side', 'Compare')}
         <div class="compare-scroll" data-rv>
           <table class="compare">
             <thead><tr><th></th><th>Done-For-You</th><th>Marketing Academy</th></tr></thead>
@@ -598,7 +597,7 @@ social_body = f'''{hero([("Home", "/"), ("Social Media", "")], 'Social media mar
 
     <section class="tile tile-raise">
       <div class="wrap">
-        <div class="sec-head"><h2 class="h2" data-rv>Platforms we run and teach.</h2></div>
+        {head('Platforms we run and teach', 'Platforms')}
         {cards(PLATFORMS)}
       </div>
     </section>
@@ -611,11 +610,11 @@ social_body = f'''{hero([("Home", "/"), ("Social Media", "")], 'Social media mar
 XHS_NOTE = "<strong>Good to know:</strong> Xiaohongshu&#8217;s Juguang (聚光) ad platform generally requires a mainland China business entity, so overseas brands usually advertise through certified agency partners. We handle the access route for you, and put most of the effort where it pays off first: search-led notes and creator seeding."
 
 
-def svc_panel(h3, lede, points, res=None, note=''):
+def svc_panel(h3, lede, points, res=None, note='', ics=None):
     r = f'\n        <div style="margin-top:56px">\n{result(*res)}\n        </div>' if res else ''
     n = f'\n        <p class="note" data-rv>{note}</p>' if note else ''
     return f'''{panel_intro(h3, lede)}
-        {cards(points, 'grid g3')}{r}{n}
+        {cards(points, 'grid g3', ics)}{r}{n}
         <div class="btn-row" data-rv><a class="btn btn-ghost" href="/portfolio">See our work</a></div>'''
 
 
@@ -669,30 +668,30 @@ dfy_ld = {'@context': 'https://schema.org', '@graph': [
 dfy_body = f'''{hero([("Home", "/"), ("Social Media", "/social-media"), ("Done-For-You", "")], 'Your marketing, <span class="accent">done for you.</span>',
        'Strategy, content, ads, livestream and KOC/KOL across Facebook, Instagram, TikTok, Google and Xiaohongshu, handled end to end by one team.',
        btns(('Get a free strategy chat', wa("Hi, I'd like the Done-For-You marketing service!")), ('Choose a platform', '#platforms')),
-       switch('services') + video('services', 'Done-For-You marketing services video'))}
+       switch('services') + video('services', 'Done-For-You marketing services video'), eyebrow='Done-For-You services')}
 
     <section class="tile tile-raise" id="platforms">
       <div class="wrap">
-        <div class="sec-head" style="margin-bottom:40px"><h2 class="h2" data-rv>Choose a platform.</h2></div>
+        {head('Choose a platform', 'Done-For-You', style='margin-bottom:40px')}
 {tabs('Platforms', [
-    ('facebook', 'Facebook & IG', svc_panel('Facebook &amp; Instagram, from scroll to sale', 'We run Facebook and Instagram as one engine: strategy first, creative built to convert, then ads tuned every week.', DFY_FB, RES_META)),
-    ('tiktok', 'TikTok', svc_panel('TikTok video, Live and Shop', 'From trend-driven short video to full livestream selling, we run the whole TikTok flywheel.', DFY_TT, RES_TT)),
-    ('google', 'Google', svc_panel('Own the search results, human and AI', 'When customers search on Google or ask an AI, your brand should be the answer.', DFY_GG, RES_GG)),
-    ('xiaohongshu', 'Xiaohongshu', svc_panel('Xiaohongshu (RED): notes, 博主 and ads', 'Reach Chinese-speaking buyers in Malaysia, Singapore and China with content that gets found and creators who build trust.', DFY_XHS, note=XHS_NOTE)),
+    ('facebook', 'Facebook & IG', svc_panel('Facebook &amp; Instagram, from scroll to sale', 'We run Facebook and Instagram as one engine: strategy first, creative built to convert, then ads tuned every week.', DFY_FB, RES_META, ics=['target', 'video', 'pen', 'layers', 'megaphone', 'zap'])),
+    ('tiktok', 'TikTok', svc_panel('TikTok video, Live and Shop', 'From trend-driven short video to full livestream selling, we run the whole TikTok flywheel.', DFY_TT, RES_TT, ics=['music', 'live', 'coins', 'users', 'zap', 'target'])),
+    ('google', 'Google', svc_panel('Own the search results, human and AI', 'When customers search on Google or ask an AI, your brand should be the answer.', DFY_GG, RES_GG, ics=['search', 'megaphone', 'sparkles', 'layers', 'target', 'zap'])),
+    ('xiaohongshu', 'Xiaohongshu', svc_panel('Xiaohongshu (RED): notes, 博主 and ads', 'Reach Chinese-speaking buyers in Malaysia, Singapore and China with content that gets found and creators who build trust.', DFY_XHS, note=XHS_NOTE, ics=['book', 'search', 'users', 'megaphone', 'layers', 'target'])),
 ])}
       </div>
     </section>
 
     <section class="tile tile-dark">
       <div class="wrap">
-        <div class="sec-head"><h2 class="h2" data-rv>Also in our toolkit.</h2></div>
-        {cards(TOOLKIT, 'grid g3')}
+        {head('Also in our toolkit', 'More services')}
+        {cards(TOOLKIT, 'grid g3', ['users', 'live', 'calendar', 'pen', 'layers', 'sparkles'])}
       </div>
     </section>
 
     <section class="tile tile-raise">
       <div class="wrap">
-        <div class="sec-head"><h2 class="h2" data-rv>How we work.</h2></div>
+        {head('How we work', 'Our process')}
 {STEPS3}
       </div>
     </section>
@@ -756,11 +755,11 @@ academy_ld = {'@context': 'https://schema.org', '@graph': [
 academy_body = f'''{hero([("Home", "/"), ("Social Media", "/social-media"), ("Marketing Academy", "")], 'Learn to run your own ads, <span class="accent">A to Z.</span>',
        'Facebook, Instagram, TikTok, Google and Xiaohongshu, taught hands-on on your own accounts. Save on agency fees and never waste money on the wrong strategy again.',
        btns(('Join the next class', wa("Hi, I'd like to join the Marketing Academy!")), ('Choose a platform', '#platforms')),
-       switch('academy') + video('academy', 'Marketing Academy introduction video'))}
+       switch('academy') + video('academy', 'Marketing Academy introduction video'), eyebrow='Marketing Academy')}
 
     <section class="tile tile-raise">
       <div class="wrap">
-        <div class="sec-head"><h2 class="h2" data-rv>Made for beginners. Used by pros.</h2></div>
+        {head('Made for beginners. Used by pros', 'Who it is for')}
         <div class="cols">
           <div class="col" data-rv><div class="col-t">Business owners</div><p class="col-d">Stop paying for guesswork. Learn to run your own ads and content, and know exactly what you are paying for.</p></div>
           <div class="col" data-rv><div class="col-t">Staff &amp; marketing teams</div><p class="col-d">Give your team a proven system: the same structures, checklists and reports we use for clients.</p></div>
@@ -771,7 +770,7 @@ academy_body = f'''{hero([("Home", "/"), ("Social Media", "/social-media"), ("Ma
 
     <section class="tile tile-dark" id="platforms">
       <div class="wrap">
-        <div class="sec-head" style="margin-bottom:40px"><h2 class="h2" data-rv>One platform at a time.</h2></div>
+        {head('One platform at a time', 'Curriculum', style='margin-bottom:40px')}
 {tabs('Platforms', [
     ('facebook', 'Facebook & IG', panel_intro('Facebook &amp; Instagram, from account to scale', 'Nine steps from a blank account to campaigns you can optimise and grow. Facebook and Instagram share the same Meta Ads Manager.') + '\n' + modules(META, 'You will do')),
     ('tiktok', 'TikTok', panel_intro('TikTok content, ads and live selling', 'From Business Center to Smart+ and GMV Max, with videos that feel native and a plan for TikTok Live.') + '\n' + modules(TT, 'You will do')),
@@ -783,7 +782,7 @@ academy_body = f'''{hero([("Home", "/"), ("Social Media", "/social-media"), ("Ma
 
     <section class="tile tile-raise">
       <div class="wrap">
-        <div class="sec-head"><h2 class="h2" data-rv>Templates you take home.</h2><p class="lede" data-rv style="margin-top:20px">So you can run it again next month without us.</p></div>
+        {head('Templates you take home', 'Take-home kit', 'So you can run it again next month without us.')}
         <div class="cols">
           <div class="col" data-rv><div class="col-t">Launch checklist</div><p class="col-d">Every setting to confirm before you press publish, by platform.</p></div>
           <div class="col" data-rv><div class="col-t">Creative testing tracker</div><p class="col-d">A simple sheet to plan, run and learn from every creative test.</p></div>
@@ -825,11 +824,11 @@ ai_ld = {'@context': 'https://schema.org', '@graph': [
 ai_body = f'''{hero([("Home", "/"), ("AI Classes", "")], 'Let AI do the work. <span class="accent">You run the show.</span>',
        'AI already helps businesses work smarter and replace complex manual tasks. Learn to use it for video, graphics, captions, websites and automation. No coding, no tech background.',
        btns(('Join the next class', wa("Hi, I'd like to join the AI classes!")), ('See the 7 modules', '#curriculum')),
-       video('ai', 'AI Classes introduction video'))}
+       video('ai', 'AI Classes introduction video'), eyebrow='AI Classes · No coding needed')}
 
     <section class="tile tile-raise">
       <div class="wrap">
-        <div class="sec-head"><h2 class="h2" data-rv>Save costs, or earn from it.</h2></div>
+        {head('Save costs, or earn from it', 'Who it is for')}
         <div class="cols">
           <div class="col" data-rv><div class="col-t">Business owners</div><p class="col-d">Stop paying thousands to outsource what AI can do in a few clicks. One person can now run a whole marketing operation.</p></div>
           <div class="col" data-rv><div class="col-t">Teams &amp; companies</div><p class="col-d">Replace repetitive manual work with AI flows, so your people spend time on what grows the business.</p></div>
@@ -840,14 +839,14 @@ ai_body = f'''{hero([("Home", "/"), ("AI Classes", "")], 'Let AI do the work. <s
 
     <section class="tile tile-dark" id="curriculum">
       <div class="wrap">
-        <div class="sec-head"><h2 class="h2" data-rv>Seven modules. Take one, or all.</h2><p class="lede" data-rv style="margin-top:20px">Every module ends with something you made, for your own business.</p></div>
+        {head('Seven modules. Take one, or all', 'Curriculum', 'Every module ends with something you made, for your own business.')}
 {modules(AI_MODS)}
       </div>
     </section>
 
     <section class="tile tile-raise">
       <div class="wrap">
-        <div class="sec-head"><h2 class="h2" data-rv>How a class works.</h2></div>
+        {head('How a class works', 'How it works')}
         <div class="cols">
           <div class="col" data-rv><div class="col-n">1</div><div class="col-t">See it done</div><p class="col-d">Short, focused demos of what works right now, and why. Not a tour of every button.</p></div>
           <div class="col" data-rv><div class="col-n">2</div><div class="col-t">Do it yourself</div><p class="col-d">Your products, your brand, your customers. You do the work with your own hands, with us beside you.</p></div>
@@ -867,7 +866,7 @@ pf_ld = {'@context': 'https://schema.org', '@type': 'CollectionPage', 'name': 'P
          'description': 'Short-form videos, ad results dashboards and brand work by Top Creation Media.',
          'url': SITE + 'portfolio', 'publisher': PROVIDER}
 pf_body = f'''{hero([("Home", "/"), ("Portfolio", "")], 'Work that <span class="accent">moves numbers.</span>',
-       'Videos, ad results and brand work for clients across Malaysia, Singapore and beyond.')}
+       'Videos, ad results and brand work for clients across Malaysia, Singapore and beyond.', eyebrow='Portfolio')}
 
     <section class="tile tile-raise" style="padding-top:72px">
       <div class="wrap">
@@ -879,7 +878,7 @@ pf_body = f'''{hero([("Home", "/"), ("Portfolio", "")], 'Work that <span class="
 
     <section class="tile tile-dark">
       <div class="wrap">
-        <div class="sec-head"><h2 class="h2" data-rv>Brands we have worked with.</h2></div>
+        {head('Brands we have worked with', 'Clients')}
         <div class="clients" id="clients" data-rv></div>
       </div>
     </section>
@@ -897,28 +896,87 @@ def steps(rows):
     return '<ol class="steps">' + ''.join(f'<li data-rv><b>{esc(t)}</b><span>{esc(d)}</span></li>' for t, d in rows) + '</ol>'
 
 
-def tool_body(key, h1, lede, wa_msg, video_label, step_rows, feat_h2, feats, extra, faq, cta_h2, cta_lede):
+def tool_body(key, h1, lede, wa_msg, video_label, step_rows, feat_h2, feats, extra, faq, cta_h2, cta_lede, feat_icons=None):
     tag = '<div class="rise" style="margin-bottom:24px"><span class="tag">For TCM subscribers</span></div>'
     return f'''{hero([("Home", "/"), (h1.split(':')[0], "")], h1, lede,
        btns(('Get access on WhatsApp', wa(wa_msg)), ('How it works', '#how')), video(key, video_label)).replace('<div class="crumbs', tag + '<div class="crumbs', 1)}
 
     <section class="tile tile-raise" id="how">
       <div class="wrap">
-        <div class="sec-head"><h2 class="h2" data-rv>How it works.</h2></div>
+        {head('How it works', 'How it works')}
         {steps(step_rows)}
       </div>
     </section>
 
-    <section class="tile tile-dark">
+{extra}
+    <section class="tile tile-raise">
       <div class="wrap">
-        <div class="sec-head"><h2 class="h2" data-rv>{feat_h2}</h2></div>
-        {cards(feats, 'grid g3')}
+        {head(feat_h2, 'Features')}
+        {cards(feats, 'grid g3', feat_icons)}
       </div>
     </section>
-{extra}
-{faq_section(faq, 'tile-raise')}
+
+{faq_section(faq)}
 
 {cta(cta_h2, cta_lede, 'Get Access on WhatsApp', wa_msg)}'''
+
+
+
+def qr_svg(seed=7, n=25):
+    # Decorative QR-style pattern (not scannable).
+    rnd = __import__('random').Random(seed)
+    cells = []
+    def finder(x, y):
+        return (f'<rect x="{x}" y="{y}" width="7" height="7" rx="1.6" fill="none" stroke="#14123B" stroke-width="1"/>'
+                f'<rect x="{x+2}" y="{y+2}" width="3" height="3" rx=".8" fill="url(#qg)"/>')
+    for yy in range(n):
+        for xx in range(n):
+            if (xx < 8 and yy < 8) or (xx > n - 9 and yy < 8) or (xx < 8 and yy > n - 9):
+                continue
+            if rnd.random() < .46:
+                cells.append(f'<rect x="{xx}" y="{yy}" width=".92" height=".92" rx=".25"/>')
+    return (f'<svg viewBox="-.5 -.5 {n+1} {n+1}" aria-hidden="true"><defs><linearGradient id="qg" x1="0" x2="1">'
+            '<stop offset="0" stop-color="#A855F7"/><stop offset="1" stop-color="#3B8BFF"/></linearGradient></defs>'
+            f'<g fill="#14123B">{"".join(cells)}</g>{finder(.5, .5)}{finder(n-7.5, .5)}{finder(.5, n-7.5)}</svg>')
+
+
+def sb_mockup():
+    links = [('Follow on Facebook', '#1877F2'), ('Follow on Instagram', '#E1306C'), ('Follow on TikTok', '#111111'),
+             ('Follow on Xiaohongshu', '#FF2442'), ('Chat on WhatsApp', '#25D366'), ('Leave a Google review', '#F4B400')]
+    btns = ''.join(f'<span class="ph-link"><i style="background:{c}"></i>{t}</span>' for t, c in links)
+    return f'''    <section class="tile tile-dark">
+      <div class="wrap">
+        {head('See it in action', 'Preview')}
+        <div class="mock" data-rv>
+          <div class="mock-qr"><div class="qr-card">{qr_svg()}<b>Scan to follow us</b><small>Your shop name</small></div></div>
+          <div class="mock-arrow" aria-hidden="true">{ARROW}</div>
+          <div class="phone" aria-label="Example Scan Buddy page on a phone" role="img">
+            <div class="ph-top"><span class="ph-avatar">TCM</span><b>Your shop name</b><small>Follow us everywhere</small></div>
+            <div class="ph-links">{btns}</div>
+            <div class="ph-stat"><b>1,248</b> scans this month</div>
+          </div>
+        </div>
+      </div>
+    </section>
+'''
+
+
+def av_mockup():
+    scenes = [('Showcase', 'linear-gradient(160deg,#F3E8FF,#C4B5FD)', 'This changed my mornings'),
+              ('Lifestyle', 'linear-gradient(160deg,#FFE4D6,#FDBA8C)', 'POV: your new favourite'),
+              ('UGC style', 'linear-gradient(160deg,#DBEAFE,#93C5FD)', 'Honest review, 7 days in')]
+    clips = ''.join(f'''<div class="clip" style="background:{bg}"><span class="clip-tag">{t}</span><span class="clip-prod"></span><span class="clip-cap">{cap}</span></div>''' for t, bg, cap in scenes)
+    return f'''    <section class="tile tile-dark">
+      <div class="wrap">
+        {head('One photo in. Videos out.', 'Preview')}
+        <div class="mock" data-rv>
+          <div class="mock-in"><div class="prod-card"><span class="clip-prod big"></span><b>product.jpg</b><small>Your product photo</small></div></div>
+          <div class="mock-arrow" aria-hidden="true">{ARROW}</div>
+          <div class="clips" role="img" aria-label="Three example AI videos in vertical format">{clips}</div>
+        </div>
+      </div>
+    </section>
+'''
 
 
 SB_FAQ = [
@@ -940,7 +998,7 @@ sb_body = tool_body(
      ('WhatsApp in one tap', 'Customers start a chat with you instantly, ready for follow-up and repeat orders.'),
      ('Scan tracking', 'See scans by day, so you know which location or campaign brings customers.'),
      ('One QR per KOC & KOL', 'Give each influencer or event its own code and see which one really brings people in.')],
-    '', SB_FAQ, 'Ready to connect offline to online?', 'WhatsApp us and we will set up Scan Buddy for your business.')
+    sb_mockup(), SB_FAQ, 'Ready to connect offline to online?', 'WhatsApp us and we will set up Scan Buddy for your business.', ['qr', 'users', 'target', 'zap', 'calendar', 'megaphone'])
 
 AV_FAQ = [
     ('Do I need to film anything?', 'No. Start from a product photo. AI creates the scenes, motion, captions and music. You can also add your own footage if you have it.'),
@@ -961,7 +1019,7 @@ av_body = tool_body(
      ('UGC-style clips', 'Natural, creator-style videos that feel native on TikTok and Reels.'),
      ('Captions that sell', 'Hook, body and call to action written for you, in English, 中文 or Bahasa.'),
      ('Every format', '9:16 for TikTok and Reels, 1:1 for feeds, 16:9 for YouTube and websites.')],
-    '', AV_FAQ, 'Make your next ad in minutes.', 'WhatsApp us to get AI Video for your business.')
+    av_mockup(), AV_FAQ, 'Make your next ad in minutes.', 'WhatsApp us to get AI Video for your business.', ['video', 'layers', 'users', 'sparkles', 'pen', 'zap'])
 
 tool_ld = lambda faq: {'@context': 'https://schema.org', '@graph': [faq_ld(faq)]}
 

@@ -112,6 +112,28 @@ img{max-width:100%;display:block}
 .video-soon{cursor:default}
 .video iframe,.video video{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
 
+/* ---------- Video sound toggle ---------- */
+.video-sound{position:absolute;right:16px;bottom:16px;z-index:2;display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:rgba(20,18,59,.62);color:#fff;font-size:14px;font-weight:700;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:background .3s var(--ease)}
+.video-sound:hover{background:rgba(20,18,59,.82)}
+
+/* ---------- Our MVP ---------- */
+.mvp{overflow:hidden;background:radial-gradient(40% 35% at 0% 30%,rgba(168,85,247,.10),transparent 70%),radial-gradient(40% 35% at 100% 70%,rgba(59,139,255,.10),transparent 70%),var(--bg)}
+.mvp-head{text-align:center;margin-bottom:40px}
+.mvp-title{font-weight:800;font-size:clamp(72px,13vw,188px);line-height:.95;letter-spacing:-.05em;color:var(--ink)}
+.mvp-title .accent{background:linear-gradient(90deg,#A855F7,#7C4DFF,#3B8BFF,#A855F7);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;animation:shimmer 8s linear infinite}
+@keyframes shimmer{to{background-position:300% 0}}
+.mvp-head .lede{max-width:46ch;margin:20px auto 0}
+.mvp .split{padding:64px 0}
+.mvp-text{position:relative;isolation:isolate}
+.mvp-text::before{content:attr(data-letter);position:absolute;z-index:-1;top:-.42em;left:-.06em;font-weight:800;font-size:clamp(170px,20vw,300px);line-height:1;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:2px rgba(124,77,255,.28);pointer-events:none}
+.mvp-num{display:inline-flex;align-items:center;gap:10px}
+.mvp-num b{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--btn);color:#fff;font-size:13px;letter-spacing:0}
+.js .mvp .photo[data-rv]{opacity:1;transform:scale(.94);clip-path:inset(10% 10% 10% 10% round 28px);transition:clip-path 1.3s var(--ease),transform 1.3s var(--ease)}
+.js .mvp .photo[data-rv].in{transform:none;clip-path:inset(0 0 0 0 round 28px)}
+.mvp .photo{animation:floaty 7s ease-in-out infinite}
+.mvp .split.flip .photo{animation-delay:-3.5s}
+@keyframes floaty{50%{translate:0 -10px}}
+
 /* ---------- Section switcher (Social Media pages) ---------- */
 .switch{display:inline-flex;flex-wrap:wrap;justify-content:center;gap:4px;padding:5px;border-radius:999px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
 .switch a{padding:10px 22px;border-radius:999px;font-weight:700;font-size:15px;color:var(--ink-2)}
@@ -248,6 +270,32 @@ img{max-width:100%;display:block}
 .steps b{display:block;margin-top:16px;font-size:19px;font-weight:800;letter-spacing:-.02em}
 .steps span{display:block;margin-top:8px;font-size:15.5px;line-height:1.55;color:var(--ink-2)}
 
+/* ---------- Product mockups (tool pages) ---------- */
+.mock{display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap}
+.mock-arrow{display:grid;place-items:center;width:52px;height:52px;border-radius:999px;background:var(--btn);color:#fff;box-shadow:0 12px 26px -10px rgba(124,77,255,.7)}
+.qr-card,.prod-card{display:flex;flex-direction:column;align-items:center;gap:6px;width:260px;padding:26px;border-radius:26px;background:#fff;box-shadow:var(--shadow-lg);text-align:center}
+.qr-card svg{width:190px;height:190px;margin-bottom:10px}
+.qr-card b,.prod-card b{font-size:16px}
+.qr-card small,.prod-card small{font-size:13px;color:var(--ink-3)}
+.phone{width:280px;padding:22px 18px 26px;border-radius:40px;background:linear-gradient(180deg,#FBFAFF,#F1EDFF);border:8px solid #14123B;box-shadow:var(--shadow-lg)}
+.ph-top{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+.ph-avatar{display:grid;place-items:center;width:62px;height:62px;border-radius:999px;background:var(--btn);color:#fff;font-weight:800;font-size:15px;margin-bottom:6px}
+.ph-top b{font-size:16px}
+.ph-top small{font-size:12.5px;color:var(--ink-3)}
+.ph-links{display:grid;gap:9px;margin-top:18px}
+.ph-link{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:14px;background:#fff;box-shadow:var(--shadow);font-size:13.5px;font-weight:700}
+.ph-link i{width:10px;height:10px;border-radius:999px;flex-shrink:0}
+.ph-stat{margin-top:16px;text-align:center;font-size:12.5px;color:var(--ink-3)}
+.ph-stat b{color:var(--purple-d)}
+.clips{display:flex;gap:14px}
+.clip{position:relative;width:150px;aspect-ratio:9/16;border-radius:22px;overflow:hidden;border:5px solid #14123B;box-shadow:var(--shadow-lg)}
+.clip:nth-child(2){transform:translateY(-18px)}
+.clip-tag{position:absolute;top:10px;left:10px;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.85);font-size:11px;font-weight:700}
+.clip-prod{position:absolute;left:50%;top:44%;width:46px;height:78px;transform:translate(-50%,-50%);border-radius:12px 12px 16px 16px;background:linear-gradient(180deg,#fff,#E9E4FF);box-shadow:0 14px 24px -10px rgba(20,18,59,.45)}
+.clip-prod::before{content:"";position:absolute;left:50%;top:-12px;width:22px;height:14px;transform:translateX(-50%);border-radius:5px 5px 0 0;background:#14123B}
+.clip-prod.big{position:relative;left:auto;top:auto;transform:none;width:72px;height:120px;margin:10px 0 18px}
+.clip-cap{position:absolute;left:8px;right:8px;bottom:12px;padding:6px 8px;border-radius:10px;background:rgba(20,18,59,.75);color:#fff;font-size:11px;font-weight:700;line-height:1.3;text-align:center}
+
 /* ---------- CTA + footer ---------- */
 .cta{position:relative;text-align:center;padding:112px 24px;background:radial-gradient(55% 80% at 20% 100%,rgba(168,85,247,.18),transparent 70%),radial-gradient(55% 80% at 85% 0%,rgba(59,139,255,.16),transparent 70%),var(--tint)}
 .cta .h2{max-width:18ch;margin:0 auto}
@@ -324,6 +372,10 @@ img{max-width:100%;display:block}
 @media (max-width:560px){
   .gallery,.grid,.steps{grid-template-columns:1fr}
   .grid.center{grid-template-columns:1fr 1fr;gap:10px}
+  .mock{gap:24px}
+  .mock-arrow{transform:rotate(90deg)}
+  .clips{gap:8px}
+  .clip{width:31vw;max-width:150px;border-width:4px;border-radius:16px}
   .grid.center .card{padding:20px 14px}
   .grid.center .ico{width:46px;height:46px}
   .grid.center .card-t{font-size:16px}
