@@ -62,6 +62,67 @@
   }
   Array.prototype.forEach.call(document.querySelectorAll('[role="tablist"]'), initTabs);
 
+  var media = window.TCM_MEDIA || { videos: {}, testimonials: [] };
+
+  // ---- Video slots: <div class="video" data-video="home"> (configured in site-media.js)
+  Array.prototype.forEach.call(document.querySelectorAll('[data-video]'), function (box) {
+    var v = (media.videos || {})[box.getAttribute('data-video')] || {};
+    var btn = box.querySelector('.video-btn');
+    var title = box.getAttribute('aria-label') || 'Video';
+    var src = v.youtubeId ? 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(v.youtubeId) + '?autoplay=1&rel=0'
+      : v.driveId ? 'https://drive.google.com/file/d/' + encodeURIComponent(v.driveId) + '/preview' : '';
+    if (!src && !v.mp4) return;
+    btn.classList.remove('video-soon');
+    btn.querySelector('.video-cap').textContent = 'Play video';
+    if (v.poster) box.style.background = 'center/cover no-repeat url("' + v.poster.replace(/"/g, '%22') + '")';
+    btn.addEventListener('click', function () {
+      var el;
+      if (v.mp4) {
+        el = document.createElement('video');
+        el.src = v.mp4; el.controls = true; el.autoplay = true; el.playsInline = true;
+        if (v.poster) el.poster = v.poster;
+      } else {
+        el = document.createElement('iframe');
+        el.src = src; el.title = title; el.allow = 'autoplay; fullscreen; picture-in-picture'; el.allowFullscreen = true;
+      }
+      box.textContent = '';
+      box.appendChild(el);
+    });
+  });
+
+  // ---- Testimonials: hidden until real ones are added in site-media.js
+  var tq = document.getElementById('testimonials');
+  var list = (media.testimonials || []).filter(function (t) { return t && t.quote; });
+  if (tq && list.length) {
+    var grid = tq.querySelector('.quotes');
+    list.forEach(function (t) {
+      var card = document.createElement('figure'); card.className = 'quote';
+      var p = document.createElement('p'); p.textContent = '“' + t.quote + '”';
+      var who = document.createElement('figcaption'); who.className = 'quote-who';
+      if (t.photo) { var im = document.createElement('img'); im.src = t.photo; im.alt = ''; who.appendChild(im); }
+      var nm = document.createElement('span'); var b = document.createElement('b'); b.textContent = t.name || '';
+      nm.appendChild(b); nm.appendChild(document.createTextNode(t.role || '')); who.appendChild(nm);
+      card.appendChild(p); card.appendChild(who); grid.appendChild(card);
+    });
+    tq.hidden = false;
+  }
+
+  // ---- Home: portfolio preview from portfolio-data.js
+  var hg = document.getElementById('home-gallery');
+  var pf = window.TCM_PORTFOLIO;
+  if (hg && pf && pf.items) {
+    pf.items.slice(0, 6).forEach(function (it) {
+      var a = document.createElement('a'); a.className = 'work'; a.href = '/portfolio';
+      a.setAttribute('aria-label', (it.title || 'Portfolio item') + ', view in portfolio');
+      var img = document.createElement('div'); img.className = 'work-img cover';
+      var t = it.image || (it.driveThumbId ? 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(it.driveThumbId) + '&sz=w800'
+        : it.youtubeId ? 'https://i.ytimg.com/vi/' + encodeURIComponent(it.youtubeId) + '/hqdefault.jpg' : '');
+      if (t) img.style.backgroundImage = 'url("' + t.replace(/"/g, '%22') + '")';
+      if (it.type === 'dashboard') img.className = 'work-img';
+      a.appendChild(img); hg.appendChild(a);
+    });
+  }
+
   // ---- Footer year
   var y = document.getElementById('year');
   if (y) y.textContent = new Date().getFullYear();
