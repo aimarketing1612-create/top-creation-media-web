@@ -28,6 +28,32 @@ def esc(s):
 
 
 WA_PATH = 'M12 2a10 10 0 0 0-8.53 15.23L2 22l4.9-1.42A10 10 0 1 0 12 2Zm5.07 14.13c-.22.62-1.28 1.2-1.78 1.24-.48.05-.93.23-3.12-.65-2.64-1.06-4.32-3.75-4.45-3.92-.13-.18-1.07-1.42-1.07-2.71 0-1.29.68-1.92.92-2.19.24-.26.52-.33.7-.33h.5c.16 0 .38-.06.59.45.22.52.74 1.8.8 1.93.07.13.11.29.02.46-.09.18-.13.28-.26.44-.13.15-.28.35-.4.47-.13.13-.27.28-.12.54.15.26.68 1.12 1.46 1.81 1 .9 1.85 1.17 2.11 1.3.26.13.42.11.57-.07.16-.17.66-.77.84-1.03.17-.26.35-.22.59-.13.24.09 1.52.71 1.78.84.26.13.43.2.5.31.06.11.06.64-.15 1.24Z'
+ICON_PATHS = {
+    'megaphone': 'M3 11l18-5v12L3 14v-3zM11.6 16.8a3 3 0 1 1-5.8-1.6',
+    'video': 'M3 6h11a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2zM16 10l6-4v12l-6-4',
+    'live': 'M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM16.24 7.76a6 6 0 0 1 0 8.49M7.76 16.24a6 6 0 0 1 0-8.49M19.07 4.93a10 10 0 0 1 0 14.14M4.93 19.07a10 10 0 0 1 0-14.14',
+    'users': 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75',
+    'ai': 'M5 5h14v14H5zM9 9h6v6H9zM9 2v3M15 2v3M9 19v3M15 19v3M19 9h3M19 15h3M2 9h3M2 15h3',
+    'layers': 'M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5',
+    'search': 'M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM21 21l-4.35-4.35',
+    'book': 'M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z',
+    'music': 'M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM21 16a3 3 0 1 1-6 0 3 3 0 0 1 6 0z',
+    'pen': 'M12 19l7-7 3 3-7 7-3-3zM18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5zM2 2l7.59 7.59',
+    'calendar': 'M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z',
+    'zap': 'M13 2 3 14h9l-1 8 10-12h-9l1-8z',
+    'coins': 'M12 8c4.97 0 9-1.34 9-3s-4.03-3-9-3-9 1.34-9 3 4.03 3 9 3zM21 12c0 1.66-4 3-9 3s-9-1.34-9-3M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5',
+    'target': 'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12zM12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z',
+    'qr': 'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM18 18h3v3h-3zM14 20h1M20 14h1',
+    'sparkles': 'M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9z',
+    'facebook': 'M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z',
+}
+
+
+def icon(name):
+    return f'<span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{ICON_PATHS[name]}"/></svg></span>'
+
+
+ARROW = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
 PLAY = '<svg width="30" height="30" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>'
 
 # ---------------------------------------------------------------- shared parts
@@ -40,6 +66,9 @@ NAV = [
     ('aivideo', '/ai-video', 'AI Video'),
 ]
 SOCIAL_KEYS = ('social', 'services', 'academy')
+AI_MENU = [('m-know-your-ai-tools', 'Know your AI tools'), ('m-ai-video', 'AI video'), ('m-ai-graphics', 'AI graphics'),
+           ('m-ai-website-builder-ai-seo', 'AI website &amp; SEO'), ('m-ai-captions-hook-body-cta', 'AI captions'),
+           ('m-ai-system-flow', 'AI system flow'), ('m-ai-marketing', 'AI marketing')]
 
 
 def nav(cur):
@@ -58,8 +87,17 @@ def nav(cur):
             <a href="/marketing-classes">Marketing Academy<small>Learn to run it yourself</small></a>
           </div>
         </div>''')
+        elif key == 'ai':
+            mods = ''.join(f'<a href="/ai-classes#{mid}">{name}</a>' for mid, name in AI_MENU)
+            items.append(f'''<div class="dd">
+          <a href="{href}"{cur_attr(key)}>{label}<span class="badge">New</span></a>
+          <div class="dd-menu">
+            <a href="/ai-classes">All AI classes<small>7 modules, no coding needed</small></a>
+            {mods}
+          </div>
+        </div>''')
         else:
-            badge = '<span class="badge">New</span>' if key == 'ai' else ''
+            badge = ''
             items.append(f'<a href="{href}"{cur_attr(key)}>{label}{badge}</a>')
     sub = [('home', '/', 'Home'), ('social', '/social-media', 'Social Media'), ('services', '/marketing-services', 'Done-For-You'),
            ('academy', '/marketing-classes', 'Academy'), ('ai', '/ai-classes', 'AI Classes'), ('portfolio', '/portfolio', 'Portfolio'),
@@ -69,10 +107,10 @@ def nav(cur):
     return f'''<a class="skip" href="#main">Skip to content</a>
   <header class="nav">
     <div class="nav-in">
-      <a class="brand" href="/" aria-label="Top Creation Media, home"><img src="/assets/tcm-logo.jpg" alt="" width="32" height="32"><span>Top Creation Media</span></a>
+      <a class="brand" href="/" aria-label="Top Creation Media, home"><img src="/assets/tcm-wordmark.png" alt="TCM Top Creation Media" width="480" height="207"></a>
       <nav class="nav-links" aria-label="Main">
         {main}
-        <a class="btn btn-primary btn-sm" href="{wa("Hi, I'd like a customized package!")}" onclick="{CONV}" target="_blank" rel="noopener">WhatsApp Us</a>
+        <a class="btn btn-primary btn-sm" href="{wa("Hi, I'd like a customized package!")}" onclick="{CONV}" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="{WA_PATH}"/></svg>WhatsApp Us</a>
       </nav>
     </div>
     <nav class="subnav" aria-label="Pages"><div class="subnav-in">
@@ -113,7 +151,7 @@ def page(slug, title, desc, cur, ld, body, scripts=()):
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{esc(title)}</title>
   <meta name="description" content="{esc(desc)}">
-  <meta name="theme-color" content="#05050A">
+  <meta name="theme-color" content="#FFFFFF">
   <link rel="canonical" href="{canon}">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Top Creation Media">
@@ -127,7 +165,7 @@ def page(slug, title, desc, cur, ld, body, scripts=()):
   <link rel="icon" href="/assets/tcm-logo.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Bricolage+Grotesque:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/site.css">
   <script>document.documentElement.className='js'</script>
   <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
@@ -159,6 +197,13 @@ def photo(file, alt):
           <div class="photo-ph"><b>Behind the scenes</b>Top Creation Media studio</div>
           <img src="/assets/bts/{file}" alt="{esc(alt)}" loading="lazy" onerror="this.remove()">
         </figure>'''
+
+
+def head(h2, eyebrow='', lede='', style=''):
+    eb = f'<div class="eyebrow">{eyebrow}</div>' if eyebrow else ''
+    ld = f'<p class="lede" data-rv style="margin-top:18px">{lede}</p>' if lede else ''
+    st = f' style="{style}"' if style else ''
+    return f'<div class="sec-head"{st}><div data-rv>{eb}<h2 class="h2">{h2}</h2></div>{ld}</div>'
 
 
 def ticks(items):
@@ -237,15 +282,17 @@ def cards(rows, cls='grid'):
         links = ''
         if len(row) > 2 and row[2]:
             links = '<div class="card-links">' + ''.join(f'<a href="{h}">{esc(l)} &rarr;</a>' for l, h in row[2]) + '</div>'
-        out.append(f'<div class="card" data-rv><div class="card-t">{esc(t)}</div><p class="card-d">{esc(d)}</p>{links}</div>')
+        ico = icon(row[3]) if len(row) > 3 and row[3] else ''
+        out.append(f'<div class="card" data-rv>{ico}<div class="card-t">{esc(t)}</div><p class="card-d">{esc(d)}</p>{links}</div>')
     return f'<div class="{cls}">' + '\n          '.join(out) + '</div>'
 
 
 def modules(rows, key='You will build'):
     out = []
     for i, (t, d, build, tools) in enumerate(rows, 1):
+        mid = 'm-' + '-'.join(''.join(c if c.isalnum() else ' ' for c in t.lower()).split())
         chips = ''.join(f'<span class="chip">{esc(x)}</span>' for x in tools)
-        out.append(f'''        <div class="mod" data-rv>
+        out.append(f'''        <div class="mod" id="{mid}" data-rv>
           <div class="mod-n">{i:02d}</div>
           <div><h3 class="mod-t">{esc(t)}</h3><p class="mod-d">{esc(d)}</p></div>
           <div><div class="mod-k">{key}</div><p class="mod-b">{esc(build)}</p><div class="mod-tools">{chips}</div></div>
@@ -330,34 +377,58 @@ home_ld = {'@context': 'https://schema.org', '@graph': [
     faq_ld(HOME_FAQ)]}
 
 SERVICES = [
-    ('Meta ads', 'Facebook and Instagram campaigns built around one goal: sales and leads, tracked to the ringgit.'),
-    ('TikTok', 'Short video at volume, livestream operations and TikTok Shop, run as one sales engine.'),
-    ('Xiaohongshu', 'Search-led notes and KOC seeding that put your brand in front of Chinese-speaking buyers.'),
-    ('Google SEO & SEM', 'Page-one rankings, Google Ads and AI search visibility in ChatGPT and Gemini answers.'),
-    ('Video & livestream studio', 'In-house shooting, editing and live hosting, from product clips to brand films.'),
-    ('KOC & KOL', 'Influencers matched on audience fit and engagement quality, not just follower count.'),
-    ('Branding', 'Visual identity, positioning and guidelines so every post looks like you.'),
-    ('Events, offline to online', 'Launches and activations captured on the day and amplified online after it.'),
+    ('Meta ads', 'Facebook and Instagram campaigns built around one goal: sales and leads, tracked to the ringgit.', None, 'megaphone'),
+    ('TikTok', 'Short video at volume, livestream operations and TikTok Shop, run as one sales engine.', None, 'music'),
+    ('Xiaohongshu', 'Search-led notes and KOC seeding that put your brand in front of Chinese-speaking buyers.', None, 'book'),
+    ('Google SEO & SEM', 'Page-one rankings, Google Ads and AI search visibility in ChatGPT and Gemini answers.', None, 'search'),
+    ('Video & livestream studio', 'In-house shooting, editing and live hosting, from product clips to brand films.', None, 'video'),
+    ('KOC & KOL', 'Influencers matched on audience fit and engagement quality, not just follower count.', None, 'users'),
+    ('Branding', 'Visual identity, positioning and guidelines so every post looks like you.', None, 'pen'),
+    ('Events, offline to online', 'Launches and activations captured on the day and amplified online after it.', None, 'layers'),
 ]
 
 home_body = f'''    <section class="hero">
-      <h1 class="h1 rise">Marketing made <span class="accent">simple.</span></h1>
-      <p class="lede rise" style="animation-delay:.15s">Ads, video, livestream, KOC &amp; KOL and AI, from offline to fully online. Let our team run it for you, or learn to run it yourself, in just a few clicks.</p>
-      <div class="btn-row rise" style="animation-delay:.3s">
-        <a class="btn btn-primary" href="{wa("Hi, I'd like a free consultation!")}" target="_blank" rel="noopener">Get a free consultation</a>
-        <a class="btn btn-ghost" href="#services">See the two ways to grow</a>
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow rise">Digital marketing × Content × AI</div>
+          <h1 class="h1 rise" style="animation-delay:.05s">Your Marketing,<br><span class="accent">Simplified.</span></h1>
+          <p class="lede rise" style="animation-delay:.15s">From offline to fully online: ads, videos, livestream, KOC/KOL and AI automation. Let our team run it for you, or learn to run it yourself in just a few clicks.</p>
+          <div class="btn-row rise" style="animation-delay:.3s">
+            <a class="btn btn-primary" href="{wa("Hi, I'd like a free consultation!")}" target="_blank" rel="noopener">Get a free consultation {ARROW}</a>
+            <a class="btn btn-ghost" href="#services">Explore our services</a>
+          </div>
+        </div>
+        <div class="rise" style="animation-delay:.2s">{video('home', 'Top Creation Media introduction video').replace(' data-rv', '')}</div>
       </div>
-      {video('home', 'Top Creation Media introduction video')}
-      <div class="wrap" style="padding:72px 0 96px">
-        <p class="lede" data-rv style="font-size:16px;margin-bottom:24px">Trusted by brands across Malaysia and beyond</p>
+      <div class="hero-logos">
+        <p data-rv>Trusted by brands across Malaysia and beyond</p>
         {CLIENTS_HTML}
+      </div>
+    </section>
+
+    <section class="tile tile-raise" id="what-we-do">
+      <div class="wrap">
+        {head('Everything you need to <span class="accent">grow online</span>', 'Our services')}
+        {cards(SERVICES, 'grid center')}
+      </div>
+    </section>
+
+    <section class="tile tile-dark" style="padding-top:72px;padding-bottom:72px">
+      <div class="why">
+        <div class="why-head" data-rv><div class="eyebrow">Why TCM</div><h2 class="h2" style="font-size:clamp(30px,3.4vw,42px)">Why businesses choose <span class="accent">TCM</span></h2></div>
+        <div class="why-list">
+          <div data-rv>{icon('zap')}<p>Marketing made simple, in a few clicks</p></div>
+          <div data-rv>{icon('coins')}<p>Save thousands on wasted ad spend</p></div>
+          <div data-rv>{icon('target')}<p>Skip the trial and error: we have done it already</p></div>
+          <div data-rv>{icon('users')}<p>One team, all platforms</p></div>
+        </div>
       </div>
     </section>
 
     <section class="tile tile-raise" id="about">
       <div class="wrap">
         <div class="sec-head" style="margin-bottom:0">
-          <h2 class="h2" data-rv>One team, from offline to online.</h2>
+          <div data-rv><div class="eyebrow">About us</div><h2 class="h2">One team, from <span class="accent">offline to online.</span></h2></div>
           <p class="lede" data-rv style="margin-top:22px">Top Creation Media is a digital marketing agency and training studio in Malaysia. We plan, shoot, launch and scale marketing for brands, and we teach business owners and teams to do the same with AI. Follow our way and you save on wasted ad spend and skip years of trial and error.</p>
         </div>
         <div class="stats">
@@ -371,7 +442,7 @@ home_body = f'''    <section class="hero">
 
     <section class="tile tile-dark" id="mission">
       <div class="wrap">
-        <div class="sec-head" style="margin-bottom:24px"><h2 class="h2" data-rv>What drives us.</h2></div>
+        {head('What drives us', 'Mission · Vision · Performance', style='margin-bottom:16px')}
         <div class="split">
         {photo('mission.jpg', 'Top Creation Media team guiding participants during a hands-on class')}
           <div data-rv>
@@ -404,7 +475,7 @@ home_body = f'''    <section class="hero">
 
     <section class="tile tile-raise" id="services">
       <div class="wrap">
-        <div class="sec-head"><h2 class="h2" data-rv>Two ways to grow. You choose.</h2><p class="lede" data-rv style="margin-top:20px">Same team, same platforms. The difference is who does the work.</p></div>
+        {head('Two ways to grow. <span class="accent">You choose.</span>', 'How we work with you', 'Same team, same platforms. The difference is who does the work.')}
         <div class="ways">
           <div class="way" data-rv>
             <div class="way-k">Done-For-You services</div>
@@ -423,24 +494,17 @@ home_body = f'''    <section class="hero">
         </div>
         <div style="margin-top:16px">
         {cards([
-            ('AI Classes', 'AI video, graphics, captions, websites and automation. No coding needed.', [('Explore AI Classes', '/ai-classes')]),
-            ('Scan Buddy', 'One smart QR code that turns offline customers into followers, chats and reviews.', [('See Scan Buddy', '/scan-buddy')]),
-            ('AI Video', 'Upload a product photo. Get ready-to-post marketing videos.', [('See AI Video', '/ai-video')]),
+            ('AI Classes', 'AI video, graphics, captions, websites and automation. No coding needed.', [('Explore AI Classes', '/ai-classes')], 'sparkles'),
+            ('Scan Buddy', 'One smart QR code that turns offline customers into followers, chats and reviews.', [('See Scan Buddy', '/scan-buddy')], 'qr'),
+            ('AI Video', 'Upload a product photo. Get ready-to-post marketing videos.', [('See AI Video', '/ai-video')], 'video'),
         ], 'grid g3')}
         </div>
       </div>
     </section>
 
-    <section class="tile tile-dark">
-      <div class="wrap">
-        <div class="sec-head"><h2 class="h2" data-rv>Everything you need, under one roof.</h2></div>
-        {cards(SERVICES)}
-      </div>
-    </section>
-
     <section class="tile tile-raise" id="results">
       <div class="wrap">
-        <div class="sec-head" style="margin-bottom:24px"><h2 class="h2" data-rv>Real numbers from real campaigns.</h2></div>
+        {head('Real numbers from <span class="accent">real campaigns</span>', 'Results', style='margin-bottom:16px')}
 {result(*RES_GG)}
 {result(*RES_META, flip=True)}
 {result(*RES_TT)}
@@ -449,7 +513,7 @@ home_body = f'''    <section class="hero">
 
     <section class="tile tile-dark">
       <div class="wrap">
-        <div class="sec-head"><h2 class="h2" data-rv>Recent work.</h2></div>
+        {head('Recent work', 'Portfolio')}
         <div class="gallery" id="home-gallery"></div>
         <div class="btn-row" data-rv><a class="btn btn-ghost" href="/portfolio">View the full portfolio</a></div>
       </div>
@@ -464,7 +528,7 @@ home_body = f'''    <section class="hero">
 
     <section class="tile tile-dark">
       <div class="wrap">
-        <div class="sec-head"><h2 class="h2" data-rv>Three steps. Zero confusion.</h2></div>
+        {head('Three steps. Zero confusion.', 'Our process')}
 {STEPS3}
       </div>
     </section>
@@ -481,10 +545,10 @@ SOCIAL_FAQ = [
 ]
 social_ld = {'@context': 'https://schema.org', '@graph': [faq_ld(SOCIAL_FAQ)]}
 PLATFORMS = [
-    ('Facebook & Instagram', 'Ads, posters, carousels and Reels on Meta, with tracking that shows what each ringgit brings back.', [('We do it', '/marketing-services#facebook'), ('Learn it', '/marketing-classes#facebook')]),
-    ('TikTok', 'Short video, livestream selling, TikTok Shop and KOC content that feels native.', [('We do it', '/marketing-services#tiktok'), ('Learn it', '/marketing-classes#tiktok')]),
-    ('Google', 'SEO, search ads and AI search, so you show up when customers look for you.', [('We do it', '/marketing-services#google'), ('Learn it', '/marketing-classes#google')]),
-    ('Xiaohongshu', 'Search-led notes, creator (博主) seeding and Juguang ads for Chinese-speaking buyers.', [('We do it', '/marketing-services#xiaohongshu'), ('Learn it', '/marketing-classes#xiaohongshu')]),
+    ('Facebook & Instagram', 'Ads, posters, carousels and Reels on Meta, with tracking that shows what each ringgit brings back.', [('We do it', '/marketing-services#facebook'), ('Learn it', '/marketing-classes#facebook')], 'megaphone'),
+    ('TikTok', 'Short video, livestream selling, TikTok Shop and KOC content that feels native.', [('We do it', '/marketing-services#tiktok'), ('Learn it', '/marketing-classes#tiktok')], 'music'),
+    ('Google', 'SEO, search ads and AI search, so you show up when customers look for you.', [('We do it', '/marketing-services#google'), ('Learn it', '/marketing-classes#google')], 'search'),
+    ('Xiaohongshu', 'Search-led notes, creator (博主) seeding and Juguang ads for Chinese-speaking buyers.', [('We do it', '/marketing-services#xiaohongshu'), ('Learn it', '/marketing-classes#xiaohongshu')], 'book'),
 ]
 
 social_body = f'''{hero([("Home", "/"), ("Social Media", "")], 'Social media marketing, <span class="accent">two ways.</span>',
