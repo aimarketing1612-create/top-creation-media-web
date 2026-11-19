@@ -4,16 +4,13 @@
     "ignoreFiles": [],
     "ignoreValues": [
       {
-        "rule": "overused-font",
-        "value": "inter",
-        "createdAt": "2026-11-05T15:34:56.729Z",
-        "reason": "Existing TCM brand body font, already on the live site before this work; kept to preserve identity. Not explicitly confirmed by the user."
-      },
-      {
-        "rule": "overused-font",
-        "value": "space grotesk",
-        "createdAt": "2026-11-05T15:34:56.747Z",
-        "reason": "Existing TCM brand heading font, already on the live site before this work; kept to preserve identity. Not explicitly confirmed by the user."
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "deploy/site.css"
+        ],
+        "createdAt": "2026-11-19T14:25:25.572Z",
+        "reason": "User-requested: the owner supplied a reference design with purple-to-blue gradient headline words and asked to follow it (2026-11-19)."
       }
     ]
   }
