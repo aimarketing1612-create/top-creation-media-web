@@ -151,7 +151,7 @@ def page(slug, title, desc, cur, ld, body, scripts=()):
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{esc(title)}</title>
   <meta name="description" content="{esc(desc)}">
-  <meta name="theme-color" content="#FFFFFF">
+  <meta name="theme-color" content="#07051A">
   <link rel="canonical" href="{canon}">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Top Creation Media">
@@ -941,7 +941,7 @@ def qr_svg(seed=7, n=25):
 
 
 def sb_mockup():
-    links = [('Follow on Facebook', '#1877F2'), ('Follow on Instagram', '#E1306C'), ('Follow on TikTok', '#111111'),
+    links = [('Follow on Facebook', '#1877F2'), ('Follow on Instagram', '#E1306C'), ('Follow on TikTok', '#FFFFFF'),
              ('Follow on Xiaohongshu', '#FF2442'), ('Chat on WhatsApp', '#25D366'), ('Leave a Google review', '#F4B400')]
     btns = ''.join(f'<span class="ph-link"><i style="background:{c}"></i>{t}</span>' for t, c in links)
     return f'''    <section class="tile tile-dark">
