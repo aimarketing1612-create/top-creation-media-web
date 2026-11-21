@@ -11,6 +11,15 @@
         ],
         "createdAt": "2026-11-19T14:25:25.572Z",
         "reason": "User-requested: the owner supplied a reference design with purple-to-blue gradient headline words and asked to follow it (2026-11-19)."
+      },
+      {
+        "rule": "overused-font",
+        "value": "plus jakarta sans",
+        "files": [
+          "deploy/site.css"
+        ],
+        "createdAt": "2026-11-21T10:41:34.683Z",
+        "reason": "Site-wide body font chosen in the earlier redesign; the Chinese font stack only repeats it"
       }
     ]
   }
