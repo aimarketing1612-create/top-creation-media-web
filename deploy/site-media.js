@@ -3,7 +3,7 @@
    The ONLY file you edit to add your intro videos and client reviews.
 
    ---------------------------------------------------------------------
-   1) VIDEOS  (16:9). Fill in ONE of the three options per video:
+   1) VIDEOS  (16:9; the three AI Video samples are 9:16 vertical). Fill in ONE of the three options per video:
         mp4:       '/assets/video/home.mp4'   BEST: a file you upload to deploy/assets/video/
                                               (H.264 MP4, 1080p, under ~10 MB)
         youtubeId: 'dQw4w9WgXcQ'    the code after watch?v= in a YouTube link
@@ -31,6 +31,10 @@ window.TCM_MEDIA = {
     ai:           { youtubeId: '', driveId: '', mp4: '', poster: '' },  // AI Classes intro
     'scan-buddy': { youtubeId: '', driveId: '', mp4: '', poster: '' },  // Scan Buddy demo
     'ai-video':   { youtubeId: '', driveId: '', mp4: '', poster: '' },  // AI Video demo
+    // AI Video page: three vertical (9:16) sample videos
+    'ai-video-1': { youtubeId: '', driveId: '', mp4: '', poster: '' },
+    'ai-video-2': { youtubeId: '', driveId: '', mp4: '', poster: '' },
+    'ai-video-3': { youtubeId: '', driveId: '', mp4: '', poster: '' },
   },
 
   testimonials: [

@@ -8,6 +8,7 @@ behind-the-scenes photos in deploy/assets/bts/ (see the README there).
 import html as H
 import json
 import os
+from PIL import Image
 from urllib.parse import quote
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -64,6 +65,7 @@ NAV = [
     ('portfolio', '/portfolio', 'Portfolio'),
     ('scan', '/scan-buddy', 'Scan Buddy'),
     ('aivideo', '/ai-video', 'AI Video'),
+    ('member', '/membership', 'Membership'),
 ]
 SOCIAL_KEYS = ('social', 'services', 'academy')
 AI_MENU = [('m-know-your-ai-tools', 'Know your AI tools'), ('m-ai-video', 'AI video'), ('m-ai-graphics', 'AI graphics'),
@@ -97,11 +99,11 @@ def nav(cur):
           </div>
         </div>''')
         else:
-            badge = ''
+            badge = '<span class="badge">RM250</span>' if key == 'member' else ''
             items.append(f'<a href="{href}"{cur_attr(key)}>{label}{badge}</a>')
     sub = [('home', '/', 'Home'), ('social', '/social-media', 'Social Media'), ('services', '/marketing-services', 'Done-For-You'),
            ('academy', '/marketing-classes', 'Academy'), ('ai', '/ai-classes', 'AI Classes'), ('portfolio', '/portfolio', 'Portfolio'),
-           ('scan', '/scan-buddy', 'Scan Buddy'), ('aivideo', '/ai-video', 'AI Video')]
+           ('scan', '/scan-buddy', 'Scan Buddy'), ('aivideo', '/ai-video', 'AI Video'), ('member', '/membership', 'Membership')]
     subs = '\n        '.join(f'<a href="{h}"{" aria-current=\"page\"" if k == cur else ""}>{l}</a>' for k, h, l in sub)
     main = '\n        '.join(items)
     return f'''<a class="skip" href="#main">Skip to content</a>
@@ -132,6 +134,7 @@ FOOT = f'''<footer class="foot">
       <a href="/portfolio">Portfolio</a>
       <a href="/scan-buddy">Scan Buddy</a>
       <a href="/ai-video">AI Video</a>
+      <a href="/membership">Membership</a>
       <a href="https://facebook.com/topcreationmedia" target="_blank" rel="noopener">Facebook</a>
       <a href="https://instagram.com/topcreationmedia" target="_blank" rel="noopener">Instagram</a>
       <a href="https://tiktok.com/@topcreationmedia" target="_blank" rel="noopener">TikTok</a>
@@ -165,7 +168,7 @@ def page(slug, title, desc, cur, ld, body, scripts=()):
   <link rel="icon" href="/assets/tcm-logo.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/site.css">
   <script>document.documentElement.className='js'</script>
   <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
@@ -190,6 +193,28 @@ def video(key, label):
     return f'''<div class="video" data-video="{key}" aria-label="{esc(label)}" data-rv>
         <button class="video-btn video-soon" type="button" aria-label="{esc(label)}"><span class="play">{PLAY}</span><span class="video-cap">Video coming soon</span></button>
       </div>'''
+
+
+def video9(key, label):
+    return video(key, label).replace('class="video"', 'class="video v916"', 1)
+
+
+def svc_cards(rows, cls='svc-grid'):
+    """rows: (title, line, href, kind, src, alt). kind 'logo' shows a real brand logo, 'photo' a photograph."""
+    out = []
+    for t, d, href, kind, src, alt in rows:
+        if kind == 'logo':
+            media = f'<div class="svc-media svc-logo"><img src="/assets/brands/{src}.svg" alt="{esc(alt)}" width="84" height="84" loading="lazy"></div>'
+        else:
+            w, h = IMG_DIMS.get(src, (1200, 892))
+            media = f'<div class="svc-media"><img src="/assets/img/{src}.webp" alt="{esc(alt)}" width="{w}" height="{h}" loading="lazy"></div>'
+        out.append(f'<a class="svc" href="{href}" data-rv>{media}<div class="svc-body"><div class="card-t">{esc(t)}</div><p class="card-d">{esc(d)}</p></div></a>')
+    return f'<div class="{cls}">' + '\n          '.join(out) + '</div>'
+
+
+def banner(src, alt):
+    w, h = IMG_DIMS.get(src, (1200, 678))
+    return f'<figure class="banner" data-rv><img src="/assets/img/{src}.webp" alt="{esc(alt)}" width="{w}" height="{h}" loading="lazy"></figure>'
 
 
 def photo(file, alt):
@@ -270,7 +295,7 @@ def guarantee(subject):
       <div class="guarantee" data-rv>
         <div class="guarantee-seal">100%</div>
         <h2 class="h2">Can&#8217;t learn it? Full refund.</h2>
-        <p class="lede">Follow the {subject} and do the practice tasks. If you still can&#8217;t do it yourself, we refund 100% of your class fee. That is our promise: we guide you until you are the next professional marketer.</p>
+        <p class="lede">Follow the {subject} and do the practice tasks. If you still can&#8217;t do it yourself, we refund 100% of your fee. That is our promise: we guide you until you are the next professional marketer.</p>
         <p class="guarantee-terms">Terms apply: attend every session and complete the practice tasks. WhatsApp us for the full terms.</p>
       </div>
     </section>'''
@@ -331,9 +356,31 @@ CLIENTS = [('3cat.jpeg', '3cat'), ('fnc.jpeg', 'FnC'), ('mobil.jpg', 'Mobil'), (
            ('nomi.png', 'NOMI'), ('tp-link.png', 'TP-Link'), ('polo-club.jpeg', 'Royal County of Berkshire Polo Club'),
            ('golden-tropics.jpeg', 'Golden Tropics'), ('joy-paradise.jpg', 'Joy Paradise'), ('lau-homecook.png', 'Lau Homecook'),
            ('sofei.png', 'SOFEI'), ('haroma.jpg', 'Haroma Signature')]
-CLIENTS_HTML = '<div class="clients" data-rv>' + ''.join(
-    f'<div class="client" role="img" aria-label="{esc(n)}" title="{esc(n)}" style="background-image:url(\'/assets/logos/{f}\')"></div>' for f, n in CLIENTS) + '</div>'
+def _logo_box(f):
+    w, h = Image.open(os.path.join(OUT, 'assets', 'logos-mono', f)).size
+    ar = w / h
+    hh = max(26, min(58, (4600 / ar) ** .5))
+    return round(hh * ar), round(hh)
 
+
+def marquee():
+    imgs = []
+    for f, n in CLIENTS:
+        png = f.rsplit('.', 1)[0] + '.png'
+        w, h = _logo_box(png)
+        imgs.append(f'<img src="/assets/logos-mono/{png}" alt="{esc(n)}" title="{esc(n)}" width="{w}" height="{h}" loading="lazy">')
+    group = ''.join(imgs)
+    dup = group.replace(' alt="', ' alt="" data-alt="')
+    return (f'<div class="marquee" data-rv><div class="marquee-track">'
+            f'<div class="marquee-group">{group}</div><div class="marquee-group" aria-hidden="true">{dup}</div>'
+            f'</div></div>')
+
+
+CLIENTS_HTML = marquee()
+IMG_DIMS = {}
+for _f in os.listdir(os.path.join(OUT, 'assets', 'img')):
+    if _f.endswith('.webp'):
+        IMG_DIMS[_f[:-5]] = Image.open(os.path.join(OUT, 'assets', 'img', _f)).size
 
 DIMS = {'meta-dashboard.webp': (1665, 945), 'tiktok-dashboard.webp': (1672, 941), 'google-dashboard.webp': (1692, 930)}
 
@@ -355,21 +402,16 @@ RES_GG = ('google-dashboard.webp', 'Google Search Console dashboard showing orga
 
 # =================================================================== HOME
 HOME_FAQ = [
-    ('Why choose us over other digital marketing agencies in Malaysia and Singapore?', "With years of proven industry experience, we don't just run ads; we build full-funnel marketing ecosystems. From high-converting Facebook and Instagram strategies to Google SEO, we combine creative video production with hard data to deliver measurable results for clients across Malaysia, Singapore and beyond."),
-    ('What is the difference between your marketing services and your marketing academy?', 'With our Done-For-You services, our team runs your marketing for you: strategy, content, ads, livestream and KOC/KOL. With the Marketing Academy, we teach you or your staff to do it yourselves, step by step, on your own accounts. Many clients start with one and add the other later.'),
-    ('How much does digital marketing cost in Malaysia?', "It depends on your goals, the platforms you need, and how much content is involved. A business running Facebook and Instagram ads has very different needs from a brand that wants TikTok livestreams, SEO and video production together. That's why we build a customized package for every client. WhatsApp us with your goals and budget range, and we'll recommend the most cost-effective mix."),
-    ('What is the minimum ad budget for Facebook, Instagram, or TikTok ads in Malaysia?', "You can start small, but your budget needs to be big enough for the platform's algorithm to learn. We usually recommend a test budget first, finding the winning creatives and audiences, then scaling what works. On a strategy call we'll suggest a realistic starting budget for your industry and goals."),
-    ('Which is better for my business: Facebook ads, TikTok ads, or Google ads?', "It depends on how your customers buy. Google Ads captures people already searching for your product, which is great for high-intent leads. Facebook and Instagram ads are excellent for precise targeting and retargeting. TikTok is ideal for viral reach, younger audiences and live selling. Most brands get the best results from a mix, and we'll recommend the right split."),
-    ('Do I need any experience or coding to join your AI or marketing classes?', 'No. The classes start from zero. If you can use WhatsApp and a browser, you can follow along. You practise on your own business with us guiding every step, and if you follow the classes and still can\'t do it yourself, we refund your class fee in full (terms apply).'),
-    ('Do you provide TikTok Live streaming and TikTok Shop services in Malaysia?', 'Yes. We run the full TikTok flywheel, from trend-driven short videos to complete livestream operations in our in-house livestream studio. We handle live hosts, scripting, TikTok Shop catalog setup, affiliate creators and paid traffic to your live sessions, turning viewers into real sales.'),
-    ('Can you help my brand market on Xiaohongshu (RED) to reach Chinese-speaking customers?', 'Yes. Xiaohongshu (Little Red Book) is one of the most powerful platforms for reaching Chinese-speaking consumers in Malaysia, Singapore and China. We create authentic, native-style notes, work with KOCs and KOLs, and plan search-led content so customers who look for recommendations discover your brand.'),
-    ('Do you work with KOLs and influencers (KOC & KOL marketing)?', 'Yes. We match your brand with the right KOLs (key opinion leaders) and KOCs (key opinion consumers) based on audience fit, engagement quality and budget, not just follower count. We manage briefing, content approval and result tracking, so every collaboration drives real awareness and sales.'),
-    ('Does your team handle video production and event marketing?', "Yes. Our in-house team handles video production, from short-form reels to brand films. We also run event marketing: capturing offline events and amplifying them online through targeted search and social campaigns, taking your brand from offline to online."),
-    ('Do you offer Google SEO and SEM, including AI search?', 'Yes. We cover SEO (search engine optimization), SEM (Google Ads), AEO (answer engine optimization) and GEO (generative engine optimization), so your brand shows up both in Google results and in AI answers from ChatGPT, Gemini and Google AI.'),
-    ('How long does it take to see results from SEO?', 'SEO is a long-term investment. Most websites start to see movement in Google rankings and organic traffic within 3 to 6 months, depending on competition and the current state of the site. Paid ads on Google, Meta and TikTok can bring traffic within days, which is why we often combine SEM for fast leads with SEO for sustainable growth.'),
-    ('What are Scan Buddy and AI Video?', 'They are AI tools for TCM subscribers. Scan Buddy is a smart QR code that sends customers to all your social media, WhatsApp and Google reviews in one scan, and shows you every scan. AI Video turns a product photo into ready-to-post marketing videos. WhatsApp us for access.'),
-    ('How do you track and report campaign results?', 'We measure what matters to your business: leads, sales, cost per result and return on ad spend (ROAS), not just likes and views. Using Meta Pixel, Google Analytics and platform dashboards, we track every channel and share clear reports, so you always know where your money goes and what it brings back.'),
-    ('Can you help local brands expand into international markets?', 'Yes. We combine Google SEO, localized search ads and targeted Instagram, Facebook and TikTok campaigns to introduce your brand to new markets, with clients across Malaysia, Singapore, China, the USA and Indonesia.'),
+    ('Do you work with large companies and franchise brands in Malaysia?', 'Yes. We run marketing for multi-outlet and franchise brands and for companies with 50+ staff: one strategy for the whole brand, local ads for each outlet, and training so your in-house team can run the day-to-day work.'),
+    ('What does a digital marketing agency in Malaysia do for my business?', 'We plan your strategy, produce the content, run ads on Facebook, Instagram, TikTok, Google and Xiaohongshu, work with KOLs and report the leads and sales each ringgit brings back. One team, every channel.'),
+    ('Do you offer SEO services in Malaysia?', 'Yes. Technical SEO, content, Google Business Profile and AI search (AEO and GEO), so you show up on Google and in ChatGPT and Gemini answers. We pair it with Google Ads when you need leads this month.'),
+    ('Can you train our staff in AI and digital marketing?', 'Yes. We run corporate AI and marketing training for teams and departments, hands-on with your own accounts, products and data rules. Your staff leave able to make the video, launch the ad and read the report themselves.'),
+    ('Do I need experience or coding to join your AI course in Malaysia?', 'No. Every class starts from zero. If you can use WhatsApp and a browser, you can follow along, and if you follow the class and still cannot do it, we refund you in full (terms apply).'),
+    ('How much does digital marketing cost in Malaysia?', 'Done-For-You packages are customised to your goals, platforms and content volume, so WhatsApp us for a quote. To learn it yourself and use our AI tools, the TCM Membership is RM250 a month.'),
+    ('Are you a social media agency for TikTok, Facebook, Instagram and Xiaohongshu?', 'Yes. We run all four in-house: content, ads, TikTok Live and Shop, Xiaohongshu notes and creator seeding, plus Google. You get one plan and one report instead of four agencies.'),
+    ('Do you work with KOLs and influencers in Malaysia?', 'Yes. We shortlist KOLs and KOCs by audience fit, engagement quality and real followers, then manage the brief, approvals and results, so every collaboration is measured in reach and sales.'),
+    ('Do you do video production and livestreaming in Malaysia?', 'Yes. Our in-house studio shoots short videos, product films and brand films, and runs TikTok and Facebook livestreams with hosts, scripts and live offers.'),
+    ('What is the TCM Membership?', 'For RM250 a month you get every TCM AI tool (Scan Buddy and AI Video), our marketing resources and the full video course library. Follow the lessons and still cannot do it? Full refund (terms apply).'),
 ]
 home_ld = {'@context': 'https://schema.org', '@graph': [
     {'@type': 'ProfessionalService', 'name': 'Top Creation Media', 'url': SITE, 'logo': SITE + 'assets/tcm-logo.jpg',
@@ -379,14 +421,14 @@ home_ld = {'@context': 'https://schema.org', '@graph': [
     faq_ld(HOME_FAQ)]}
 
 SERVICES = [
-    ('Meta ads', 'Facebook and Instagram campaigns built around one goal: sales and leads, tracked to the ringgit.', None, 'megaphone'),
-    ('TikTok', 'Short video at volume, livestream operations and TikTok Shop, run as one sales engine.', None, 'music'),
-    ('Xiaohongshu', 'Search-led notes and KOC seeding that put your brand in front of Chinese-speaking buyers.', None, 'book'),
-    ('Google SEO & SEM', 'Page-one rankings, Google Ads and AI search visibility in ChatGPT and Gemini answers.', None, 'search'),
-    ('Video & livestream studio', 'In-house shooting, editing and live hosting, from product clips to brand films.', None, 'video'),
-    ('KOC & KOL', 'Influencers matched on audience fit and engagement quality, not just follower count.', None, 'users'),
-    ('Branding', 'Visual identity, positioning and guidelines so every post looks like you.', None, 'pen'),
-    ('Events, offline to online', 'Launches and activations captured on the day and amplified online after it.', None, 'layers'),
+    ('Meta ads', 'Facebook and Instagram ads, tracked to the ringgit.', '/marketing-services#facebook', 'logo', 'meta', 'Meta'),
+    ('TikTok', 'Short video, Live and TikTok Shop as one sales engine.', '/marketing-services#tiktok', 'logo', 'tiktok', 'TikTok'),
+    ('Xiaohongshu', 'Notes and creators for Chinese-speaking buyers.', '/marketing-services#xiaohongshu', 'logo', 'xiaohongshu', 'Xiaohongshu'),
+    ('Google SEO & SEM', 'Page one on Google, and in AI answers.', '/marketing-services#google', 'logo', 'google', 'Google'),
+    ('Video & livestream', 'In-house studio, hosts and crew.', '/marketing-services#more', 'photo', 'livestream', 'Livestream host selling skincare live from a studio'),
+    ('KOC & KOL', 'Creators matched on real audience fit.', '/marketing-services#more', 'photo', 'kol', 'Creator filming a product review on her phone'),
+    ('Branding', 'Identity and guidelines that look like you.', '/marketing-services#more', 'photo', 'branding', 'Brand identity kit with cards, packaging and colour swatches'),
+    ('Events, offline to online', 'Launches filmed on the day, amplified after.', '/marketing-services#more', 'photo', 'events', 'Videographer filming a brand launch event in a mall'),
 ]
 
 home_body = f'''    <section class="hero">
@@ -411,27 +453,15 @@ home_body = f'''    <section class="hero">
     <section class="tile tile-raise" id="what-we-do">
       <div class="wrap">
         {head('Everything you need to <span class="accent">grow online</span>', 'Our services')}
-        {cards(SERVICES, 'grid center')}
-      </div>
-    </section>
-
-    <section class="tile tile-dark" style="padding-top:72px;padding-bottom:72px">
-      <div class="why">
-        <div class="why-head" data-rv><div class="eyebrow">Why TCM</div><h2 class="h2" style="font-size:clamp(30px,3.4vw,42px)">Why businesses choose <span class="accent">TCM</span></h2></div>
-        <div class="why-list">
-          <div data-rv>{icon('zap')}<p>Marketing made simple, in a few clicks</p></div>
-          <div data-rv>{icon('coins')}<p>Save thousands on wasted ad spend</p></div>
-          <div data-rv>{icon('target')}<p>Skip the trial and error: we have done it already</p></div>
-          <div data-rv>{icon('users')}<p>One team, all platforms</p></div>
-        </div>
+        {svc_cards(SERVICES)}
       </div>
     </section>
 
     <section class="tile tile-raise" id="about">
       <div class="wrap">
-        <div class="sec-head" style="margin-bottom:0">
+        <div class="sec-head sec-wide" style="margin-bottom:0">
           <div data-rv><div class="eyebrow">About us</div><h2 class="h2">One team, from <span class="accent">offline to online.</span></h2></div>
-          <p class="lede" data-rv style="margin-top:22px">Top Creation Media is a digital marketing agency and training studio in Malaysia. We plan, shoot, launch and scale marketing for brands, and we teach business owners and teams to do the same with AI. Follow our way and you save on wasted ad spend and skip years of trial and error.</p>
+          <p class="lede" data-rv style="margin-top:22px">Top Creation Media is a digital marketing agency and training studio in Malaysia. We plan, shoot, launch and scale marketing for brands, and teach business owners and teams to do the same with AI.</p>
         </div>
         <div class="stats">
           <div class="stat" data-rv><div class="stat-n">8+</div><div class="stat-l">Years of experience</div></div>
@@ -471,9 +501,9 @@ home_body = f'''    <section class="hero">
         {photo('performance.jpg', 'Top Creation Media livestream session in the studio')}
           <div class="mvp-text" data-letter="P" data-rv>
             <div class="split-k mvp-num"><b>03</b>Our performance</div>
-            <h3 class="h2">Sales that sell out. Brands that last.</h3>
-            <p class="lede">We measure ourselves in results: orders, leads and a brand people remember. Not likes for the sake of likes.</p>
-            {ticks(['Sell-out campaigns and livestreams', 'Leads and sales you can count', 'A brand people trust and come back to'])}
+            <h3 class="h2">Our experience becomes your performance.</h3>
+            <p class="lede">Everything we learned serving 500+ clients, we hand to you. Run your marketing more efficiently, save on costly agency fees, and grow your sales and your brand.</p>
+            {ticks(['Higher sales, from proven campaign playbooks', 'Lower costs: do in-house what you used to outsource', 'Faster workflows with AI and ready templates', 'A stronger brand that customers trust'])}
           </div>
         </div>
       </div>
@@ -501,8 +531,8 @@ home_body = f'''    <section class="hero">
         <div style="margin-top:16px">
         {cards([
             ('AI Classes', 'AI video, graphics, captions, websites and automation. No coding needed.', [('Explore AI Classes', '/ai-classes')], 'sparkles'),
-            ('Scan Buddy', 'One smart QR code that turns offline customers into followers, chats and reviews.', [('See Scan Buddy', '/scan-buddy')], 'qr'),
-            ('AI Video', 'Upload a product photo. Get ready-to-post marketing videos.', [('See AI Video', '/ai-video')], 'video'),
+            ('TCM Membership · RM250/mo', 'Every AI tool, every course and all our marketing resources in one plan.', [('See the membership', '/membership')], 'zap'),
+            ('Scan Buddy & AI Video', 'Smart QR codes and product-photo-to-video, included in the membership.', [('Scan Buddy', '/scan-buddy'), ('AI Video', '/ai-video')], 'qr'),
         ], 'grid g3')}
         </div>
       </div>
@@ -536,78 +566,8 @@ home_body = f'''    <section class="hero">
 
 {cta('Stop guessing. Start growing.', 'One chat. One customized plan. One team for every channel, or a class that teaches you to run it yourself.', 'WhatsApp Us for a Free Consultation', "Hi, I'd like a free consultation!")}'''
 
-# =================================================================== SOCIAL MEDIA HUB
-SOCIAL_FAQ = [
-    ('Should I choose Done-For-You or the Marketing Academy?', 'Choose Done-For-You if you want results without spending your own time on the tools. Choose the Academy if you want you or your staff to own the skill and save on agency fees long term. If you are unsure, WhatsApp us your goal and we will recommend one honestly.'),
-    ('Can I do both?', 'Yes. Many clients start with Done-For-You to get results quickly, then train their staff in the Academy so they can take over day-to-day work.'),
-    ('Which platform should I start with?', 'It depends on where your customers spend time and how they buy. Google suits people already searching, Facebook and Instagram suit precise targeting, TikTok suits reach and live selling, and Xiaohongshu suits Chinese-speaking buyers who search for recommendations.'),
-]
-social_ld = {'@context': 'https://schema.org', '@graph': [faq_ld(SOCIAL_FAQ)]}
-PLATFORMS = [
-    ('Facebook & Instagram', 'Ads, posters, carousels and Reels on Meta, with tracking that shows what each ringgit brings back.', [('We do it', '/marketing-services#facebook'), ('Learn it', '/marketing-classes#facebook')], 'megaphone'),
-    ('TikTok', 'Short video, livestream selling, TikTok Shop and KOC content that feels native.', [('We do it', '/marketing-services#tiktok'), ('Learn it', '/marketing-classes#tiktok')], 'music'),
-    ('Google', 'SEO, search ads and AI search, so you show up when customers look for you.', [('We do it', '/marketing-services#google'), ('Learn it', '/marketing-classes#google')], 'search'),
-    ('Xiaohongshu', 'Search-led notes, creator (博主) seeding and Juguang ads for Chinese-speaking buyers.', [('We do it', '/marketing-services#xiaohongshu'), ('Learn it', '/marketing-classes#xiaohongshu')], 'book'),
-]
-
-social_body = f'''{hero([("Home", "/"), ("Social Media", "")], 'Social media marketing, <span class="accent">two ways.</span>',
-       'Facebook, Instagram, TikTok, Google and Xiaohongshu. Let our team run it for you, or learn to run it yourself the right way, from day one.',
-       extra=switch('social') + video('social', 'Social media marketing: two ways to work with us'), eyebrow='Social media marketing')}
-
-    <section class="tile tile-raise">
-      <div class="wrap">
-        {head('Pick the way that fits you', 'Two options')}
-        <div class="ways">
-          <div class="way" data-rv>
-            <div class="way-k">Option 1 · Done-For-You</div>
-            <div class="way-t">We handle everything.</div>
-            <p class="way-d">Ads, content, livestream, account management and KOC/KOL, run by our team. You focus on your business and read a clear report.</p>
-            {ticks(['Strategy and monthly plan', 'Video, posters and carousels made in-house', 'Ads set up, tested and scaled', 'Monthly results report'])}
-            <a class="btn btn-primary" href="/marketing-services">Explore Done-For-You</a>
-          </div>
-          <div class="way" data-rv>
-            <div class="way-k">Option 2 · Marketing Academy</div>
-            <div class="way-t">Learn it yourself.</div>
-            <p class="way-d">Master the skill step by step, save on costs, and never waste money on the wrong strategy again. You can even take on clients of your own.</p>
-            {ticks(['Every platform, A to Z', 'Hands-on, on your own accounts', 'Checklists and templates you keep', "Can't learn it? 100% refund"])}
-            <a class="btn btn-primary" href="/marketing-classes">Explore the Academy</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="tile tile-dark">
-      <div class="wrap">
-        {head('The difference, side by side', 'Compare')}
-        <div class="compare-scroll" data-rv>
-          <table class="compare">
-            <thead><tr><th></th><th>Done-For-You</th><th>Marketing Academy</th></tr></thead>
-            <tbody>
-              <tr><th>Best for</th><td>Busy owners and brands who want results without learning the tools</td><td>Owners, staff and freelancers who want to do it themselves</td></tr>
-              <tr><th>Your time</th><td>A short check-in each week</td><td>Class time plus hands-on practice</td></tr>
-              <tr><th>What you get</th><td>Strategy, content, ads, livestream, KOC/KOL and monthly reports</td><td>Step-by-step classes, templates and guidance on your own accounts</td></tr>
-              <tr><th>Who owns the skill</th><td>Our team runs it; you see everything</td><td>You do, for good</td></tr>
-              <tr><th>Start with</th><td>A free strategy chat</td><td>A short chat about your goals</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="lede" data-rv style="text-align:center;margin-top:40px">Or both: many clients start with Done-For-You, then train their staff in the Academy.</p>
-      </div>
-    </section>
-
-    <section class="tile tile-raise">
-      <div class="wrap">
-        {head('Platforms we run and teach', 'Platforms')}
-        {cards(PLATFORMS)}
-      </div>
-    </section>
-
-{faq_section(SOCIAL_FAQ)}
-
-{cta('Not sure which to choose?', 'Tell us your business and goal. We will recommend the right option honestly.', 'WhatsApp Us for Advice', "Hi, I'm not sure whether to choose Done-For-You or the Academy. Can you advise?")}'''
-
 # =================================================================== DONE-FOR-YOU
-XHS_NOTE = "<strong>Good to know:</strong> Xiaohongshu&#8217;s Juguang (聚光) ad platform generally requires a mainland China business entity, so overseas brands usually advertise through certified agency partners. We handle the access route for you, and put most of the effort where it pays off first: search-led notes and creator seeding."
+XHS_NOTE_UNUSED = " Xiaohongshu&#8217;s Juguang (聚光) ad platform generally requires a mainland China business entity, so overseas brands usually advertise through certified agency partners. We handle the access route for you, and put most of the effort where it pays off first: search-led notes and creator seeding."
 
 
 def svc_panel(h3, lede, points, res=None, note='', ics=None):
@@ -651,14 +611,20 @@ DFY_XHS = [
     ('Leads & conversion', 'DMs, lead forms and store links that turn attention into enquiries.'),
 ]
 TOOLKIT = [
-    ('KOC & KOL collaborations', 'We scan and shortlist influencers by audience fit, engagement quality and real followers, then manage briefs, approvals and results.'),
-    ('Livestream studio', 'An in-house studio with hosts and crew for TikTok, Facebook and Shopee lives.'),
-    ('Account management', 'Posting, replies and community management across your channels.'),
-    ('Branding', 'Logo, visual identity and guidelines so every channel looks consistent.'),
-    ('Events, offline to online', 'Launches and activations organised, filmed and amplified online.'),
-    ('AI-powered production', 'AI speeds up captions, variations and edits, so you get more creative for the same budget.'),
+    ('Video production', 'Short videos, product and brand films.', '#more', 'photo', 'production', 'Crew filming a product on a turntable in a studio'),
+    ('Livestream studio', 'Hosts, scripts and crew for selling lives.', '#more', 'photo', 'livestream', 'Livestream host presenting products to a phone camera'),
+    ('KOC & KOL', 'Creators shortlisted, briefed and measured.', '#more', 'photo', 'kol', 'Creator recording a product review'),
+    ('Branding', 'Logo, identity and brand guidelines.', '#more', 'photo', 'branding', 'Brand identity kit on a desk'),
+    ('Events, offline to online', 'Launches filmed live and amplified online.', '#more', 'photo', 'events', 'Brand launch event being filmed in a mall atrium'),
+    ('Team training', 'Train your staff to take over day-to-day.', '/marketing-classes', 'photo', 'training', 'Corporate marketing and AI training workshop'),
 ]
-DFY_FAQ = [HOME_FAQ[2], HOME_FAQ[3], HOME_FAQ[4], HOME_FAQ[13]]
+DFY_FAQ = [
+    ('What is included in your social media management in Malaysia?', 'Strategy, a monthly content plan, video and design made in our studio, posting, community replies, ads and a monthly results report. You choose the platforms and content volume.'),
+    ('Do you run Google Ads and Meta ads for companies in Malaysia?', 'Yes. We plan, launch and optimise Google Search, Performance Max, Facebook and Instagram campaigns every week, with tracking set up so you see cost per lead and return on ad spend.'),
+    ('What is the minimum ad budget in Malaysia?', 'Enough for the platform to learn: we start with a test budget, find the winning creative and audience, then scale. We recommend a realistic number for your industry on the first call.'),
+    ('Can you handle marketing for a franchise with many outlets?', 'Yes. One brand standard and shared content for the group, local campaigns per outlet, and a report that compares every branch.'),
+    ('Do you also do branding?', 'Yes. Logo, visual identity, positioning and brand guidelines, so every post, ad and outlet looks like one brand.'),
+]
 dfy_ld = {'@context': 'https://schema.org', '@graph': [
     {'@type': 'Service', 'name': 'Done-For-You Social Media Marketing', 'serviceType': 'Digital marketing agency services',
      'provider': PROVIDER, 'areaServed': ['MY', 'SG'], 'url': SITE + 'marketing-services',
@@ -677,15 +643,15 @@ dfy_body = f'''{hero([("Home", "/"), ("Social Media", "/social-media"), ("Done-F
     ('facebook', 'Facebook & IG', svc_panel('Facebook &amp; Instagram, from scroll to sale', 'We run Facebook and Instagram as one engine: strategy first, creative built to convert, then ads tuned every week.', DFY_FB, RES_META, ics=['target', 'video', 'pen', 'layers', 'megaphone', 'zap'])),
     ('tiktok', 'TikTok', svc_panel('TikTok video, Live and Shop', 'From trend-driven short video to full livestream selling, we run the whole TikTok flywheel.', DFY_TT, RES_TT, ics=['music', 'live', 'coins', 'users', 'zap', 'target'])),
     ('google', 'Google', svc_panel('Own the search results, human and AI', 'When customers search on Google or ask an AI, your brand should be the answer.', DFY_GG, RES_GG, ics=['search', 'megaphone', 'sparkles', 'layers', 'target', 'zap'])),
-    ('xiaohongshu', 'Xiaohongshu', svc_panel('Xiaohongshu (RED): notes, 博主 and ads', 'Reach Chinese-speaking buyers in Malaysia, Singapore and China with content that gets found and creators who build trust.', DFY_XHS, note=XHS_NOTE, ics=['book', 'search', 'users', 'megaphone', 'layers', 'target'])),
+    ('xiaohongshu', 'Xiaohongshu', svc_panel('Xiaohongshu (RED): notes, 博主 and ads', 'Reach Chinese-speaking buyers in Malaysia, Singapore and China with content that gets found and creators who build trust.', DFY_XHS, ics=['book', 'search', 'users', 'megaphone', 'layers', 'target'])),
 ])}
       </div>
     </section>
 
-    <section class="tile tile-dark">
+    <section class="tile tile-dark" id="more">
       <div class="wrap">
         {head('Also in our toolkit', 'More services')}
-        {cards(TOOLKIT, 'grid g3', ['users', 'live', 'calendar', 'pen', 'layers', 'sparkles'])}
+        {svc_cards(TOOLKIT, 'svc-grid g3')}
       </div>
     </section>
 
@@ -739,12 +705,11 @@ XHS = [
     ('Leads & measurement', 'Turn attention into enquiries with DMs, lead forms and Qianfan (千帆), then track note performance and cost per lead.', 'A lead path and monthly review.', ['DMs', 'Qianfan 千帆', 'Note metrics']),
 ]
 ACADEMY_FAQ = [
-    ('Is this for complete beginners?', 'Yes. Each platform starts from account setup and builds step by step to optimising and scaling. If you already run ads, you can jump straight to the module you need.'),
-    ('What does the 100% refund guarantee cover?', 'If you attend every session, complete the practice tasks and still cannot do it yourself, we refund your class fee in full. WhatsApp us for the full terms before you join.'),
-    ('Do I need an ad budget to join?', 'You can learn the setup and structure without spending, but real learning comes from a small live test. We will help you choose a sensible test budget for your industry and goal.'),
-    ('Can I use these skills to freelance?', 'Yes. Many participants learn to run their own business marketing first, then take on clients. The templates and checklists you keep are the same ones we use.'),
-    ('Can I send my staff or run it for my company?', 'Yes. We can run the classes for your team and use your own products and accounts as practice material. WhatsApp us your team size and goals.'),
-    ('How much do the classes cost and when do they start?', 'Dates and fees depend on the platforms you choose and group size. WhatsApp us for the current schedule and a quote.'),
+    ('Is this digital marketing course in Malaysia suitable for beginners?', 'Yes. Every platform starts from account setup and builds to optimising and scaling. If you already run ads, jump straight to the module you need.'),
+    ('Can you run the course in-house for our company team?', 'Yes. We train teams and departments on your own accounts and products, so the practice work becomes real campaigns for your business.'),
+    ('What does the 100% refund guarantee cover?', 'Attend every session, complete the practice tasks and still cannot do it yourself? We refund your class fee in full. WhatsApp us for the full terms.'),
+    ('Do I need an ad budget to join?', 'You can learn setup and structure without spending. Real learning comes from a small live test, and we help you choose a sensible budget.'),
+    ('Are the courses included in the TCM Membership?', 'Yes. The RM250/month Membership includes the full video course library, our marketing resources and every TCM AI tool.'),
 ]
 academy_ld = {'@context': 'https://schema.org', '@graph': [
     {'@type': 'Course', 'name': 'Marketing Academy: Facebook, Instagram, TikTok, Google & Xiaohongshu',
@@ -775,7 +740,7 @@ academy_body = f'''{hero([("Home", "/"), ("Social Media", "/social-media"), ("Ma
     ('facebook', 'Facebook & IG', panel_intro('Facebook &amp; Instagram, from account to scale', 'Nine steps from a blank account to campaigns you can optimise and grow. Facebook and Instagram share the same Meta Ads Manager.') + '\n' + modules(META, 'You will do')),
     ('tiktok', 'TikTok', panel_intro('TikTok content, ads and live selling', 'From Business Center to Smart+ and GMV Max, with videos that feel native and a plan for TikTok Live.') + '\n' + modules(TT, 'You will do')),
     ('google', 'Google', panel_intro('Google SEO, search ads and AI search', 'Get found when customers search, with ChatGPT doing the heavy lifting on research and writing.') + '\n' + modules(GOOGLE, 'You will do')),
-    ('xiaohongshu', 'Xiaohongshu', panel_intro('Xiaohongshu (RED): notes, 博主 and ads', 'Reach Chinese-speaking customers with notes that get found, creators who build trust, and paid support.') + '\n' + modules(XHS, 'You will do') + f'\n        <p class="note" data-rv>{XHS_NOTE}</p>'),
+    ('xiaohongshu', 'Xiaohongshu', panel_intro('Xiaohongshu (RED): notes, 博主 and ads', 'Reach Chinese-speaking customers with notes that get found, creators who build trust, and paid support.') + '\n' + modules(XHS, 'You will do')),
 ])}
       </div>
     </section>
@@ -797,6 +762,74 @@ academy_body = f'''{hero([("Home", "/"), ("Social Media", "/social-media"), ("Ma
 
 {cta('Become the next professional marketer.', 'Tell us your business and goal. We will point you to the right platform to start.', 'WhatsApp Us About the Academy', "Hi, I'd like to know more about the Marketing Academy!")}'''
 
+# =================================================================== SOCIAL MEDIA HUB
+SOCIAL_FAQ = [
+    ('Should we outsource social media or train our own team?', 'Outsource if you need results now and have no one to run it. Train your team if you want to own the skill and cut agency costs long term. Many companies do both: we run it first, then hand it over.'),
+    ('Can you manage social media for a franchise or multiple outlets?', 'Yes. One brand strategy and content library for the group, with local ads, pages and reports for each outlet, so every branch looks the same and you can compare results.'),
+    ('Which social media platform should a Malaysian business start with?', 'Start where your buyers already are. Facebook and Instagram for precise targeting, TikTok for reach and live selling, Google for people already searching, Xiaohongshu for Chinese-speaking buyers.'),
+    ('Can we start with Done-For-You and move in-house later?', 'Yes. We run your accounts, then train your staff on the same accounts and templates, so the handover is smooth and nothing is lost.'),
+    ('How do you report social media results?', 'A clear monthly report with leads, sales, cost per result and return on ad spend, not just likes and views. You see every account and every number.'),
+]
+social_ld = {'@context': 'https://schema.org', '@graph': [faq_ld(SOCIAL_FAQ)]}
+PLATS = [('facebook', 'Facebook & IG', 'meta'), ('tiktok', 'TikTok', 'tiktok'), ('google', 'Google', 'google'), ('xiaohongshu', 'Xiaohongshu', 'xiaohongshu')]
+
+
+def do_list(rows):
+    return '<ul class="list">' + ''.join(f'<li><b>{esc(t)}</b><span>{esc(d)}</span></li>' for t, d in rows) + '</ul>'
+
+
+def learn_list(rows):
+    return '<ol class="list list-num">' + ''.join(f'<li><b>{esc(t)}</b><span>{esc(b)}</span></li>' for t, d, b, tools in rows) + '</ol>'
+
+
+def plat_panel(pid, name, logo, body, href, label):
+    return f'''        <div class="plat" data-rv>
+          <div class="plat-head"><img src="/assets/brands/{logo}.svg" alt="" width="44" height="44"><h3 class="h3">{esc(name)}</h3></div>
+          {body}
+          <div class="btn-row" style="justify-content:flex-start"><a class="btn btn-ghost btn-sm" href="{href}">{label}</a></div>
+        </div>'''
+
+
+def plat_tabs(prefix, data, href, label, lister):
+    return tabs('Platforms', [(f'{prefix}-{pid}', name, plat_panel(pid, name, logo, lister(rows), f'{href}#{pid}', label))
+                              for (pid, name, logo), rows in zip(PLATS, data)])
+
+
+social_body = f'''{hero([("Home", "/"), ("Social Media", "")], 'Social media marketing, <span class="accent">two ways.</span>',
+       'We run it for you, or we guide you to run it yourself.',
+       extra=switch('social') + video('social', 'Social media marketing: two ways to work with us'), eyebrow='Social media marketing')}
+
+    <section class="tile tile-raise" id="choose">
+      <div class="wrap">
+        {head('How do you want to grow?', 'Choose one')}
+{tabs('How we work together', [
+    ('do', 'We do it for you', '<p class="mode-lede">Our team runs it. You get the results and a monthly report.</p>' + plat_tabs('do', [DFY_FB, DFY_TT, DFY_GG, DFY_XHS], '/marketing-services', 'Full service details', do_list)),
+    ('learn', 'We guide it with you', '<p class="mode-lede">From managing social media to running ads, we teach it all, step by step.</p>' + plat_tabs('learn', [META, TT, GOOGLE, XHS], '/marketing-classes', 'Full curriculum', learn_list)),
+])}
+      </div>
+    </section>
+
+    <section class="tile tile-dark">
+      <div class="wrap">
+        {head('Side by side', 'Compare')}
+        <div class="compare-scroll" data-rv>
+          <table class="compare">
+            <thead><tr><th></th><th>We do it for you</th><th>We guide it with you</th></tr></thead>
+            <tbody>
+              <tr><th>Best for</th><td>Busy owners, franchises, brands that want results now</td><td>Owners and in-house teams who want the skill</td></tr>
+              <tr><th>Your time</th><td>A short weekly check-in</td><td>Lessons plus hands-on practice</td></tr>
+              <tr><th>You get</th><td>Content, ads, livestream, KOL, reports</td><td>Lessons, templates, guidance on your accounts</td></tr>
+              <tr><th>Price</th><td>Custom package</td><td>From RM250/month with the <a class="accent" href="/membership">Membership</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+{faq_section(SOCIAL_FAQ, 'tile-raise')}
+
+{cta('Not sure which to choose?', 'Tell us your business and goal. We will recommend the right option honestly.', 'WhatsApp Us for Advice', "Hi, I'm not sure whether to choose Done-For-You or the Academy. Can you advise?")}'''
+
 # =================================================================== AI CLASSES
 AI_MODS = [
     ('Know your AI tools', 'Start here. ChatGPT, Claude and Gemini: what each is best at, free versus paid, and how to give AI the context, examples and checks that turn generic text into usable work.', 'Your own prompt library and a brand-voice assistant.', ['ChatGPT', 'Claude', 'Gemini', 'Perplexity']),
@@ -808,12 +841,11 @@ AI_MODS = [
     ('AI marketing', 'Research, personas, content calendars, AI-powered ad campaigns (Advantage+, Smart+, Performance Max) and reading performance data with AI.', 'A 30-day AI marketing plan for your business.', ['Claude', 'ChatGPT', 'Advantage+', 'GA4']),
 ]
 AI_FAQ = [
-    ('Do I need any technical or coding experience?', 'No coding at all. If you can use WhatsApp and a browser, you can follow along. The website and automation modules use AI to do the technical parts, and we explain each step in plain language.'),
-    ('Which AI tools do you teach?', 'ChatGPT, Claude and Gemini, plus the video, design, website and automation tools around them. We teach the method first because tools change every month, and refresh the tool list at each intake.'),
-    ('Can I earn money with these skills?', 'Yes. Many businesses now pay for AI video, graphics, captions and automation. You can use the skills to cut costs in your own business, or offer them as a freelancer.'),
-    ('What does the 100% refund guarantee cover?', 'If you attend every session, complete the practice tasks and still cannot do it yourself, we refund your class fee in full. WhatsApp us for the full terms before you join.'),
-    ('Can you train my whole team or company?', 'Yes. We can run the classes for your team and tailor the examples to your industry, brand and data rules. Tell us your team size and goals on WhatsApp.'),
-    ('How much do the classes cost and when is the next one?', 'Dates and fees depend on the modules you choose and your group size. WhatsApp us for the current schedule and a quote.'),
+    ('Do I need coding experience to join the AI course?', 'No coding at all. If you can use WhatsApp and a browser, you can follow along. AI does the technical parts and we explain every step in plain language.'),
+    ('Which AI tools for marketing do you teach?', 'ChatGPT, Claude and Gemini, plus the AI video, design, website and automation tools around them. We teach the method first, because tools change every month.'),
+    ('Can you run AI training for our whole company in Malaysia?', 'Yes. We train teams and departments of any size, with examples built on your industry, products and data rules, so staff use AI on real work from day one.'),
+    ('What does the 100% refund guarantee cover?', 'Attend every session, complete the practice tasks and still cannot do it yourself? We refund your class fee in full. WhatsApp us for the full terms.'),
+    ('Are the AI classes included in the TCM Membership?', 'Yes. The RM250/month Membership includes the AI class videos, the marketing course library, our resources and every TCM AI tool.'),
 ]
 ai_ld = {'@context': 'https://schema.org', '@graph': [
     {'@type': 'Course', 'name': 'AI Classes: AI Video, Graphics, Captions, Websites & Automation',
@@ -829,6 +861,7 @@ ai_body = f'''{hero([("Home", "/"), ("AI Classes", "")], 'Let AI do the work. <s
     <section class="tile tile-raise">
       <div class="wrap">
         {head('Save costs, or earn from it', 'Who it is for')}
+        {banner('training', 'Team learning AI and marketing tools in a hands-on workshop')}
         <div class="cols">
           <div class="col" data-rv><div class="col-t">Business owners</div><p class="col-d">Stop paying thousands to outsource what AI can do in a few clicks. One person can now run a whole marketing operation.</p></div>
           <div class="col" data-rv><div class="col-t">Teams &amp; companies</div><p class="col-d">Replace repetitive manual work with AI flows, so your people spend time on what grows the business.</p></div>
@@ -879,7 +912,7 @@ pf_body = f'''{hero([("Home", "/"), ("Portfolio", "")], 'Work that <span class="
     <section class="tile tile-dark">
       <div class="wrap">
         {head('Brands we have worked with', 'Clients')}
-        <div class="clients" id="clients" data-rv></div>
+        {CLIENTS_HTML}
       </div>
     </section>
 
@@ -897,9 +930,9 @@ def steps(rows):
 
 
 def tool_body(key, h1, lede, wa_msg, video_label, step_rows, feat_h2, feats, extra, faq, cta_h2, cta_lede, feat_icons=None):
-    tag = '<div class="rise" style="margin-bottom:24px"><span class="tag">For TCM subscribers</span></div>'
+    tag = '<div class="rise" style="margin-bottom:24px"><a class="tag" href="/membership">Included in TCM Membership · RM250/month</a></div>'
     return f'''{hero([("Home", "/"), (h1.split(':')[0], "")], h1, lede,
-       btns(('Get access on WhatsApp', wa(wa_msg)), ('How it works', '#how')), video(key, video_label)).replace('<div class="crumbs', tag + '<div class="crumbs', 1)}
+       btns(('Join the Membership', '/membership'), ('How it works', '#how')), video(key, video_label)).replace('<div class="crumbs', tag + '<div class="crumbs', 1)}
 
     <section class="tile tile-raise" id="how">
       <div class="wrap">
@@ -918,7 +951,7 @@ def tool_body(key, h1, lede, wa_msg, video_label, step_rows, feat_h2, feats, ext
 
 {faq_section(faq)}
 
-{cta(cta_h2, cta_lede, 'Get Access on WhatsApp', wa_msg)}'''
+{cta(cta_h2, cta_lede, 'Join on WhatsApp', wa_msg)}'''
 
 
 
@@ -979,17 +1012,32 @@ def av_mockup():
 '''
 
 
+def av_samples():
+    return f'''    <section class="tile tile-raise" id="samples">
+      <div class="wrap">
+        {head('See real samples', 'Samples', 'Made from a single product photo.')}
+        <div class="samples">
+          {video9('ai-video-1', 'AI Video sample 1')}
+          {video9('ai-video-2', 'AI Video sample 2')}
+          {video9('ai-video-3', 'AI Video sample 3')}
+        </div>
+      </div>
+    </section>
+'''
+
+
 SB_FAQ = [
-    ('What is Scan Buddy?', 'Scan Buddy is a smart QR code for your business. Customers scan it once to follow your Facebook, Instagram, TikTok and Xiaohongshu, message you on WhatsApp or leave a Google review, and you see how many people scanned.'),
-    ('Do my customers need an app?', 'No. Any phone camera can scan the QR code and open your page in the browser.'),
+    ('What is Scan Buddy?', 'A smart QR code for your business. Customers scan once to follow your social media, chat on WhatsApp or leave a Google review, and you see every scan.'),
+    ('Can Scan Buddy work as a Google review QR code?', 'Yes. One tap takes happy customers straight to your Google review page while they are still in the shop, next to your social and WhatsApp links.'),
+    ('Do my customers need an app?', 'No. Any phone camera scans the code and opens your page in the browser.'),
     ('Can I change my links after printing?', 'Yes. Update your links any time and the same printed QR code keeps working.'),
-    ('How do I get Scan Buddy?', 'Scan Buddy is available to TCM subscribers. WhatsApp us for plans and access.'),
+    ('How do I get Scan Buddy?', 'Scan Buddy is included in the TCM Membership at RM250 a month, together with AI Video, the course library and our marketing resources.'),
 ]
 sb_body = tool_body(
     'scan-buddy', 'Scan Buddy: <span class="accent">one scan, every channel.</span>',
     'A smart QR code for your shop, packaging and events. Customers scan once to follow you on every platform, chat on WhatsApp or leave a Google review. You see every scan.',
     "Hi, I'd like to get Scan Buddy!", 'Scan Buddy demo video',
-    [('Subscribe', 'Join as a TCM subscriber and unlock Scan Buddy.'), ('Add your links', 'Facebook, Instagram, TikTok, Xiaohongshu, WhatsApp and Google reviews.'),
+    [('Join the Membership', 'RM250/month unlocks Scan Buddy and every TCM AI tool.'), ('Add your links', 'Facebook, Instagram, TikTok, Xiaohongshu, WhatsApp and Google reviews.'),
      ('Print your QR', 'On your counter, packaging, menus, flyers and event booths.'), ('Watch the scans', 'See how many people scanned, and when.')],
     'Turn offline customers into online fans.',
     [('Every social in one scan', 'One QR code instead of five. Customers pick the platform they use.'),
@@ -1001,10 +1049,11 @@ sb_body = tool_body(
     sb_mockup(), SB_FAQ, 'Ready to connect offline to online?', 'WhatsApp us and we will set up Scan Buddy for your business.', ['qr', 'users', 'target', 'zap', 'calendar', 'megaphone'])
 
 AV_FAQ = [
-    ('Do I need to film anything?', 'No. Start from a product photo. AI creates the scenes, motion, captions and music. You can also add your own footage if you have it.'),
-    ('What kind of videos can I make?', 'Product showcases, new backgrounds and scenes, AI model and outfit try-ons, UGC-style clips and short ads with captions, in 9:16, 1:1 and 16:9.'),
-    ('What photos work best?', 'Clear, well-lit product photos on a plain background give the best results. Our team can help review and polish videos when needed.'),
-    ('How do I get AI Video?', 'AI Video is available to TCM subscribers. WhatsApp us for plans and access.'),
+    ('Do I need to film anything?', 'No. Start from a product photo. AI creates the scenes, motion, captions and music. Add your own footage if you have it.'),
+    ('How is TCM AI Video different from a free AI video generator?', 'It is built for selling: ad-ready formats, hooks and captions in English, 中文 and Bahasa, and our team to help when a video needs polish.'),
+    ('What kind of videos can I make?', 'Product showcases, new scenes, AI model try-ons, UGC-style clips and short ads, in 9:16, 1:1 and 16:9.'),
+    ('What photos work best?', 'Clear, well-lit product photos on a plain background give the best results.'),
+    ('How do I get AI Video?', 'AI Video is included in the TCM Membership at RM250 a month, with Scan Buddy, the course library and our marketing resources.'),
 ]
 av_body = tool_body(
     'ai-video', 'AI Video: <span class="accent">your product, made into ads.</span>',
@@ -1019,7 +1068,79 @@ av_body = tool_body(
      ('UGC-style clips', 'Natural, creator-style videos that feel native on TikTok and Reels.'),
      ('Captions that sell', 'Hook, body and call to action written for you, in English, 中文 or Bahasa.'),
      ('Every format', '9:16 for TikTok and Reels, 1:1 for feeds, 16:9 for YouTube and websites.')],
-    av_mockup(), AV_FAQ, 'Make your next ad in minutes.', 'WhatsApp us to get AI Video for your business.', ['video', 'layers', 'users', 'sparkles', 'pen', 'zap'])
+    av_samples() + av_mockup(), AV_FAQ, 'Make your next ad in minutes.', 'WhatsApp us to get AI Video for your business.', ['video', 'layers', 'users', 'sparkles', 'pen', 'zap'])
+
+# =================================================================== MEMBERSHIP
+MEM_FAQ = [
+    ('What is included in the TCM Membership?', 'Every TCM AI tool (Scan Buddy and AI Video), our marketing resources (templates, checklists and prompts) and the full video course library: marketing for every platform plus the AI classes.'),
+    ('How are your video courses different?', 'They are not screen recordings. Every lesson is produced like a show: multiple camera angles, on-screen animations and real examples, in short episodes you can finish in one sitting.'),
+    ('What if I cannot learn it?', 'Follow the lessons, do the practice tasks, and if you still cannot do it, we refund you in full. Terms apply; WhatsApp us for the details.'),
+    ('Who is the membership for?', 'Business owners, marketers and in-house teams who want to run their own marketing with AI, without paying agency fees every month.'),
+    ('How do I join?', 'WhatsApp us and we will set up your account. It is RM250 a month.'),
+]
+mem_ld = {'@context': 'https://schema.org', '@graph': [
+    {'@type': 'Product', 'name': 'TCM Membership', 'description': 'Monthly membership: TCM AI tools, marketing resources and the full AI and marketing video course library.',
+     'brand': PROVIDER, 'offers': {'@type': 'Offer', 'price': '250', 'priceCurrency': 'MYR', 'url': SITE + 'membership'}},
+    faq_ld(MEM_FAQ)]}
+MEM_MSG = "Hi, I'd like to join the TCM Membership (RM250/month)!"
+MEM_INSIDE = [
+    ('Every AI tool', 'Scan Buddy and AI Video, with new tools as we release them.', [('Scan Buddy', '/scan-buddy'), ('AI Video', '/ai-video')], 'sparkles'),
+    ('Every course', 'Facebook, Instagram, TikTok, Google, Xiaohongshu and all 7 AI classes.', [('Marketing', '/marketing-classes'), ('AI classes', '/ai-classes')], 'book'),
+    ('Marketing resources', 'Templates, checklists, prompts and reports we use for clients.', None, 'layers'),
+]
+mem_body = f'''    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow rise">TCM Membership</div>
+          <h1 class="h1 rise" style="animation-delay:.05s;text-wrap:balance">Everything TCM. <span class="accent">RM250 a month.</span></h1>
+          <p class="lede rise" style="animation-delay:.15s">Every AI tool, every course and all our marketing resources in one membership.</p>
+          <div class="btn-row rise" style="animation-delay:.3s">
+            <a class="btn btn-primary" href="{wa(MEM_MSG)}" onclick="{CONV}" target="_blank" rel="noopener">Join on WhatsApp {ARROW}</a>
+            <a class="btn btn-ghost" href="#inside">See what is inside</a>
+          </div>
+        </div>
+        <div class="rise" style="animation-delay:.2s">{banner('membership', 'Member watching a multi-scene video lesson on a laptop').replace(' data-rv', '')}</div>
+      </div>
+      <div style="height:88px"></div>
+    </section>
+
+    <section class="tile tile-raise" id="inside">
+      <div class="wrap">
+        {head('What you get', 'Inside the membership')}
+        {cards(MEM_INSIDE, 'grid g3')}
+      </div>
+    </section>
+
+    <section class="tile tile-dark">
+      <div class="wrap">
+        <div class="split">
+          {banner('production', 'Lesson being filmed in a studio with a cinema camera and lights')}
+          <div data-rv>
+            <div class="split-k">Not a screen recording</div>
+            <h2 class="h2">Lessons you actually want to watch.</h2>
+            {ticks(['Multiple scenes and camera angles', 'Animated on-screen guides', 'Real examples from real campaigns', 'Short episodes, done in one sitting'])}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile tile-raise">
+      <div class="wrap">
+        <div class="price" data-rv>
+          <div class="price-k">TCM Membership</div>
+          <div class="price-n"><span>RM</span>250<small>/month</small></div>
+          {ticks(['Scan Buddy and AI Video', 'Full marketing and AI course library', 'Templates, checklists and prompts', "Can't learn it? Full refund"])}
+          <a class="btn btn-primary btn-lg" href="{wa(MEM_MSG)}" onclick="{CONV}" target="_blank" rel="noopener">Join on WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+{guarantee('lessons')}
+
+{faq_section(MEM_FAQ, 'tile-raise')}
+
+{cta('Start this month.', 'One membership. Every tool and every course.', 'Join on WhatsApp', MEM_MSG)}'''
+
 
 tool_ld = lambda faq: {'@context': 'https://schema.org', '@graph': [faq_ld(faq)]}
 
@@ -1049,6 +1170,9 @@ PAGES = [
     ('ai-video.html', 'ai-video', 'AI Video | Turn Product Photos into Video Ads | TCM',
      'AI Video turns a product photo into ready-to-post marketing videos: showcases, new backgrounds, model try-ons, UGC-style clips and captions.',
      'aivideo', tool_ld(AV_FAQ), av_body, ()),
+    ('membership.html', 'membership', 'TCM Membership RM250/month | AI Tools & Marketing Courses',
+     'TCM Membership: every AI tool, the full marketing and AI video course library and our marketing resources for RM250 a month. Can\'t learn it? Full refund.',
+     'member', mem_ld, mem_body, ()),
 ]
 
 if __name__ == '__main__':

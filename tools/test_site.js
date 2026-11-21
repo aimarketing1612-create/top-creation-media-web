@@ -8,7 +8,7 @@ const { chromium, devices } = require('playwright');
 
 const root = path.join(__dirname, '..', 'deploy');
 const PORT = 8790, BASE = 'http://127.0.0.1:' + PORT;
-const PAGES = ['/', '/social-media', '/marketing-services', '/marketing-classes', '/ai-classes', '/portfolio', '/scan-buddy', '/ai-video'];
+const PAGES = ['/', '/social-media', '/marketing-services', '/marketing-classes', '/ai-classes', '/portfolio', '/scan-buddy', '/ai-video', '/membership'];
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.xml': 'application/xml', '.txt': 'text/plain' };
 
 function serve() {

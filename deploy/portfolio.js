@@ -119,6 +119,7 @@
   }
 
   function buildClients() {
+    if (!clientsEl) return;
     clientsEl.textContent = '';
     data.clients.forEach(function (c) {
       var d = el('div', 'client');
