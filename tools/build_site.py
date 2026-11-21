@@ -99,7 +99,7 @@ def nav(cur):
           </div>
         </div>''')
         else:
-            badge = '<span class="badge">RM250</span>' if key == 'member' else ''
+            badge = '<span class="badge">RM300</span>' if key == 'member' else ''
             items.append(f'<a href="{href}"{cur_attr(key)}>{label}{badge}</a>')
     sub = [('home', '/', 'Home'), ('social', '/social-media', 'Social Media'), ('services', '/marketing-services', 'Done-For-You'),
            ('academy', '/marketing-classes', 'Academy'), ('ai', '/ai-classes', 'AI Classes'), ('portfolio', '/portfolio', 'Portfolio'),
@@ -204,12 +204,19 @@ def svc_cards(rows, cls='svc-grid'):
     out = []
     for t, d, href, kind, src, alt in rows:
         if kind == 'logo':
-            media = f'<div class="svc-media svc-logo"><img src="/assets/brands/{src}.svg" alt="{esc(alt)}" width="84" height="84" loading="lazy"></div>'
+            chips = ''.join(f'<span>{esc(c)}</span>' for c in LOGO_CHIPS.get(src, ()))
+            media = (f'<div class="svc-media svc-logo brand-{src}"><i class="orbit" aria-hidden="true"></i>'
+                     f'<img src="/assets/brands/{src}.svg" alt="{esc(alt)}" width="120" height="120" loading="lazy">'
+                     f'<div class="svc-chips" aria-hidden="true">{chips}</div></div>')
         else:
             w, h = IMG_DIMS.get(src, (1200, 892))
             media = f'<div class="svc-media"><img src="/assets/img/{src}.webp" alt="{esc(alt)}" width="{w}" height="{h}" loading="lazy"></div>'
         out.append(f'<a class="svc" href="{href}" data-rv>{media}<div class="svc-body"><div class="card-t">{esc(t)}</div><p class="card-d">{esc(d)}</p></div></a>')
     return f'<div class="{cls}">' + '\n          '.join(out) + '</div>'
+
+
+LOGO_CHIPS = {'meta': ('Ads', 'Reels', 'Leads'), 'tiktok': ('Video', 'LIVE', 'Shop'),
+              'xiaohongshu': ('Notes', 'KOC', 'Search'), 'google': ('SEO', 'Ads', 'AI search')}
 
 
 def banner(src, alt):
@@ -327,9 +334,11 @@ def modules(rows, key='You will build'):
     return '\n'.join(out)
 
 
-def tabs(label, panels):
+def tabs(label, panels, icons=None):
+    def ic(i):
+        return f'<img src="/assets/brands/{icons[i]}.svg" alt="" width="20" height="20">' if icons else ''
     buttons = ''.join(
-        f'<button role="tab" id="t-{pid}" aria-controls="{pid}" aria-selected="{"true" if i == 0 else "false"}">{esc(name)}</button>'
+        f'<button role="tab" id="t-{pid}" aria-controls="{pid}" aria-selected="{"true" if i == 0 else "false"}">{ic(i)}{esc(name)}</button>'
         for i, (pid, name, _) in enumerate(panels))
     bodies = '\n'.join(
         f'''      <div role="tabpanel" class="panel" id="{pid}" aria-labelledby="t-{pid}"{"" if i == 0 else " hidden"}>
@@ -407,11 +416,11 @@ HOME_FAQ = [
     ('Do you offer SEO services in Malaysia?', 'Yes. Technical SEO, content, Google Business Profile and AI search (AEO and GEO), so you show up on Google and in ChatGPT and Gemini answers. We pair it with Google Ads when you need leads this month.'),
     ('Can you train our staff in AI and digital marketing?', 'Yes. We run corporate AI and marketing training for teams and departments, hands-on with your own accounts, products and data rules. Your staff leave able to make the video, launch the ad and read the report themselves.'),
     ('Do I need experience or coding to join your AI course in Malaysia?', 'No. Every class starts from zero. If you can use WhatsApp and a browser, you can follow along, and if you follow the class and still cannot do it, we refund you in full (terms apply).'),
-    ('How much does digital marketing cost in Malaysia?', 'Done-For-You packages are customised to your goals, platforms and content volume, so WhatsApp us for a quote. To learn it yourself and use our AI tools, the TCM Membership is RM250 a month.'),
+    ('How much does digital marketing cost in Malaysia?', 'Done-For-You packages are customised to your goals, platforms and content volume, so WhatsApp us for a quote. To learn it yourself and use our AI tools, the TCM Membership is RM300 a month, or 40% off when you pay yearly.'),
     ('Are you a social media agency for TikTok, Facebook, Instagram and Xiaohongshu?', 'Yes. We run all four in-house: content, ads, TikTok Live and Shop, Xiaohongshu notes and creator seeding, plus Google. You get one plan and one report instead of four agencies.'),
     ('Do you work with KOLs and influencers in Malaysia?', 'Yes. We shortlist KOLs and KOCs by audience fit, engagement quality and real followers, then manage the brief, approvals and results, so every collaboration is measured in reach and sales.'),
     ('Do you do video production and livestreaming in Malaysia?', 'Yes. Our in-house studio shoots short videos, product films and brand films, and runs TikTok and Facebook livestreams with hosts, scripts and live offers.'),
-    ('What is the TCM Membership?', 'For RM250 a month you get every TCM AI tool (Scan Buddy and AI Video), our marketing resources and the full video course library. Follow the lessons and still cannot do it? Full refund (terms apply).'),
+    ('What is the TCM Membership?', 'For RM300 a month (or RM2,160 a year, 40% off) you get every TCM AI tool (Scan Buddy and AI Video), our marketing resources and the full video course library. Follow the lessons and still cannot do it? Full refund (terms apply).'),
 ]
 home_ld = {'@context': 'https://schema.org', '@graph': [
     {'@type': 'ProfessionalService', 'name': 'Top Creation Media', 'url': SITE, 'logo': SITE + 'assets/tcm-logo.jpg',
@@ -427,7 +436,7 @@ SERVICES = [
     ('Google SEO & SEM', 'Page one on Google, and in AI answers.', '/marketing-services#google', 'logo', 'google', 'Google'),
     ('Video & livestream', 'In-house studio, hosts and crew.', '/marketing-services#more', 'photo', 'livestream', 'Livestream host selling skincare live from a studio'),
     ('KOC & KOL', 'Creators matched on real audience fit.', '/marketing-services#more', 'photo', 'kol', 'Creator filming a product review on her phone'),
-    ('Branding', 'Identity and guidelines that look like you.', '/marketing-services#more', 'photo', 'branding', 'Brand identity kit with cards, packaging and colour swatches'),
+    ('IP branding', 'Turn the founder into the face of the brand.', '/marketing-services#more', 'photo', 'ip-branding', 'Founder being interviewed on camera for a personal brand video'),
     ('Events, offline to online', 'Launches filmed on the day, amplified after.', '/marketing-services#more', 'photo', 'events', 'Videographer filming a brand launch event in a mall'),
 ]
 
@@ -528,13 +537,6 @@ home_body = f'''    <section class="hero">
             <a class="btn btn-primary" href="/marketing-classes">See the Academy</a>
           </div>
         </div>
-        <div style="margin-top:16px">
-        {cards([
-            ('AI Classes', 'AI video, graphics, captions, websites and automation. No coding needed.', [('Explore AI Classes', '/ai-classes')], 'sparkles'),
-            ('TCM Membership · RM250/mo', 'Every AI tool, every course and all our marketing resources in one plan.', [('See the membership', '/membership')], 'zap'),
-            ('Scan Buddy & AI Video', 'Smart QR codes and product-photo-to-video, included in the membership.', [('Scan Buddy', '/scan-buddy'), ('AI Video', '/ai-video')], 'qr'),
-        ], 'grid g3')}
-        </div>
       </div>
     </section>
 
@@ -614,7 +616,7 @@ TOOLKIT = [
     ('Video production', 'Short videos, product and brand films.', '#more', 'photo', 'production', 'Crew filming a product on a turntable in a studio'),
     ('Livestream studio', 'Hosts, scripts and crew for selling lives.', '#more', 'photo', 'livestream', 'Livestream host presenting products to a phone camera'),
     ('KOC & KOL', 'Creators shortlisted, briefed and measured.', '#more', 'photo', 'kol', 'Creator recording a product review'),
-    ('Branding', 'Logo, identity and brand guidelines.', '#more', 'photo', 'branding', 'Brand identity kit on a desk'),
+    ('AI tools', 'Scan Buddy and AI Video, in the Membership.', '/membership', 'photo', 'ai-tools', 'Customer scanning a QR code beside a tablet making an AI product video'),
     ('Events, offline to online', 'Launches filmed live and amplified online.', '#more', 'photo', 'events', 'Brand launch event being filmed in a mall atrium'),
     ('Team training', 'Train your staff to take over day-to-day.', '/marketing-classes', 'photo', 'training', 'Corporate marketing and AI training workshop'),
 ]
@@ -709,7 +711,7 @@ ACADEMY_FAQ = [
     ('Can you run the course in-house for our company team?', 'Yes. We train teams and departments on your own accounts and products, so the practice work becomes real campaigns for your business.'),
     ('What does the 100% refund guarantee cover?', 'Attend every session, complete the practice tasks and still cannot do it yourself? We refund your class fee in full. WhatsApp us for the full terms.'),
     ('Do I need an ad budget to join?', 'You can learn setup and structure without spending. Real learning comes from a small live test, and we help you choose a sensible budget.'),
-    ('Are the courses included in the TCM Membership?', 'Yes. The RM250/month Membership includes the full video course library, our marketing resources and every TCM AI tool.'),
+    ('Are the courses included in the TCM Membership?', 'Yes. The RM300/month Membership includes the full video course library, our marketing resources and every TCM AI tool.'),
 ]
 academy_ld = {'@context': 'https://schema.org', '@graph': [
     {'@type': 'Course', 'name': 'Marketing Academy: Facebook, Instagram, TikTok, Google & Xiaohongshu',
@@ -784,7 +786,6 @@ def learn_list(rows):
 
 def plat_panel(pid, name, logo, body, href, label):
     return f'''        <div class="plat" data-rv>
-          <div class="plat-head"><img src="/assets/brands/{logo}.svg" alt="" width="44" height="44"><h3 class="h3">{esc(name)}</h3></div>
           {body}
           <div class="btn-row" style="justify-content:flex-start"><a class="btn btn-ghost btn-sm" href="{href}">{label}</a></div>
         </div>'''
@@ -792,7 +793,7 @@ def plat_panel(pid, name, logo, body, href, label):
 
 def plat_tabs(prefix, data, href, label, lister):
     return tabs('Platforms', [(f'{prefix}-{pid}', name, plat_panel(pid, name, logo, lister(rows), f'{href}#{pid}', label))
-                              for (pid, name, logo), rows in zip(PLATS, data)])
+                              for (pid, name, logo), rows in zip(PLATS, data)], [logo for _, _, logo in PLATS])
 
 
 social_body = f'''{hero([("Home", "/"), ("Social Media", "")], 'Social media marketing, <span class="accent">two ways.</span>',
@@ -819,7 +820,7 @@ social_body = f'''{hero([("Home", "/"), ("Social Media", "")], 'Social media mar
               <tr><th>Best for</th><td>Busy owners, franchises, brands that want results now</td><td>Owners and in-house teams who want the skill</td></tr>
               <tr><th>Your time</th><td>A short weekly check-in</td><td>Lessons plus hands-on practice</td></tr>
               <tr><th>You get</th><td>Content, ads, livestream, KOL, reports</td><td>Lessons, templates, guidance on your accounts</td></tr>
-              <tr><th>Price</th><td>Custom package</td><td>From RM250/month with the <a class="accent" href="/membership">Membership</a></td></tr>
+              <tr><th>Price</th><td>Custom package</td><td>From RM180/month with the <a class="accent" href="/membership">Membership</a></td></tr>
             </tbody>
           </table>
         </div>
@@ -845,7 +846,7 @@ AI_FAQ = [
     ('Which AI tools for marketing do you teach?', 'ChatGPT, Claude and Gemini, plus the AI video, design, website and automation tools around them. We teach the method first, because tools change every month.'),
     ('Can you run AI training for our whole company in Malaysia?', 'Yes. We train teams and departments of any size, with examples built on your industry, products and data rules, so staff use AI on real work from day one.'),
     ('What does the 100% refund guarantee cover?', 'Attend every session, complete the practice tasks and still cannot do it yourself? We refund your class fee in full. WhatsApp us for the full terms.'),
-    ('Are the AI classes included in the TCM Membership?', 'Yes. The RM250/month Membership includes the AI class videos, the marketing course library, our resources and every TCM AI tool.'),
+    ('Are the AI classes included in the TCM Membership?', 'Yes. The RM300/month Membership includes the AI class videos, the marketing course library, our resources and every TCM AI tool.'),
 ]
 ai_ld = {'@context': 'https://schema.org', '@graph': [
     {'@type': 'Course', 'name': 'AI Classes: AI Video, Graphics, Captions, Websites & Automation',
@@ -930,7 +931,7 @@ def steps(rows):
 
 
 def tool_body(key, h1, lede, wa_msg, video_label, step_rows, feat_h2, feats, extra, faq, cta_h2, cta_lede, feat_icons=None):
-    tag = '<div class="rise" style="margin-bottom:24px"><a class="tag" href="/membership">Included in TCM Membership · RM250/month</a></div>'
+    tag = '<div class="rise" style="margin-bottom:24px"><a class="tag" href="/membership">Included in TCM Membership · RM300/month</a></div>'
     return f'''{hero([("Home", "/"), (h1.split(':')[0], "")], h1, lede,
        btns(('Join the Membership', '/membership'), ('How it works', '#how')), video(key, video_label)).replace('<div class="crumbs', tag + '<div class="crumbs', 1)}
 
@@ -1031,13 +1032,13 @@ SB_FAQ = [
     ('Can Scan Buddy work as a Google review QR code?', 'Yes. One tap takes happy customers straight to your Google review page while they are still in the shop, next to your social and WhatsApp links.'),
     ('Do my customers need an app?', 'No. Any phone camera scans the code and opens your page in the browser.'),
     ('Can I change my links after printing?', 'Yes. Update your links any time and the same printed QR code keeps working.'),
-    ('How do I get Scan Buddy?', 'Scan Buddy is included in the TCM Membership at RM250 a month, together with AI Video, the course library and our marketing resources.'),
+    ('How do I get Scan Buddy?', 'Scan Buddy is included in the TCM Membership at RM300 a month, together with AI Video, the course library and our marketing resources.'),
 ]
 sb_body = tool_body(
     'scan-buddy', 'Scan Buddy: <span class="accent">one scan, every channel.</span>',
     'A smart QR code for your shop, packaging and events. Customers scan once to follow you on every platform, chat on WhatsApp or leave a Google review. You see every scan.',
     "Hi, I'd like to get Scan Buddy!", 'Scan Buddy demo video',
-    [('Join the Membership', 'RM250/month unlocks Scan Buddy and every TCM AI tool.'), ('Add your links', 'Facebook, Instagram, TikTok, Xiaohongshu, WhatsApp and Google reviews.'),
+    [('Join the Membership', 'RM300/month unlocks Scan Buddy and every TCM AI tool.'), ('Add your links', 'Facebook, Instagram, TikTok, Xiaohongshu, WhatsApp and Google reviews.'),
      ('Print your QR', 'On your counter, packaging, menus, flyers and event booths.'), ('Watch the scans', 'See how many people scanned, and when.')],
     'Turn offline customers into online fans.',
     [('Every social in one scan', 'One QR code instead of five. Customers pick the platform they use.'),
@@ -1053,7 +1054,7 @@ AV_FAQ = [
     ('How is TCM AI Video different from a free AI video generator?', 'It is built for selling: ad-ready formats, hooks and captions in English, 中文 and Bahasa, and our team to help when a video needs polish.'),
     ('What kind of videos can I make?', 'Product showcases, new scenes, AI model try-ons, UGC-style clips and short ads, in 9:16, 1:1 and 16:9.'),
     ('What photos work best?', 'Clear, well-lit product photos on a plain background give the best results.'),
-    ('How do I get AI Video?', 'AI Video is included in the TCM Membership at RM250 a month, with Scan Buddy, the course library and our marketing resources.'),
+    ('How do I get AI Video?', 'AI Video is included in the TCM Membership at RM300 a month, with Scan Buddy, the course library and our marketing resources.'),
 ]
 av_body = tool_body(
     'ai-video', 'AI Video: <span class="accent">your product, made into ads.</span>',
@@ -1073,30 +1074,49 @@ av_body = tool_body(
 # =================================================================== MEMBERSHIP
 MEM_FAQ = [
     ('What is included in the TCM Membership?', 'Every TCM AI tool (Scan Buddy and AI Video), our marketing resources (templates, checklists and prompts) and the full video course library: marketing for every platform plus the AI classes.'),
-    ('How are your video courses different?', 'They are not screen recordings. Every lesson is produced like a show: multiple camera angles, on-screen animations and real examples, in short episodes you can finish in one sitting.'),
+    ('How much is the TCM Membership?', 'RM300 a month, or RM2,160 a year when you subscribe yearly. That is 40% off, the same as RM180 a month.'),
+    ('I joined a TCM offline course. Do I get anything?', 'Yes. Offline course participants get their first 6 months of the Membership free, so you can keep learning and use every tool after class.'),
+    ('How are your video courses different?', 'They are not screen recordings. Every lesson is produced like a show: multiple camera angles, on-screen animations and real examples, in short episodes you finish in one sitting.'),
     ('What if I cannot learn it?', 'Follow the lessons, do the practice tasks, and if you still cannot do it, we refund you in full. Terms apply; WhatsApp us for the details.'),
-    ('Who is the membership for?', 'Business owners, marketers and in-house teams who want to run their own marketing with AI, without paying agency fees every month.'),
-    ('How do I join?', 'WhatsApp us and we will set up your account. It is RM250 a month.'),
 ]
 mem_ld = {'@context': 'https://schema.org', '@graph': [
-    {'@type': 'Product', 'name': 'TCM Membership', 'description': 'Monthly membership: TCM AI tools, marketing resources and the full AI and marketing video course library.',
-     'brand': PROVIDER, 'offers': {'@type': 'Offer', 'price': '250', 'priceCurrency': 'MYR', 'url': SITE + 'membership'}},
+    {'@type': 'Product', 'name': 'TCM Membership', 'description': 'Membership with every TCM AI tool, our marketing resources and the full AI and marketing video course library.',
+     'brand': PROVIDER, 'offers': [
+         {'@type': 'Offer', 'name': 'Monthly', 'price': '300', 'priceCurrency': 'MYR', 'url': SITE + 'membership'},
+         {'@type': 'Offer', 'name': 'Yearly', 'price': '2160', 'priceCurrency': 'MYR', 'url': SITE + 'membership'}]},
     faq_ld(MEM_FAQ)]}
-MEM_MSG = "Hi, I'd like to join the TCM Membership (RM250/month)!"
+MEM_M = "Hi, I'd like to subscribe to the TCM Membership, monthly plan (RM300/month)."
+MEM_Y = "Hi, I'd like to subscribe to the TCM Membership, yearly plan (RM2,160/year)."
+MEM_C = "Hi, I joined a TCM offline course and would like my 6 free months of the Membership."
+MEM_MSG = MEM_Y
 MEM_INSIDE = [
-    ('Every AI tool', 'Scan Buddy and AI Video, with new tools as we release them.', [('Scan Buddy', '/scan-buddy'), ('AI Video', '/ai-video')], 'sparkles'),
-    ('Every course', 'Facebook, Instagram, TikTok, Google, Xiaohongshu and all 7 AI classes.', [('Marketing', '/marketing-classes'), ('AI classes', '/ai-classes')], 'book'),
-    ('Marketing resources', 'Templates, checklists, prompts and reports we use for clients.', None, 'layers'),
+    ('Every AI tool', 'Scan Buddy, AI Video and every new tool we release.', '/ai-video', 'photo', 'ai-tools', 'Customer scanning a QR code beside a tablet making an AI product video'),
+    ('The full course library', 'Every platform and all 7 AI classes, produced like a show.', '/marketing-classes', 'photo', 'production', 'Lesson being filmed in a studio with a cinema camera and lights'),
+    ('Marketing resources', 'The templates, checklists and prompts we use for clients.', '#plans', 'photo', 'resources', 'Marketing templates, checklists and a campaign report on a desk'),
 ]
+PLAN_FEATS = ['Scan Buddy and AI Video', 'Full marketing and AI course library', 'Templates, checklists and prompts', "Can't learn it? Full refund"]
+
+
+def plan(name, price, unit, note, msg, label, best=False):
+    flag = '<span class="plan-flag">Save 40%</span>' if best else ''
+    return f'''<div class="plan{' plan-best' if best else ''}" data-rv>
+            <div class="plan-top"><span class="plan-name">{name}</span>{flag}</div>
+            <div class="plan-price"><span class="plan-cur">RM</span>{price}<span class="plan-unit">{unit}</span></div>
+            <p class="plan-note">{note}</p>
+            {ticks(PLAN_FEATS)}
+            <a class="btn {'btn-primary' if best else 'btn-ghost'}" href="{wa(msg)}" onclick="{CONV}" target="_blank" rel="noopener">{label}</a>
+          </div>'''
+
+
 mem_body = f'''    <section class="hero">
       <div class="hero-grid">
         <div>
           <div class="eyebrow rise">TCM Membership</div>
-          <h1 class="h1 rise" style="animation-delay:.05s;text-wrap:balance">Everything TCM. <span class="accent">RM250 a month.</span></h1>
-          <p class="lede rise" style="animation-delay:.15s">Every AI tool, every course and all our marketing resources in one membership.</p>
+          <h1 class="h1 rise mem-h1" style="animation-delay:.05s">Every AI tool and every course, <span class="accent">one membership.</span></h1>
+          <p class="lede rise" style="animation-delay:.15s">Tools, lessons and resources to run your own marketing with AI. From RM180 a month, billed yearly.</p>
           <div class="btn-row rise" style="animation-delay:.3s">
-            <a class="btn btn-primary" href="{wa(MEM_MSG)}" onclick="{CONV}" target="_blank" rel="noopener">Join on WhatsApp {ARROW}</a>
-            <a class="btn btn-ghost" href="#inside">See what is inside</a>
+            <a class="btn btn-primary" href="#plans">See plans {ARROW}</a>
+            <a class="btn btn-ghost" href="#inside">What is inside</a>
           </div>
         </div>
         <div class="rise" style="animation-delay:.2s">{banner('membership', 'Member watching a multi-scene video lesson on a laptop').replace(' data-rv', '')}</div>
@@ -1107,30 +1127,26 @@ mem_body = f'''    <section class="hero">
     <section class="tile tile-raise" id="inside">
       <div class="wrap">
         {head('What you get', 'Inside the membership')}
-        {cards(MEM_INSIDE, 'grid g3')}
+        {svc_cards(MEM_INSIDE, 'svc-grid g3')}
+        <ul class="facts" data-rv>
+          <li><b>Not a screen recording</b>Multiple scenes and camera angles</li>
+          <li><b>Easy to follow</b>Animated on-screen guides</li>
+          <li><b>Real work</b>Examples from real campaigns</li>
+          <li><b>Short episodes</b>Finish each in one sitting</li>
+        </ul>
       </div>
     </section>
 
-    <section class="tile tile-dark">
+    <section class="tile tile-dark" id="plans">
       <div class="wrap">
-        <div class="split">
-          {banner('production', 'Lesson being filmed in a studio with a cinema camera and lights')}
-          <div data-rv>
-            <div class="split-k">Not a screen recording</div>
-            <h2 class="h2">Lessons you actually want to watch.</h2>
-            {ticks(['Multiple scenes and camera angles', 'Animated on-screen guides', 'Real examples from real campaigns', 'Short episodes, done in one sitting'])}
-          </div>
+        {head('Choose your plan', 'Pricing')}
+        <div class="plans">
+          {plan('Monthly', '300', '/month', 'Billed monthly.', MEM_M, 'Subscribe monthly')}
+          {plan('Yearly', '180', '/month', 'RM2,160 billed yearly. <s>RM3,600</s>', MEM_Y, 'Subscribe yearly', best=True)}
         </div>
-      </div>
-    </section>
-
-    <section class="tile tile-raise">
-      <div class="wrap">
-        <div class="price" data-rv>
-          <div class="price-k">TCM Membership</div>
-          <div class="price-n"><span>RM</span>250<small>/month</small></div>
-          {ticks(['Scan Buddy and AI Video', 'Full marketing and AI course library', 'Templates, checklists and prompts', "Can't learn it? Full refund"])}
-          <a class="btn btn-primary btn-lg" href="{wa(MEM_MSG)}" onclick="{CONV}" target="_blank" rel="noopener">Join on WhatsApp</a>
+        <div class="offer" data-rv>
+          <div><b>Joined a TCM offline course?</b><span>Your first 6 months of the Membership are free.</span></div>
+          <a class="btn btn-ghost btn-sm" href="{wa(MEM_C)}" target="_blank" rel="noopener">Claim on WhatsApp</a>
         </div>
       </div>
     </section>
@@ -1139,8 +1155,7 @@ mem_body = f'''    <section class="hero">
 
 {faq_section(MEM_FAQ, 'tile-raise')}
 
-{cta('Start this month.', 'One membership. Every tool and every course.', 'Join on WhatsApp', MEM_MSG)}'''
-
+{cta('Start this month.', 'One membership. Every tool and every course.', 'Subscribe on WhatsApp', MEM_Y)}'''
 
 tool_ld = lambda faq: {'@context': 'https://schema.org', '@graph': [faq_ld(faq)]}
 
@@ -1170,8 +1185,8 @@ PAGES = [
     ('ai-video.html', 'ai-video', 'AI Video | Turn Product Photos into Video Ads | TCM',
      'AI Video turns a product photo into ready-to-post marketing videos: showcases, new backgrounds, model try-ons, UGC-style clips and captions.',
      'aivideo', tool_ld(AV_FAQ), av_body, ()),
-    ('membership.html', 'membership', 'TCM Membership RM250/month | AI Tools & Marketing Courses',
-     'TCM Membership: every AI tool, the full marketing and AI video course library and our marketing resources for RM250 a month. Can\'t learn it? Full refund.',
+    ('membership.html', 'membership', 'TCM Membership | AI Tools & Marketing Courses from RM180/mo',
+     'TCM Membership: every AI tool, the full marketing and AI video course library and marketing resources. RM300/month or RM2,160/year (save 40%).',
      'member', mem_ld, mem_body, ()),
 ]
 
