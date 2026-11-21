@@ -28,9 +28,11 @@ def tr(s):
     if not key or not any(c.isalpha() and c.isascii() for c in key):
         return s
     if key in ZH:
-        lead = s[:len(s) - len(s.lstrip())]
-        trail = s[len(s.rstrip()):]
-        return lead + ZH[key] + trail
+        z = ZH[key]
+        # Chinese needs no space beside CJK text or punctuation; a space there shows as a gap.
+        lead = '' if not z[:1].isascii() else s[:len(s) - len(s.lstrip())]
+        trail = '' if not z[-1:].isascii() else s[len(s.rstrip()):]
+        return lead + z + trail
     missing.add(key)
     return s
 
@@ -108,6 +110,8 @@ class Tr(HTMLParser):
                 v = 'en'
             elif k == 'href' and tag == 'link' and a.get('rel') == 'canonical':
                 v = zh_href_abs(v)
+            elif k == 'href' and tag == 'link' and 'fonts.googleapis.com/css2' in v:
+                v = v.replace('&display=swap', '&family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap')
             elif k == 'href' and tag == 'link':
                 pass
             elif k == 'href':
