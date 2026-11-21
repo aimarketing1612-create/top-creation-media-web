@@ -73,7 +73,7 @@ AI_MENU = [('m-know-your-ai-tools', 'Know your AI tools'), ('m-ai-video', 'AI vi
            ('m-ai-system-flow', 'AI system flow'), ('m-ai-marketing', 'AI marketing')]
 
 
-def nav(cur):
+def nav(cur, slug=''):
     def cur_attr(key):
         hit = key == cur or (key == 'social' and cur in SOCIAL_KEYS)
         return ' aria-current="page"' if hit else ''
@@ -112,6 +112,7 @@ def nav(cur):
       <a class="brand" href="/" aria-label="Top Creation Media, home"><img src="/assets/tcm-wordmark.webp" alt="TCM Top Creation Media" width="480" height="207"></a>
       <nav class="nav-links" aria-label="Main">
         {main}
+        <a class="lang" href="/zh/{slug}" hreflang="zh-Hans" lang="zh-Hans" data-lang-switch aria-label="中文 / English">中文</a>
         <a class="btn btn-primary btn-sm" href="{wa("Hi, I'd like a customized package!")}" onclick="{CONV}" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="{WA_PATH}"/></svg>WhatsApp Us</a>
       </nav>
     </div>
@@ -156,6 +157,9 @@ def page(slug, title, desc, cur, ld, body, scripts=()):
   <meta name="description" content="{esc(desc)}">
   <meta name="theme-color" content="#07051A">
   <link rel="canonical" href="{canon}">
+  <link rel="alternate" hreflang="en" href="{canon}">
+  <link rel="alternate" hreflang="zh-Hans" href="{SITE}zh/{slug}">
+  <link rel="alternate" hreflang="x-default" href="{canon}">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Top Creation Media">
   <meta property="og:title" content="{esc(title)}">
@@ -174,7 +178,7 @@ def page(slug, title, desc, cur, ld, body, scripts=()):
   <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
 </head>
 <body>
-  {nav(cur)}
+  {nav(cur, slug)}
 
   <main id="main">
 {body}
@@ -1195,7 +1199,11 @@ if __name__ == '__main__':
         with open(os.path.join(OUT, fname), 'w', encoding='utf8') as f:
             f.write(page(slug, title, desc, cur, ld, body, scripts))
         print(f'wrote {fname:24} title={len(title):3} desc={len(desc):3}')
-    urls = ''.join(f'  <url><loc>{SITE}{slug}</loc></url>\n' for _, slug, *_ in PAGES)
+    import sys
+    sys.path.insert(0, os.path.join(ROOT, 'tools', 'i18n'))
+    import build_zh
+    build_zh.build_all()
+    urls = ''.join(f'  <url><loc>{SITE}{pre}{slug}</loc></url>\n' for pre in ('', 'zh/') for _, slug, *_ in PAGES)
     with open(os.path.join(OUT, 'sitemap.xml'), 'w', encoding='utf8') as f:
         f.write(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
     print('wrote sitemap.xml')

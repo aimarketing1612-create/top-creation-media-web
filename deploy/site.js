@@ -63,6 +63,9 @@
   Array.prototype.forEach.call(document.querySelectorAll('[role="tablist"]'), initTabs);
 
   var media = window.TCM_MEDIA || { videos: {}, testimonials: [] };
+  var ZH = (document.documentElement.lang || '').indexOf('zh') === 0;
+  var T = ZH ? { on: '开声音', off: '关声音', aon: '开启声音', aoff: '关闭声音', play: '播放视频' }
+             : { on: 'Sound on', off: 'Sound off', aon: 'Turn sound on', aoff: 'Turn sound off', play: 'Play video' };
 
   // ---- Video slots: <div class="video" data-video="home"> (configured in site-media.js)
   // Browsers only allow autoplay when muted, so autoplay starts muted with an "unmute" button.
@@ -85,12 +88,12 @@
     if (!auto) { el.controls = true; el.play(); return; }
     el.muted = true; el.loop = true; el.autoplay = true; el.preload = 'auto';
     var snd = document.createElement('button');
-    snd.type = 'button'; snd.className = 'video-sound'; snd.setAttribute('aria-label', 'Turn sound on'); snd.innerHTML = SOUND_OFF + '<span>Sound on</span>';
+    snd.type = 'button'; snd.className = 'video-sound'; snd.setAttribute('aria-label', T.aon); snd.innerHTML = SOUND_OFF + '<span>' + T.on + '</span>';
     snd.addEventListener('click', function () {
       el.muted = !el.muted;
       if (!el.muted) el.play();
-      snd.innerHTML = (el.muted ? SOUND_OFF + '<span>Sound on</span>' : SOUND_ON + '<span>Sound off</span>');
-      snd.setAttribute('aria-label', el.muted ? 'Turn sound on' : 'Turn sound off');
+      snd.innerHTML = (el.muted ? SOUND_OFF + '<span>' + T.on + '</span>' : SOUND_ON + '<span>' + T.off + '</span>');
+      snd.setAttribute('aria-label', el.muted ? T.aon : T.aoff);
     });
     box.appendChild(snd);
     // Pause when scrolled away, resume when back, to save data and battery.
@@ -113,7 +116,7 @@
     if (!v.youtubeId && !v.driveId && !v.mp4) return;
     var auto = v.autoplay !== false && !reduce && !v.driveId;
     btn.classList.remove('video-soon');
-    btn.querySelector('.video-cap').textContent = 'Play video';
+    btn.querySelector('.video-cap').textContent = T.play;
     if (v.poster) box.style.background = 'center/cover no-repeat url("' + v.poster.replace(/"/g, '%22') + '")';
 
     function start(autoMode) {
@@ -154,7 +157,7 @@
   var pf = window.TCM_PORTFOLIO;
   if (hg && pf && pf.items) {
     pf.items.slice(0, 6).forEach(function (it) {
-      var a = document.createElement('a'); a.className = 'work'; a.href = '/portfolio';
+      var a = document.createElement('a'); a.className = 'work'; a.href = ZH ? '/zh/portfolio' : '/portfolio';
       a.setAttribute('aria-label', (it.title || 'Portfolio item') + ', view in portfolio');
       var img = document.createElement('div'); img.className = 'work-img cover';
       var t = it.image || (it.driveThumbId ? 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(it.driveThumbId) + '&sz=w800'

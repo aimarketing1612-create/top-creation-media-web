@@ -8,7 +8,8 @@ const { chromium, devices } = require('playwright');
 
 const root = path.join(__dirname, '..', 'deploy');
 const PORT = 8790, BASE = 'http://127.0.0.1:' + PORT;
-const PAGES = ['/', '/social-media', '/marketing-services', '/marketing-classes', '/ai-classes', '/portfolio', '/scan-buddy', '/ai-video', '/membership'];
+const EN = ['/', '/social-media', '/marketing-services', '/marketing-classes', '/ai-classes', '/portfolio', '/scan-buddy', '/ai-video', '/membership'];
+const PAGES = EN.concat(EN.map(p => '/zh' + (p === '/' ? '/' : p)));
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.xml': 'application/xml', '.txt': 'text/plain' };
 
 function serve() {
@@ -16,6 +17,7 @@ function serve() {
     let u = decodeURIComponent(req.url.split('?')[0].split('#')[0]);
     if (u.endsWith('.html')) { res.writeHead(308, { Location: u === '/index.html' ? '/' : u.slice(0, -5) }); return res.end(); }
     let f = u === '/' ? '/index.html' : u;
+    if (f.endsWith('/')) f += 'index.html';
     if (!path.extname(f) && fs.existsSync(path.join(root, f + '.html'))) f += '.html';
     const fp = path.join(root, f);
     if (!fp.startsWith(root) || !fs.existsSync(fp) || fs.statSync(fp).isDirectory()) { res.writeHead(404); return res.end('404'); }
@@ -76,6 +78,12 @@ const check = (ok, msg) => { if (!ok) fails.push(msg); };
   await page.goto(BASE + '/marketing-services#tiktok');
   const sel = await page.locator('[role=tab][aria-selected=true]').getAttribute('aria-controls');
   check(sel === 'tiktok', `deep link #tiktok opened "${sel}"`);
+
+  await page.goto(BASE + '/zh/');
+  check(await page.getAttribute('html', 'lang') === 'zh-Hans', 'Chinese home is not lang=zh-Hans');
+  check((await page.locator('h1').innerText()).includes('变简单'), 'Chinese home h1 is not translated');
+  await page.locator('a.lang').click();
+  check(new URL(page.url()).pathname === '/', 'language switch on /zh/ does not lead to /');
 
   await page.goto(BASE + '/');
   const wa = await page.locator('a[href*="wa.me/60127816121"]').count();
