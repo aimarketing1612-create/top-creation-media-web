@@ -414,18 +414,15 @@ body::after{opacity:.75;background-image:
 .svc-media{position:relative;aspect-ratio:4/3;overflow:hidden;background:#120B2C}
 .svc-media img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
 .svc:hover .svc-media img{transform:scale(1.03)}
-.svc-logo{display:grid;place-items:center;isolation:isolate;--b1:rgba(124,77,255,.55);--b2:rgba(34,211,238,.35);background:radial-gradient(42% 46% at 50% 44%,var(--b1),transparent 72%),radial-gradient(60% 50% at 80% 100%,var(--b2),transparent 70%),linear-gradient(150deg,#2A1D5E,#140D33)}
+.svc-logo{display:grid;place-items:center;isolation:isolate;--b1:rgba(124,77,255,.55);--b2:rgba(34,211,238,.35);background:radial-gradient(38% 44% at 50% 44%,var(--b1),transparent 75%),linear-gradient(160deg,#241953,#130C30)}
 .brand-meta{--b1:rgba(0,129,251,.6);--b2:rgba(168,85,247,.35)}
 .brand-tiktok{--b1:rgba(254,44,85,.45);--b2:rgba(37,244,238,.4)}
 .brand-xiaohongshu{--b1:rgba(255,36,66,.55);--b2:rgba(244,114,182,.35)}
 .brand-google{--b1:rgba(66,133,244,.5);--b2:rgba(52,168,83,.35)}
 .svc-art{position:absolute;inset:0;width:100%;height:100%;z-index:-2;filter:saturate(1.05);transition:transform 1s var(--ease)}
 .svc:hover .svc-art{transform:scale(1.04)}
-.svc-logo::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(44% 48% at 50% 44%,rgba(18,10,45,.82),rgba(18,10,45,.5) 62%,rgba(18,10,45,0) 100%)}
-.brand-xiaohongshu .svc-art{filter:blur(1.4px) saturate(1.1);opacity:.9}
-.brand-google .svc-art{opacity:.9}
-.svc-logo .orbit{position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 50% 44%,transparent 0 62px,rgba(255,255,255,.10) 63px 64px,transparent 65px 98px,rgba(255,255,255,.06) 99px 100px,transparent 101px)}
-.svc-logo img{width:120px;height:120px;object-fit:contain;margin-top:-22px;filter:drop-shadow(0 14px 30px rgba(0,0,0,.5))}
+.svc-logo .orbit{display:none}
+.svc-logo img{width:128px;height:128px;object-fit:contain;margin-top:-24px;filter:drop-shadow(0 0 26px rgba(255,255,255,.18)) drop-shadow(0 14px 28px rgba(0,0,0,.45))}
 .svc-chips{position:absolute;left:0;right:0;bottom:14px;display:flex;justify-content:center;gap:6px}
 .svc-chips span{padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16);font-size:12px;font-weight:700;color:#fff;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 .svc:hover .svc-logo img{transform:scale(1.06)}
