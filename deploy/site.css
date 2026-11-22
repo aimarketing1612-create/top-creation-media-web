@@ -397,7 +397,7 @@ body::after{opacity:.75;background-image:
 
 
 /* ---------- Client logo marquee (moves right, loops) ---------- */
-.marquee{overflow:hidden;padding:30px 0;background:radial-gradient(75% 50% at 50% 50%,rgba(244,240,255,.8),rgba(244,240,255,.5) 60%,rgba(244,240,255,0) 100%);-webkit-mask:linear-gradient(90deg,transparent,#000 18%,#000 82%,transparent);mask:linear-gradient(90deg,transparent,#000 18%,#000 82%,transparent)}
+.marquee{overflow:hidden;padding:30px 0;background:linear-gradient(180deg,rgba(244,240,255,0) 0%,rgba(244,240,255,.92) 22%,rgba(244,240,255,.92) 78%,rgba(244,240,255,0) 100%);-webkit-mask:linear-gradient(90deg,transparent,#000 18%,#000 82%,transparent);mask:linear-gradient(90deg,transparent,#000 18%,#000 82%,transparent)}
 .marquee-track{display:flex;width:max-content;animation:marquee 45s linear infinite}
 .marquee:hover .marquee-track{animation-play-state:paused}
 .marquee-group{display:flex;align-items:center;gap:72px;padding-right:72px}

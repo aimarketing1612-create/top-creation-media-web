@@ -76,7 +76,7 @@ window.TCM_PORTFOLIO = {
   // TEMPLATE: { name: 'Client name', logo: 'assets/logos/file.png' },
   clients: [
     { name: '3cat', logo: 'assets/logos/3cat.jpeg' },
-    { name: 'FnC', logo: 'assets/logos/fnc.jpeg' },
+    { name: 'Hairology 丝域养发', logo: 'assets/logos/hairology.png' },
     { name: 'Mobil', logo: 'assets/logos/mobil.jpg' },
     { name: 'TCL', logo: 'assets/logos/tcl.png' },
     { name: 'Nescafé', logo: 'assets/logos/nescafe.jpg' },

@@ -365,7 +365,7 @@ STEPS3 = '''        <div class="cols">
           <div class="col" data-rv><div class="col-n">3</div><div class="col-t">Execution &amp; growth</div><p class="col-d">Our studio produces, campaigns launch, and we optimise every week: scale what works, stop what doesn&#8217;t.</p></div>
         </div>'''
 
-CLIENTS = [('3cat.jpeg', '3cat'), ('fnc.jpeg', 'FnC'), ('mobil.jpg', 'Mobil'), ('tcl.png', 'TCL'), ('nescafe.jpg', 'Nescafé'),
+CLIENTS = [('3cat.jpeg', '3cat'), ('hairology.png', 'Hairology 丝域养发'), ('mobil.jpg', 'Mobil'), ('tcl.png', 'TCL'), ('nescafe.jpg', 'Nescafé'),
            ('nomi.png', 'NOMI'), ('tp-link.png', 'TP-Link'), ('polo-club.jpeg', 'Royal County of Berkshire Polo Club'),
            ('golden-tropics.jpeg', 'Golden Tropics'), ('joy-paradise.jpg', 'Joy Paradise'), ('lau-homecook.png', 'Lau Homecook'),
            ('sofei.png', 'SOFEI'), ('haroma.jpg', 'Haroma Signature')]
