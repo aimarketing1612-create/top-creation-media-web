@@ -109,7 +109,7 @@ def nav(cur, slug=''):
     return f'''<a class="skip" href="#main">Skip to content</a>
   <header class="nav">
     <div class="nav-in">
-      <a class="brand" href="/" aria-label="Top Creation Media, home"><img src="/assets/tcm-wordmark.webp" alt="TCM Top Creation Media" width="480" height="207"></a>
+      <a class="brand" href="/" aria-label="Top Creation Media, home"><img src="/assets/tcm-wordmark.webp" alt="TCM Top Creation Media" width="960" height="401"></a>
       <nav class="nav-links" aria-label="Main">
         {main}
         <a class="lang" href="/zh/{slug}" hreflang="zh-Hans" lang="zh-Hans" data-lang-switch aria-label="中文 / English">中文</a>
@@ -124,7 +124,7 @@ def nav(cur, slug=''):
 
 FOOT = f'''<footer class="foot">
     <div style="display:flex;align-items:center;gap:10px">
-      <img src="/assets/tcm-logo.jpg" alt="" width="26" height="26" style="width:26px;height:26px;border-radius:7px;object-fit:cover">
+      <img src="/assets/tcm-wordmark.webp" alt="" width="960" height="401" style="width:auto;height:30px">
       <span>© <span id="year">2026</span> Top Creation Media Sdn Bhd · Strategy. Execution. Growth.</span>
     </div>
     <div class="foot-links">
@@ -370,9 +370,9 @@ CLIENTS = [('3cat.jpeg', '3cat'), ('fnc.jpeg', 'FnC'), ('mobil.jpg', 'Mobil'), (
            ('golden-tropics.jpeg', 'Golden Tropics'), ('joy-paradise.jpg', 'Joy Paradise'), ('lau-homecook.png', 'Lau Homecook'),
            ('sofei.png', 'SOFEI'), ('haroma.jpg', 'Haroma Signature')]
 def _logo_box(f):
-    w, h = Image.open(os.path.join(OUT, 'assets', 'logos-mono', f)).size
+    w, h = Image.open(os.path.join(OUT, 'assets', 'logos-web', f)).size
     ar = w / h
-    hh = max(26, min(58, (4600 / ar) ** .5))
+    hh = max(28, min(60, (5400 / ar) ** .5))
     return round(hh * ar), round(hh)
 
 
@@ -381,7 +381,7 @@ def marquee():
     for f, n in CLIENTS:
         png = f.rsplit('.', 1)[0] + '.png'
         w, h = _logo_box(png)
-        imgs.append(f'<img src="/assets/logos-mono/{png}" alt="{esc(n)}" title="{esc(n)}" width="{w}" height="{h}" loading="lazy">')
+        imgs.append(f'<img src="/assets/logos-web/{png}" alt="{esc(n)}" title="{esc(n)}" width="{w}" height="{h}" loading="lazy">')
     group = ''.join(imgs)
     dup = group.replace(' alt="', ' alt="" data-alt="')
     return (f'<div class="marquee" data-rv><div class="marquee-track">'

@@ -21,6 +21,8 @@ TEXT_ATTRS = {'alt', 'aria-label', 'title', 'data-alt'}
 VOID = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr'}
 PAGES = {'', 'social-media', 'marketing-services', 'marketing-classes', 'ai-classes', 'portfolio', 'scan-buddy', 'ai-video', 'membership'}
 missing = set()
+# Drop the licensed 字由点字玄真宋 web font here to use it on every Chinese page:
+FONT_FILE = 'tcm-xuanzhen-song.woff2'
 
 
 def tr(s):
@@ -127,6 +129,10 @@ class Tr(HTMLParser):
         self.handle_starttag(tag, attrs)
 
     def handle_endtag(self, tag):
+        if tag == 'head' and os.path.exists(os.path.join(OUT, 'assets', 'fonts', FONT_FILE)):
+            # Licensed Chinese display font, used first when its web font file is present.
+            self.out.append(f'<link rel="preload" href="/assets/fonts/{FONT_FILE}" as="font" type="font/woff2" crossorigin>'
+                            f'<style>@font-face{{font-family:"TCM XuanZhen Song";src:url(/assets/fonts/{FONT_FILE}) format("woff2");font-display:swap}}</style>')
         if tag == 'a':
             self.in_switch = False
         while self.stack:
@@ -158,7 +164,8 @@ def build_all():
         p.feed(open(f, encoding='utf8').read())
         p.close()
         with open(os.path.join(OUT, 'zh', name), 'w', encoding='utf8') as w:
-            w.write(''.join(p.out))
+            # A comma before the coloured phrase is hidden when that phrase drops to its own line (phones).
+            w.write(''.join(p.out).replace('，<span class="accent">', '<span class="zh-p">，</span><span class="accent">'))
     if missing:
         print(f'zh: {len(missing)} strings not in tools/i18n/zh.json (kept in English):')
         for m in sorted(missing):
