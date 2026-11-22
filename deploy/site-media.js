@@ -10,6 +10,10 @@
         driveId:   'FILE_ID'        Google Drive (click-to-play only, cannot autoplay)
       Optional: poster: '/assets/video/home-cover.jpg'  (cover image shown while loading)
 
+      VIDEO TOO BIG? Shrink it first: bash tools/compress_video.sh <your-video.mp4> home
+      (needs ffmpeg; writes the MP4 and a cover image into deploy/assets/video/).
+      Or upload it to YouTube as Unlisted and paste the code into youtubeId.
+
       AUTOPLAY: MP4 and YouTube videos play automatically when the visitor
       reaches them, MUTED (browsers block autoplay with sound). A "Sound on"
       button lets visitors turn the sound on. To turn autoplay off for one

@@ -419,6 +419,11 @@ body::after{opacity:.75;background-image:
 .brand-tiktok{--b1:rgba(254,44,85,.45);--b2:rgba(37,244,238,.4)}
 .brand-xiaohongshu{--b1:rgba(255,36,66,.55);--b2:rgba(244,114,182,.35)}
 .brand-google{--b1:rgba(66,133,244,.5);--b2:rgba(52,168,83,.35)}
+.svc-art{position:absolute;inset:0;width:100%;height:100%;z-index:-2;filter:saturate(1.05);transition:transform 1s var(--ease)}
+.svc:hover .svc-art{transform:scale(1.04)}
+.svc-logo::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(44% 48% at 50% 44%,rgba(18,10,45,.82),rgba(18,10,45,.5) 62%,rgba(18,10,45,0) 100%)}
+.brand-xiaohongshu .svc-art{filter:blur(1.4px) saturate(1.1);opacity:.9}
+.brand-google .svc-art{opacity:.9}
 .svc-logo .orbit{position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 50% 44%,transparent 0 62px,rgba(255,255,255,.10) 63px 64px,transparent 65px 98px,rgba(255,255,255,.06) 99px 100px,transparent 101px)}
 .svc-logo img{width:120px;height:120px;object-fit:contain;margin-top:-22px;filter:drop-shadow(0 14px 30px rgba(0,0,0,.5))}
 .svc-chips{position:absolute;left:0;right:0;bottom:14px;display:flex;justify-content:center;gap:6px}

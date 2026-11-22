@@ -209,7 +209,7 @@ def svc_cards(rows, cls='svc-grid'):
     for t, d, href, kind, src, alt in rows:
         if kind == 'logo':
             chips = ''.join(f'<span>{esc(c)}</span>' for c in LOGO_CHIPS.get(src, ()))
-            media = (f'<div class="svc-media svc-logo brand-{src}"><i class="orbit" aria-hidden="true"></i>'
+            media = (f'<div class="svc-media svc-logo brand-{src}">{brand_bg(src)}<i class="orbit" aria-hidden="true"></i>'
                      f'<img src="/assets/brands/{src}.svg" alt="{esc(alt)}" width="120" height="120" loading="lazy">'
                      f'<div class="svc-chips" aria-hidden="true">{chips}</div></div>')
         else:
@@ -217,6 +217,44 @@ def svc_cards(rows, cls='svc-grid'):
             media = f'<div class="svc-media"><img src="/assets/img/{src}.webp" alt="{esc(alt)}" width="{w}" height="{h}" loading="lazy"></div>'
         out.append(f'<a class="svc" href="{href}" data-rv>{media}<div class="svc-body"><div class="card-t">{esc(t)}</div><p class="card-d">{esc(d)}</p></div></a>')
     return f'<div class="{cls}">' + '\n          '.join(out) + '</div>'
+
+
+# Decorative app-style backdrops behind each platform logo (aria-hidden, no text).
+def _cards_xhs():
+    import random
+    r = random.Random(11)
+    cols = [('#FF6A88', '#FF2442'), ('#C084FC', '#7C4DFF'), ('#FDBA74', '#FB7185'), ('#67E8F9', '#6366F1')]
+    out = []
+    for x, ys in ((18, (14, 112, 196)), (112, (46, 134, 214)), (206, (10, 98, 190)), (300, (40, 128, 212))):
+        for y in ys:
+            h = r.choice((62, 74, 88)); a, b = r.choice(cols)
+            out.append(f'<g><rect x="{x}" y="{y}" width="80" height="{h}" rx="9" fill="url(#g{x}{y})"/>'
+                       f'<defs><linearGradient id="g{x}{y}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="{a}"/><stop offset="1" stop-color="{b}"/></linearGradient></defs>'
+                       f'<rect x="{x+6}" y="{y+h-14}" width="{r.choice((34, 46, 52))}" height="4" rx="2" fill="#fff" opacity=".7"/>'
+                       f'<circle cx="{x+68}" cy="{y+h-12}" r="4" fill="#fff" opacity=".75"/></g>')
+    return ''.join(out)
+
+
+BRAND_BG = {
+    'meta': '''<g opacity=".95"><g stroke="#fff" stroke-opacity=".08"><path d="M0 70H400M0 130H400M0 190H400M0 250H400"/></g>
+      <g fill="#3B82F6" opacity=".55"><rect x="26" y="170" width="26" height="90" rx="5"/><rect x="66" y="146" width="26" height="114" rx="5"/><rect x="106" y="156" width="26" height="104" rx="5"/><rect x="146" y="120" width="26" height="140" rx="5"/><rect x="228" y="110" width="26" height="150" rx="5"/><rect x="268" y="84" width="26" height="176" rx="5"/><rect x="308" y="96" width="26" height="164" rx="5"/><rect x="348" y="58" width="26" height="202" rx="5"/></g>
+      <path d="M20 190 L80 160 L140 170 L200 118 L260 96 L320 104 L380 54" fill="none" stroke="#A78BFA" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <g fill="#fff"><circle cx="80" cy="160" r="5"/><circle cx="200" cy="118" r="5"/><circle cx="320" cy="104" r="5"/><circle cx="380" cy="54" r="6"/></g>
+      <rect x="22" y="22" width="84" height="22" rx="11" fill="#fff" opacity=".16"/><rect x="294" y="22" width="84" height="22" rx="11" fill="#fff" opacity=".16"/></g>''',
+    'tiktok': '''<g><g transform="rotate(-9 90 160)"><rect x="34" y="40" width="112" height="210" rx="16" fill="#0B0B14" stroke="#25F4EE" stroke-opacity=".55" stroke-width="2"/><rect x="40" y="48" width="100" height="168" rx="10" fill="url(#t1)"/><path d="M84 112l22 14-22 14z" fill="#fff" opacity=".9"/><rect x="48" y="226" width="60" height="5" rx="2.5" fill="#fff" opacity=".6"/></g>
+      <g transform="rotate(8 310 160)"><rect x="254" y="30" width="112" height="210" rx="16" fill="#0B0B14" stroke="#FE2C55" stroke-opacity=".6" stroke-width="2"/><rect x="260" y="38" width="100" height="168" rx="10" fill="url(#t2)"/><path d="M304 102l22 14-22 14z" fill="#fff" opacity=".9"/><path d="M342 160c-5-5-12-1-9 5 2 3 9 8 9 8s7-5 9-8c3-6-4-10-9-5z" fill="#FE2C55"/></g>
+      <defs><linearGradient id="t1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#25F4EE" stop-opacity=".55"/><stop offset="1" stop-color="#7C4DFF" stop-opacity=".7"/></linearGradient><linearGradient id="t2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FE2C55" stop-opacity=".7"/><stop offset="1" stop-color="#7C4DFF" stop-opacity=".6"/></linearGradient></defs></g>''',
+    'google': '''<g><rect x="40" y="26" width="320" height="38" rx="19" fill="#fff" opacity=".92"/><circle cx="66" cy="45" r="7" fill="none" stroke="#5F6368" stroke-width="2.4"/><path d="M71 50l6 6" stroke="#5F6368" stroke-width="2.4" stroke-linecap="round"/><rect x="90" y="41" width="120" height="7" rx="3.5" fill="#5F6368" opacity=".5"/>
+      <g fill="#fff"><rect x="40" y="86" width="150" height="8" rx="4" opacity=".55"/><rect x="40" y="102" width="260" height="6" rx="3" opacity=".25"/><rect x="40" y="116" width="220" height="6" rx="3" opacity=".25"/>
+      <rect x="40" y="148" width="170" height="8" rx="4" opacity=".4"/><rect x="40" y="164" width="280" height="6" rx="3" opacity=".2"/><rect x="40" y="178" width="200" height="6" rx="3" opacity=".2"/>
+      <rect x="40" y="208" width="130" height="8" rx="4" opacity=".3"/><rect x="40" y="224" width="240" height="6" rx="3" opacity=".16"/></g>
+      <g><circle cx="340" cy="150" r="22" fill="#34A853" opacity=".7"/><path d="M330 150l7 7 14-15" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><rect x="316" y="186" width="56" height="20" rx="10" fill="#FBBC05" opacity=".75"/></g></g>''',
+}
+
+
+def brand_bg(src):
+    body = _cards_xhs() if src == 'xiaohongshu' else BRAND_BG[src]
+    return f'<svg class="svc-art" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">{body}</svg>'
 
 
 LOGO_CHIPS = {'meta': ('Ads', 'Reels', 'Leads'), 'tiktok': ('Video', 'LIVE', 'Shop'),
