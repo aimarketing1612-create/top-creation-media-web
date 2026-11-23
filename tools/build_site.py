@@ -454,6 +454,21 @@ SERVICES = [
     ('Events, offline to online', 'Launches filmed on the day, amplified after.', '/marketing-services#more', 'photo', 'events', 'Videographer filming a brand launch event in a mall'),
 ]
 
+TEAM = [
+    ('team-emma', 'Emma', 'AI & Marketing Director'),
+    ('team-jess', 'Jess', 'HR & Media Advertising Manager'),
+    ('team-mac', 'Mac', 'SEO & AI Strategist'),
+    ('team-marcus', 'Marcus', 'Planning & Operation Consultant'),
+]
+
+
+def member(key, name, role, i):
+    return f'''<figure class="member" style="--i:{i}" data-rv>
+            {video(key, f'{name}, {role}').replace(' data-rv', '')}
+            <figcaption><b>{esc(name)}</b><span>{esc(role)}</span></figcaption>
+          </figure>'''
+
+
 home_body = f'''    <section class="hero">
       <div class="hero-grid">
         <div>
@@ -491,6 +506,15 @@ home_body = f'''    <section class="hero">
           <div class="stat" data-rv><div class="stat-n">3,000+</div><div class="stat-l">Videos produced</div></div>
           <div class="stat" data-rv><div class="stat-n">500+</div><div class="stat-l">Clients served</div></div>
           <div class="stat" data-rv><div class="stat-n">5</div><div class="stat-l">Markets: MY, SG, CN, US, ID</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile tile-dark team" id="team">
+      <div class="wrap">
+        {head('The people behind <span class="accent">your growth</span>', 'Meet the team')}
+        <div class="team-grid">
+          {''.join(member(*m, i) for i, m in enumerate(TEAM))}
         </div>
       </div>
     </section>

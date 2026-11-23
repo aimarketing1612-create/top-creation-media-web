@@ -35,6 +35,11 @@ window.TCM_MEDIA = {
     ai:           { youtubeId: '', driveId: '', mp4: '', poster: '' },  // AI Classes intro
     'scan-buddy': { youtubeId: '', driveId: '', mp4: '', poster: '' },  // Scan Buddy demo
     'ai-video':   { youtubeId: '', driveId: '', mp4: '', poster: '' },  // AI Video demo
+    // Home page: team intro videos (with BGM; plays muted, visitors tap "Sound on")
+    'team-emma':   { youtubeId: '', driveId: '', mp4: '', poster: '' },
+    'team-jess':   { youtubeId: '', driveId: '', mp4: '', poster: '' },
+    'team-mac':    { youtubeId: '', driveId: '', mp4: '', poster: '' },
+    'team-marcus': { youtubeId: '', driveId: '', mp4: '', poster: '' },
     // AI Video page: three vertical (9:16) sample videos
     'ai-video-1': { youtubeId: '', driveId: '', mp4: '', poster: '' },
     'ai-video-2': { youtubeId: '', driveId: '', mp4: '', poster: '' },
