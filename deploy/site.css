@@ -561,9 +561,25 @@ html[lang^="zh"] :is(.lede,.card-d,.col-d,.mod-d,.way-d,.list span,.faq details 
 /* ---------- Nav: keep every item on one line ---------- */
 .nav-links{gap:24px}
 .nav-links > a,.dd > a,.nav-links a.lang{white-space:nowrap}
-@media (max-width:1240px){.nav-links{gap:16px;font-size:14px}.nav-links .badge{display:none}.brand img{height:42px}}
-@media (max-width:1000px) and (min-width:901px){.nav-links{gap:12px;font-size:13px}.nav-links .btn-sm{padding:0 12px}}
-@media (max-width:900px){.nav-links a:not(.btn):not(.lang),.nav-links .dd{display:none}.nav-links{gap:10px}.subnav{display:block}}
+@media (max-width:920px) and (min-width:769px){.nav-links{gap:14px;font-size:14px}.nav-links .btn-sm{padding:0 14px}.brand img{height:42px}}
+
+
+/* ---------- Nav dropdown rows, AI Tools hub, one-line tabs ---------- */
+.dd-menu{min-width:270px}
+.dd-menu a{white-space:nowrap}
+.dd-menu a.dd-row{display:flex;align-items:center;gap:10px}
+.dd-menu a.dd-row img{width:18px;height:18px;object-fit:contain;flex:none}
+.dd-menu hr{border:0;border-top:1px solid var(--line);margin:6px 8px}
+.dd-menu a.dd-hl{background:linear-gradient(90deg,rgba(236,72,153,.16),rgba(124,77,255,.16))}
+.dd-menu a.dd-hl small{color:var(--ink-2)}
+.seg button,.switch a,.subnav a,.btn{white-space:nowrap}
+.tool-art{display:grid;place-items:center;height:250px;margin:-8px 0 26px;border-radius:18px;background:radial-gradient(60% 70% at 50% 40%,rgba(124,77,255,.28),transparent 75%),rgba(255,255,255,.03);overflow:hidden}
+.tool-art .qr-card{width:170px;padding:16px;border-radius:18px;box-shadow:0 18px 40px -16px rgba(0,0,0,.6) !important;border:0 !important}
+.tool-art .qr-card svg{width:128px;height:128px;margin-bottom:6px}
+.tool-art .qr-card b{font-size:13px}
+.tool-art .clips{transform:scale(.72)}
+.photo img{object-position:var(--pos,50% 50%)}
+@media (max-width:560px){.seg button{white-space:normal}.tool-art{height:210px}}
 
 /* ---------- Responsive ---------- */
 @media (max-width:1080px){

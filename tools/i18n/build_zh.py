@@ -20,7 +20,7 @@ OUT = os.path.join(ROOT, 'deploy')
 ZH = json.load(open(os.path.join(HERE, 'zh.json'), encoding='utf8'))
 TEXT_ATTRS = {'alt', 'aria-label', 'title', 'data-alt'}
 VOID = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr'}
-PAGES = {'', 'social-media', 'marketing-services', 'marketing-classes', 'ai-classes', 'portfolio', 'scan-buddy', 'ai-video', 'membership'}
+PAGES = {'', 'ai-tools', 'marketing-services', 'marketing-classes', 'ai-classes', 'portfolio', 'scan-buddy', 'ai-video', 'membership'}
 missing = set()
 # Drop the licensed 字由点字玄真宋 web font here to use it on every Chinese page:
 FONT_FILE = 'tcm-xuanzhen-song.woff2'

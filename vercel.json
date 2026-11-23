@@ -1,3 +1,15 @@
 {
-  "cleanUrls": true
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/social-media",
+      "destination": "/marketing-services",
+      "permanent": true
+    },
+    {
+      "source": "/zh/social-media",
+      "destination": "/zh/marketing-services",
+      "permanent": true
+    }
+  ]
 }

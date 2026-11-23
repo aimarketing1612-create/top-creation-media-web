@@ -58,54 +58,50 @@ ARROW = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="cur
 PLAY = '<svg width="30" height="30" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>'
 
 # ---------------------------------------------------------------- shared parts
-NAV = [
-    ('home', '/', 'Home'),
-    ('social', '/social-media', 'Social Media'),
-    ('ai', '/ai-classes', 'AI Classes'),
-    ('portfolio', '/portfolio', 'Portfolio'),
-    ('scan', '/scan-buddy', 'Scan Buddy'),
-    ('aivideo', '/ai-video', 'AI Video'),
-    ('member', '/membership', 'Membership'),
-]
-SOCIAL_KEYS = ('social', 'services', 'academy')
-AI_MENU = [('m-know-your-ai-tools', 'Know your AI tools'), ('m-ai-video', 'AI video'), ('m-ai-graphics', 'AI graphics'),
-           ('m-ai-website-builder-ai-seo', 'AI website &amp; SEO'), ('m-ai-captions-hook-body-cta', 'AI captions'),
-           ('m-ai-system-flow', 'AI system flow'), ('m-ai-marketing', 'AI marketing')]
+ACADEMY_KEYS = ('academy', 'ai', 'member')
+TOOL_KEYS = ('tools', 'scan', 'aivideo')
 
 
 def nav(cur, slug=''):
-    def cur_attr(key):
-        hit = key == cur or (key == 'social' and cur in SOCIAL_KEYS)
+    def on(hit):
         return ' aria-current="page"' if hit else ''
 
-    items = []
-    for key, href, label in NAV[1:]:
-        if key == 'social':
-            items.append(f'''<div class="dd">
-          <a href="{href}"{cur_attr(key)}>{label}</a>
+    def logo(n):
+        return f'<img src="/assets/brands/{n}.svg" alt="" width="18" height="18">'
+
+    main = f'''<div class="dd">
+          <a href="/marketing-services"{on(cur == 'services')}>Services</a>
           <div class="dd-menu">
-            <a href="/social-media">Overview<small>Compare the two ways to grow</small></a>
-            <a href="/marketing-services">Done-For-You<small>We run your marketing</small></a>
-            <a href="/marketing-classes">Marketing Academy<small>Learn to run it yourself</small></a>
+            <a class="dd-row" href="/marketing-services#facebook">{logo('meta')}Facebook &amp; Instagram</a>
+            <a class="dd-row" href="/marketing-services#tiktok">{logo('tiktok')}TikTok</a>
+            <a class="dd-row" href="/marketing-services#google">{logo('google')}Google</a>
+            <a class="dd-row" href="/marketing-services#xiaohongshu">{logo('xiaohongshu')}Xiaohongshu</a>
+            <hr>
+            <a href="/marketing-services#more">More services<small>Video, livestream, KOL, events</small></a>
           </div>
-        </div>''')
-        elif key == 'ai':
-            mods = ''.join(f'<a href="/ai-classes#{mid}">{name}</a>' for mid, name in AI_MENU)
-            items.append(f'''<div class="dd">
-          <a href="{href}"{cur_attr(key)}>{label}<span class="badge">New</span></a>
+        </div>
+        <div class="dd">
+          <a href="/marketing-classes"{on(cur in ACADEMY_KEYS)}>Academy</a>
           <div class="dd-menu">
-            <a href="/ai-classes">All AI classes<small>7 modules, no coding needed</small></a>
-            {mods}
+            <a href="/marketing-classes">Marketing Classes<small>Facebook, TikTok, Google, Xiaohongshu</small></a>
+            <a href="/ai-classes">AI Classes<small>7 modules, no coding needed</small></a>
+            <hr>
+            <a class="dd-hl" href="/membership">Membership<small>Every class and AI tool, from RM180/mo</small></a>
           </div>
-        </div>''')
-        else:
-            badge = '<span class="badge">RM300</span>' if key == 'member' else ''
-            items.append(f'<a href="{href}"{cur_attr(key)}>{label}{badge}</a>')
-    sub = [('home', '/', 'Home'), ('social', '/social-media', 'Social Media'), ('services', '/marketing-services', 'Done-For-You'),
-           ('academy', '/marketing-classes', 'Academy'), ('ai', '/ai-classes', 'AI Classes'), ('portfolio', '/portfolio', 'Portfolio'),
-           ('scan', '/scan-buddy', 'Scan Buddy'), ('aivideo', '/ai-video', 'AI Video'), ('member', '/membership', 'Membership')]
-    subs = '\n        '.join(f'<a href="{h}"{" aria-current=\"page\"" if k == cur else ""}>{l}</a>' for k, h, l in sub)
-    main = '\n        '.join(items)
+        </div>
+        <div class="dd">
+          <a href="/ai-tools"{on(cur in TOOL_KEYS)}>AI Tools</a>
+          <div class="dd-menu">
+            <a href="/scan-buddy">Scan Buddy<small>One QR code for followers and reviews</small></a>
+            <a href="/ai-video">AI Video<small>Product photo to video ads</small></a>
+          </div>
+        </div>
+        <a href="/portfolio"{on(cur == 'portfolio')}>Portfolio</a>'''
+    sub = [(cur == 'home', '/', 'Home'), (cur == 'services', '/marketing-services', 'Services'),
+           (cur == 'academy', '/marketing-classes', 'Marketing Classes'), (cur == 'ai', '/ai-classes', 'AI Classes'),
+           (cur == 'member', '/membership', 'Membership'), (cur in TOOL_KEYS, '/ai-tools', 'AI Tools'),
+           (cur == 'portfolio', '/portfolio', 'Portfolio')]
+    subs = '\n        '.join(f'<a href="{h}"{on(hit)}>{l}</a>' for hit, h, l in sub)
     return f'''<a class="skip" href="#main">Skip to content</a>
   <header class="nav">
     <div class="nav-in">
@@ -128,14 +124,12 @@ FOOT = f'''<footer class="foot">
       <span>© <span id="year">2026</span> Top Creation Media Sdn Bhd · Strategy. Execution. Growth.</span>
     </div>
     <div class="foot-links">
-      <a href="/social-media">Social Media</a>
-      <a href="/marketing-services">Done-For-You</a>
-      <a href="/marketing-classes">Marketing Academy</a>
+      <a href="/marketing-services">Services</a>
+      <a href="/marketing-classes">Marketing Classes</a>
       <a href="/ai-classes">AI Classes</a>
-      <a href="/portfolio">Portfolio</a>
-      <a href="/scan-buddy">Scan Buddy</a>
-      <a href="/ai-video">AI Video</a>
       <a href="/membership">Membership</a>
+      <a href="/ai-tools">AI Tools</a>
+      <a href="/portfolio">Portfolio</a>
       <a href="https://facebook.com/topcreationmedia" target="_blank" rel="noopener">Facebook</a>
       <a href="https://instagram.com/topcreationmedia" target="_blank" rel="noopener">Instagram</a>
       <a href="https://tiktok.com/@topcreationmedia" target="_blank" rel="noopener">TikTok</a>
@@ -238,8 +232,12 @@ def banner(src, alt):
     return f'<figure class="banner" data-rv><img src="/assets/img/{src}.webp" alt="{esc(alt)}" width="{w}" height="{h}" loading="lazy"></figure>'
 
 
+PHOTO_POS = {'mission.jpg': '70% 50%'}
+
+
 def photo(file, alt):
-    return f'''<figure class="photo" data-rv>
+    pos = f' style="--pos:{PHOTO_POS[file]}"' if file in PHOTO_POS else ''
+    return f'''<figure class="photo"{pos} data-rv>
           <div class="photo-ph"><b>Behind the scenes</b>Top Creation Media studio</div>
           <img src="/assets/bts/{file}" alt="{esc(alt)}" loading="lazy" onerror="this.remove()">
         </figure>'''
@@ -277,10 +275,29 @@ def btns(*pairs):
     return '<div class="btn-row rise" style="animation-delay:.35s">' + ''.join(out) + '</div>'
 
 
-def switch(cur):
-    links = [('social', '/social-media', 'Overview'), ('services', '/marketing-services', 'Done-For-You'), ('academy', '/marketing-classes', 'Marketing Academy')]
+def _switch(links, cur, label):
     a = ''.join(f'<a href="{h}"{" aria-current=\"page\"" if k == cur else ""}>{l}</a>' for k, h, l in links)
-    return f'<div class="switch-wrap rise" style="animation-delay:.3s"><nav class="switch" aria-label="Social Media sections">{a}</nav></div>'
+    return f'<div class="switch-wrap rise" style="animation-delay:.3s"><nav class="switch" aria-label="{label}">{a}</nav></div>'
+
+
+def switch(cur):
+    return _switch([('academy', '/marketing-classes', 'Marketing Classes'), ('ai', '/ai-classes', 'AI Classes'),
+                    ('member', '/membership', 'Membership')], cur, 'Academy sections')
+
+
+def tool_switch(cur):
+    return _switch([('scan', '/scan-buddy', 'Scan Buddy'), ('aivideo', '/ai-video', 'AI Video')], cur, 'AI Tools')
+
+
+def member_band():
+    return '''    <section class="tile tile-dark" style="padding-top:0">
+      <div class="wrap">
+        <div class="offer" data-rv>
+          <div><b>Prefer to learn online, at your own pace?</b><span>The Membership includes every class video, every AI tool and our resources. From RM180 a month.</span></div>
+          <a class="btn btn-ghost btn-sm" href="/membership">See the Membership</a>
+        </div>
+      </div>
+    </section>'''
 
 
 def faq_html(items):
@@ -527,7 +544,7 @@ home_body = f'''    <section class="hero">
           <p class="lede">Three promises behind everything we teach and everything we run for you.</p>
         </div>
         <div class="split">
-        {photo('mission.jpg', 'Top Creation Media team guiding participants during a hands-on class')}
+        {photo('mission.jpg', 'Trainer teaching a digital marketing strategy masterclass to a full room')}
           <div class="mvp-text" data-letter="M" data-rv>
             <div class="split-k mvp-num"><b>01</b>Our mission</div>
             <h3 class="h2">We guide you until you can do it yourself.</h3>
@@ -536,7 +553,7 @@ home_body = f'''    <section class="hero">
           </div>
         </div>
         <div class="split flip">
-        {photo('vision.jpg', 'Behind the scenes at a Top Creation Media shoot')}
+        {photo('vision.jpg', 'Behind the scenes of a product shoot in the green-screen studio')}
           <div class="mvp-text" data-letter="V" data-rv>
             <div class="split-k mvp-num"><b>02</b>Our vision</div>
             <h3 class="h2">Every beginner can become a professional marketer.</h3>
@@ -545,7 +562,7 @@ home_body = f'''    <section class="hero">
           </div>
         </div>
         <div class="split">
-        {photo('performance.jpg', 'Top Creation Media livestream session in the studio')}
+        {photo('performance.jpg', 'Client team celebrating at their shop counter')}
           <div class="mvp-text" data-letter="P" data-rv>
             <div class="split-k mvp-num"><b>03</b>Our performance</div>
             <h3 class="h2">Our experience becomes your performance.</h3>
@@ -561,14 +578,14 @@ home_body = f'''    <section class="hero">
         {head('Two ways to grow. <span class="accent">You choose.</span>', 'How we work with you', 'Same team, same platforms. The difference is who does the work.')}
         <div class="ways">
           <div class="way" data-rv>
-            <div class="way-k">Done-For-You services</div>
+            <div class="way-k">Services</div>
             <div class="way-t">We run it for you.</div>
             <p class="way-d">Strategy, content, ads, livestream and KOC/KOL, handled by our team while you focus on your business.</p>
             {ticks(['Facebook & Instagram ads', 'TikTok video, Live & TikTok Shop', 'Google SEO & search ads', 'Xiaohongshu notes & creator seeding', 'KOC & KOL collaborations'])}
-            <a class="btn btn-primary" href="/marketing-services">See Done-For-You</a>
+            <a class="btn btn-primary" href="/marketing-services">See our services</a>
           </div>
           <div class="way" data-rv>
-            <div class="way-k">Marketing Academy</div>
+            <div class="way-k">Academy</div>
             <div class="way-t">We teach you to do it.</div>
             <p class="way-d">Learn every setting, hands-on, from account setup to scaling. Save on agency fees and skip the costly trial and error.</p>
             {ticks(['Every platform, from A to Z', 'Practise on your own business', 'Templates and checklists you keep', "Can't learn it? 100% refund"])}
@@ -671,14 +688,14 @@ dfy_ld = {'@context': 'https://schema.org', '@graph': [
      'description': 'Facebook, Instagram, TikTok, Google and Xiaohongshu marketing run by Top Creation Media: strategy, content, ads, livestream and KOC/KOL.'},
     faq_ld(DFY_FAQ)]}
 
-dfy_body = f'''{hero([("Home", "/"), ("Social Media", "/social-media"), ("Done-For-You", "")], 'Your marketing, <span class="accent">done for you.</span>',
+dfy_body = f'''{hero([("Home", "/"), ("Services", "")], 'Your marketing, <span class="accent">done for you.</span>',
        'Strategy, content, ads, livestream and KOC/KOL across Facebook, Instagram, TikTok, Google and Xiaohongshu, handled end to end by one team.',
-       btns(('Get a free strategy chat', wa("Hi, I'd like the Done-For-You marketing service!")), ('Choose a platform', '#platforms')),
-       switch('services') + video('services', 'Done-For-You marketing services video'), eyebrow='Done-For-You services')}
+       btns(('Get a free strategy chat', wa("Hi, I'd like to know more about your marketing services!")), ('Choose a platform', '#platforms')),
+       video('services', 'Marketing services video'), eyebrow='Marketing services')}
 
     <section class="tile tile-raise" id="platforms">
       <div class="wrap">
-        {head('Choose a platform', 'Done-For-You', style='margin-bottom:40px')}
+        {head('Choose a platform', 'What we do', style='margin-bottom:40px')}
 {tabs('Platforms', [
     ('facebook', 'Facebook & IG', svc_panel('Facebook &amp; Instagram, from scroll to sale', 'We run Facebook and Instagram as one engine: strategy first, creative built to convert, then ads tuned every week.', DFY_FB, RES_META, ics=['target', 'video', 'pen', 'layers', 'megaphone', 'zap'])),
     ('tiktok', 'TikTok', svc_panel('TikTok video, Live and Shop', 'From trend-driven short video to full livestream selling, we run the whole TikTok flywheel.', DFY_TT, RES_TT, ics=['music', 'live', 'coins', 'users', 'zap', 'target'])),
@@ -757,10 +774,10 @@ academy_ld = {'@context': 'https://schema.org', '@graph': [
      'provider': PROVIDER, 'url': SITE + 'marketing-classes'},
     faq_ld(ACADEMY_FAQ)]}
 
-academy_body = f'''{hero([("Home", "/"), ("Social Media", "/social-media"), ("Marketing Academy", "")], 'Learn to run your own ads, <span class="accent">A to Z.</span>',
+academy_body = f'''{hero([("Home", "/"), ("Academy", "/marketing-classes"), ("Marketing Classes", "")], 'Learn to run your own ads, <span class="accent">A to Z.</span>',
        'Facebook, Instagram, TikTok, Google and Xiaohongshu, taught hands-on on your own accounts. Save on agency fees and never waste money on the wrong strategy again.',
-       btns(('Join the next class', wa("Hi, I'd like to join the Marketing Academy!")), ('Choose a platform', '#platforms')),
-       switch('academy') + video('academy', 'Marketing Academy introduction video'), eyebrow='Marketing Academy')}
+       btns(('Join the next class', wa("Hi, I'd like to join the marketing classes!")), ('Choose a platform', '#platforms')),
+       switch('academy') + video('academy', 'Marketing classes introduction video'), eyebrow='Academy · Marketing Classes')}
 
     <section class="tile tile-raise">
       <div class="wrap">
@@ -798,76 +815,11 @@ academy_body = f'''{hero([("Home", "/"), ("Social Media", "/social-media"), ("Ma
 
 {guarantee('classes')}
 
+{member_band()}
+
 {faq_section(ACADEMY_FAQ, 'tile-raise')}
 
-{cta('Become the next professional marketer.', 'Tell us your business and goal. We will point you to the right platform to start.', 'WhatsApp Us About the Academy', "Hi, I'd like to know more about the Marketing Academy!")}'''
-
-# =================================================================== SOCIAL MEDIA HUB
-SOCIAL_FAQ = [
-    ('Should we outsource social media or train our own team?', 'Outsource if you need results now and have no one to run it. Train your team if you want to own the skill and cut agency costs long term. Many companies do both: we run it first, then hand it over.'),
-    ('Can you manage social media for a franchise or multiple outlets?', 'Yes. One brand strategy and content library for the group, with local ads, pages and reports for each outlet, so every branch looks the same and you can compare results.'),
-    ('Which social media platform should a Malaysian business start with?', 'Start where your buyers already are. Facebook and Instagram for precise targeting, TikTok for reach and live selling, Google for people already searching, Xiaohongshu for Chinese-speaking buyers.'),
-    ('Can we start with Done-For-You and move in-house later?', 'Yes. We run your accounts, then train your staff on the same accounts and templates, so the handover is smooth and nothing is lost.'),
-    ('How do you report social media results?', 'A clear monthly report with leads, sales, cost per result and return on ad spend, not just likes and views. You see every account and every number.'),
-]
-social_ld = {'@context': 'https://schema.org', '@graph': [faq_ld(SOCIAL_FAQ)]}
-PLATS = [('facebook', 'Facebook & IG', 'meta'), ('tiktok', 'TikTok', 'tiktok'), ('google', 'Google', 'google'), ('xiaohongshu', 'Xiaohongshu', 'xiaohongshu')]
-
-
-def do_list(rows):
-    return '<ul class="list">' + ''.join(f'<li><b>{esc(t)}</b><span>{esc(d)}</span></li>' for t, d in rows) + '</ul>'
-
-
-def learn_list(rows):
-    return '<ol class="list list-num">' + ''.join(f'<li><b>{esc(t)}</b><span>{esc(b)}</span></li>' for t, d, b, tools in rows) + '</ol>'
-
-
-def plat_panel(pid, name, logo, body, href, label):
-    return f'''        <div class="plat" data-rv>
-          {body}
-          <div class="btn-row" style="justify-content:flex-start"><a class="btn btn-ghost btn-sm" href="{href}">{label}</a></div>
-        </div>'''
-
-
-def plat_tabs(prefix, data, href, label, lister):
-    return tabs('Platforms', [(f'{prefix}-{pid}', name, plat_panel(pid, name, logo, lister(rows), f'{href}#{pid}', label))
-                              for (pid, name, logo), rows in zip(PLATS, data)], [logo for _, _, logo in PLATS])
-
-
-social_body = f'''{hero([("Home", "/"), ("Social Media", "")], 'Social media marketing, <span class="accent">two ways.</span>',
-       'We run it for you, or we guide you to run it yourself.',
-       extra=switch('social') + video('social', 'Social media marketing: two ways to work with us'), eyebrow='Social media marketing')}
-
-    <section class="tile tile-raise" id="choose">
-      <div class="wrap">
-        {head('How do you want to grow?', 'Choose one')}
-{tabs('How we work together', [
-    ('do', 'We do it for you', '<p class="mode-lede">Our team runs it. You get the results and a monthly report.</p>' + plat_tabs('do', [DFY_FB, DFY_TT, DFY_GG, DFY_XHS], '/marketing-services', 'Full service details', do_list)),
-    ('learn', 'We guide it with you', '<p class="mode-lede">From managing social media to running ads, we teach it all, step by step.</p>' + plat_tabs('learn', [META, TT, GOOGLE, XHS], '/marketing-classes', 'Full curriculum', learn_list)),
-])}
-      </div>
-    </section>
-
-    <section class="tile tile-dark">
-      <div class="wrap">
-        {head('Side by side', 'Compare')}
-        <div class="compare-scroll" data-rv>
-          <table class="compare">
-            <thead><tr><th></th><th>We do it for you</th><th>We guide it with you</th></tr></thead>
-            <tbody>
-              <tr><th>Best for</th><td>Busy owners, franchises, brands that want results now</td><td>Owners and in-house teams who want the skill</td></tr>
-              <tr><th>Your time</th><td>A short weekly check-in</td><td>Lessons plus hands-on practice</td></tr>
-              <tr><th>You get</th><td>Content, ads, livestream, KOL, reports</td><td>Lessons, templates, guidance on your accounts</td></tr>
-              <tr><th>Price</th><td>Custom package</td><td>From RM180/month with the <a class="accent" href="/membership">Membership</a></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-{faq_section(SOCIAL_FAQ, 'tile-raise')}
-
-{cta('Not sure which to choose?', 'Tell us your business and goal. We will recommend the right option honestly.', 'WhatsApp Us for Advice', "Hi, I'm not sure whether to choose Done-For-You or the Academy. Can you advise?")}'''
+{cta('Become the next professional marketer.', 'Tell us your business and goal. We will point you to the right platform to start.', 'WhatsApp Us About the Classes', "Hi, I'd like to know more about the marketing classes!")}'''
 
 # =================================================================== AI CLASSES
 AI_MODS = [
@@ -892,10 +844,10 @@ ai_ld = {'@context': 'https://schema.org', '@graph': [
      'provider': PROVIDER, 'url': SITE + 'ai-classes'},
     faq_ld(AI_FAQ)]}
 
-ai_body = f'''{hero([("Home", "/"), ("AI Classes", "")], 'Let AI do the work. <span class="accent">You run the show.</span>',
+ai_body = f'''{hero([("Home", "/"), ("Academy", "/marketing-classes"), ("AI Classes", "")], 'Let AI do the work. <span class="accent">You run the show.</span>',
        'AI already helps businesses work smarter and replace complex manual tasks. Learn to use it for video, graphics, captions, websites and automation. No coding, no tech background.',
        btns(('Join the next class', wa("Hi, I'd like to join the AI classes!")), ('See the 7 modules', '#curriculum')),
-       video('ai', 'AI Classes introduction video'), eyebrow='AI Classes · No coding needed')}
+       switch('ai') + video('ai', 'AI Classes introduction video'), eyebrow='Academy · AI Classes')}
 
     <section class="tile tile-raise">
       <div class="wrap">
@@ -928,6 +880,8 @@ ai_body = f'''{hero([("Home", "/"), ("AI Classes", "")], 'Let AI do the work. <s
     </section>
 
 {guarantee('AI classes')}
+
+{member_band()}
 
 {faq_section(AI_FAQ, 'tile-raise')}
 
@@ -969,9 +923,10 @@ def steps(rows):
 
 
 def tool_body(key, h1, lede, wa_msg, video_label, step_rows, feat_h2, feats, extra, faq, cta_h2, cta_lede, feat_icons=None):
+    sw = tool_switch('scan' if key == 'scan-buddy' else 'aivideo')
     tag = '<div class="rise" style="margin-bottom:24px"><a class="tag" href="/membership">Included in TCM Membership · RM300/month</a></div>'
-    return f'''{hero([("Home", "/"), (h1.split(':')[0], "")], h1, lede,
-       btns(('Join the Membership', '/membership'), ('How it works', '#how')), video(key, video_label)).replace('<div class="crumbs', tag + '<div class="crumbs', 1)}
+    return f'''{hero([("Home", "/"), ("AI Tools", "/ai-tools"), (h1.split(':')[0], "")], h1, lede,
+       btns(('Join the Membership', '/membership'), ('How it works', '#how')), sw + video(key, video_label)).replace('<div class="crumbs', tag + '<div class="crumbs', 1)}
 
     <section class="tile tile-raise" id="how">
       <div class="wrap">
@@ -1033,6 +988,16 @@ def sb_mockup():
 '''
 
 
+AV_SCENES = [('Showcase', 'linear-gradient(160deg,#F3E8FF,#C4B5FD)', 'This changed my mornings'),
+             ('Lifestyle', 'linear-gradient(160deg,#FFE4D6,#FDBA8C)', 'POV: your new favourite'),
+             ('UGC style', 'linear-gradient(160deg,#DBEAFE,#93C5FD)', 'Honest review, 7 days in')]
+
+
+def av_clips():
+    clips = ''.join(f'<div class="clip" style="background:{bg}"><span class="clip-tag">{t}</span><span class="clip-prod"></span><span class="clip-cap">{cap}</span></div>' for t, bg, cap in AV_SCENES)
+    return f'<div class="clips" role="img" aria-label="Three example AI videos in vertical format">{clips}</div>'
+
+
 def av_mockup():
     scenes = [('Showcase', 'linear-gradient(160deg,#F3E8FF,#C4B5FD)', 'This changed my mornings'),
               ('Lifestyle', 'linear-gradient(160deg,#FFE4D6,#FDBA8C)', 'POV: your new favourite'),
@@ -1054,7 +1019,7 @@ def av_mockup():
 def av_samples():
     return f'''    <section class="tile tile-raise" id="samples">
       <div class="wrap">
-        {head('See real samples', 'Samples', 'Made from a single product photo.')}
+        {head('See real samples', 'Samples', 'Product ads and short dramas, made with AI.')}
         <div class="samples">
           {video9('ai-video-1', 'AI Video sample 1')}
           {video9('ai-video-2', 'AI Video sample 2')}
@@ -1149,6 +1114,7 @@ def plan(name, price, unit, note, msg, label, best=False):
 mem_body = f'''    <section class="hero">
       <div class="hero-grid">
         <div>
+          <div class="crumbs rise" style="margin-bottom:14px"><a href="/">Home</a> / <a href="/marketing-classes">Academy</a> / Membership</div>
           <div class="eyebrow rise">TCM Membership</div>
           <h1 class="h1 rise mem-h1" style="animation-delay:.05s">Every AI tool and every course, <span class="accent">one membership.</span></h1>
           <p class="lede rise" style="animation-delay:.15s">Tools, lessons and resources to run your own marketing with AI. From RM180 a month, billed yearly.</p>
@@ -1195,6 +1161,51 @@ mem_body = f'''    <section class="hero">
 
 {cta('Start this month.', 'One membership. Every tool and every course.', 'Subscribe on WhatsApp', MEM_Y)}'''
 
+# =================================================================== AI TOOLS HUB
+TOOLS_FAQ = [
+    ('What AI tools does TCM offer?', 'Two so far. Scan Buddy is a smart QR code that turns offline customers into followers, WhatsApp chats and Google reviews. AI Video turns a product photo into ready-to-post video ads.'),
+    ('Do I need technical skills to use them?', 'No. If you can use WhatsApp, you can use both. Add your links or upload a photo, and the tool does the rest.'),
+    ('How much do the AI tools cost?', 'Both are included in the TCM Membership: RM300 a month, or RM2,160 a year (40% off). The Membership also includes the full course library.'),
+    ('Which tool should I start with?', 'Have a shop, a booth or packaging? Start with Scan Buddy. Sell products online and need more content? Start with AI Video.'),
+    ('Will you add more tools?', 'Yes. Members get every new tool we release at no extra cost.'),
+]
+tools_ld = {'@context': 'https://schema.org', '@graph': [faq_ld(TOOLS_FAQ)]}
+tools_body = f'''{hero([("Home", "/"), ("AI Tools", "")], 'AI tools that <span class="accent">sell for you.</span>',
+       'Built by TCM for real shops and brands. No coding, no setup headaches.',
+       btns(('Join the Membership', '/membership'), ('See the tools', '#tools')), eyebrow='AI Tools')}
+
+    <section class="tile tile-raise" id="tools">
+      <div class="wrap">
+        {head('Two tools, one membership', 'The tools')}
+        <div class="ways">
+          <div class="way tool" data-rv>
+            <div class="tool-art"><div class="qr-card">{qr_svg()}<b>Scan to follow us</b></div></div>
+            <div class="way-k">Offline to online</div>
+            <div class="way-t">Scan Buddy</div>
+            <p class="way-d">One smart QR code for your shop, packaging and events.</p>
+            {ticks(['Follow on every platform in one scan', 'More Google reviews', 'WhatsApp chats in one tap', 'See every scan'])}
+            <a class="btn btn-primary" href="/scan-buddy">Explore Scan Buddy</a>
+          </div>
+          <div class="way tool" data-rv>
+            <div class="tool-art">{av_clips()}</div>
+            <div class="way-k">Photo to video</div>
+            <div class="way-t">AI Video</div>
+            <p class="way-d">Upload a product photo. Get ready-to-post video ads.</p>
+            {ticks(['No filming, no editing', 'Showcase, lifestyle and UGC styles', 'Captions in English, 中文 and Bahasa', 'Every format: 9:16, 1:1, 16:9'])}
+            <a class="btn btn-primary" href="/ai-video">Explore AI Video</a>
+          </div>
+        </div>
+        <div class="offer" data-rv style="max-width:none;margin-top:20px">
+          <div><b>Both tools are included in the Membership.</b><span>RM300 a month, or RM2,160 a year. Every class is included too.</span></div>
+          <a class="btn btn-ghost btn-sm" href="/membership">See plans</a>
+        </div>
+      </div>
+    </section>
+
+{faq_section(TOOLS_FAQ)}
+
+{cta('Put AI to work in your business.', 'WhatsApp us and we will set up your tools.', 'Join on WhatsApp', "Hi, I'd like to use the TCM AI tools!")}'''
+
 tool_ld = lambda faq: {'@context': 'https://schema.org', '@graph': [faq_ld(faq)]}
 
 # =================================================================== WRITE
@@ -1202,9 +1213,6 @@ PAGES = [
     ('index.html', '', 'Digital Marketing Agency Malaysia | Top Creation Media',
      'Digital marketing agency in Malaysia: Facebook & Instagram ads, TikTok Live, Google SEO, Xiaohongshu & KOL marketing, plus AI and marketing classes.',
      'home', home_ld, home_body, ('/portfolio-data.js',)),
-    ('social-media.html', 'social-media', 'Social Media Marketing Malaysia | Done-For-You or Learn It',
-     'Social media marketing in Malaysia, two ways: let Top Creation Media run your Facebook, TikTok, Google and Xiaohongshu, or learn to do it yourself.',
-     'social', social_ld, social_body, ()),
     ('marketing-services.html', 'marketing-services', 'Social Media Marketing Services Malaysia | TCM',
      'Done-for-you Facebook, Instagram, TikTok Live, Google SEO and Xiaohongshu marketing in Malaysia: strategy, video, ads, livestream and KOC/KOL.',
      'services', dfy_ld, dfy_body, ()),
@@ -1220,6 +1228,9 @@ PAGES = [
     ('scan-buddy.html', 'scan-buddy', 'Scan Buddy | Smart QR Code for Social Media | TCM',
      'Scan Buddy: one smart QR code that turns offline customers into followers, WhatsApp chats and Google reviews, with scan tracking. For TCM subscribers.',
      'scan', tool_ld(SB_FAQ), sb_body, ()),
+    ('ai-tools.html', 'ai-tools', 'AI Tools for Business Malaysia | Scan Buddy & AI Video | TCM',
+     'TCM AI tools for Malaysian businesses: Scan Buddy smart QR codes and AI Video, which turns product photos into video ads. Included in the Membership.',
+     'tools', tools_ld, tools_body, ()),
     ('ai-video.html', 'ai-video', 'AI Video | Turn Product Photos into Video Ads | TCM',
      'AI Video turns a product photo into ready-to-post marketing videos: showcases, new backgrounds, model try-ons, UGC-style clips and captions.',
      'aivideo', tool_ld(AV_FAQ), av_body, ()),
