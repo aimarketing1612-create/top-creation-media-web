@@ -10,6 +10,7 @@ import glob
 import html
 import json
 import os
+import re
 from html.parser import HTMLParser
 from urllib.parse import quote, unquote
 
@@ -151,7 +152,38 @@ class Tr(HTMLParser):
         elif self.in_switch:
             self.out.append(d.replace('中文', 'EN'))
         else:
-            self.out.append(html.escape(tr(d), quote=False))
+            t = tr(d)
+            # Chinese headings read cleaner without a closing 。 (it also pushes centred lines off-centre)
+            if any(x in ('h1', 'h2', 'h3') for x in self.stack) and t.rstrip().endswith('。'):
+                t = t.rstrip()[:-1]
+            self.out.append(phrase_wrap(t, self.stack))
+
+
+CJK_PUNCT = '，。、：；？！'
+
+
+def phrase_wrap(t, stack):
+    """Lets a Chinese line break only after punctuation: each short clause is kept whole (nowrap)."""
+    esc = html.escape(t, quote=False)
+    if not any('\u4e00' <= c <= '\u9fff' for c in t):
+        return esc
+    if any(x in ('h1', 'h2', 'h3') for x in stack):
+        limit = 9
+    elif any(x in ('p', 'li', 'td', 'figcaption') for x in stack):
+        limit = 15
+    else:
+        return esc
+    parts, cur = [], ''
+    for c in t:
+        cur += c
+        if c in CJK_PUNCT:
+            parts.append(cur); cur = ''
+    if cur:
+        parts.append(cur)
+    def width(x):  # a Latin letter is about half a Chinese character wide
+        return sum(1 if ord(c) > 0x2e80 else .55 for c in x.strip())
+    return ''.join(f'<span class="nb">{html.escape(x, quote=False)}</span>' if 1.5 <= width(x) <= limit else html.escape(x, quote=False)
+                   for x in parts)
 
 
 def build_all():
@@ -165,7 +197,11 @@ def build_all():
         p.close()
         with open(os.path.join(OUT, 'zh', name), 'w', encoding='utf8') as w:
             # A comma before the coloured phrase is hidden when that phrase drops to its own line (phones).
-            w.write(''.join(p.out).replace('，<span class="accent">', '<span class="zh-p">，</span><span class="accent">'))
+            out = ''.join(p.out).replace('，<span class="accent">', '<span class="zh-p">，</span><span class="accent">')
+            out = out.replace('，</span><span class="accent">', '</span><span class="zh-p">，</span><span class="accent">')
+            # Keep the last four Chinese characters of a paragraph together, so no line ends with one or two orphans.
+            out = re.sub(r'([\u3000-\u303f\u4e00-\u9fff\uff00-\uffef]{4})</p>', r'<span class="nb">\1</span></p>', out)
+            w.write(out)
     if missing:
         print(f'zh: {len(missing)} strings not in tools/i18n/zh.json (kept in English):')
         for m in sorted(missing):

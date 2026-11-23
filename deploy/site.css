@@ -502,7 +502,7 @@ html[lang^="zh"] :is(.h1,.h2) br{display:none}
 html[lang^="zh"] :is(.h1,.h2) .accent{display:inline-block}
 html[lang^="zh"] :is(.h1,.h2,.h3){text-spacing-trim:trim-both;hanging-punctuation:allow-end}
 html[lang^="zh"] .sec-head .h2,html[lang^="zh"] .page-hero .h1,html[lang^="zh"] .cta .h2{text-align:center;text-wrap:balance}
-@media (max-width:560px){html[lang^="zh"] .h2 .accent{display:block}html[lang^="zh"] .h2 .zh-p{display:none}}
+@media (max-width:560px){html[lang^="zh"] :is(.h2,.page-hero .h1) .accent{display:block}html[lang^="zh"] :is(.h2,.page-hero .h1) .zh-p{display:none}}
 html[lang^="zh"] .hero .h1{font-size:clamp(38px,4.8vw,68px);white-space:nowrap}
 html[lang^="zh"] .mem-h1{font-size:clamp(32px,3.6vw,50px);white-space:normal}
 html[lang^="zh"] .h2{font-weight:900;font-size:clamp(27px,3.1vw,42px);line-height:1.4}
@@ -526,6 +526,21 @@ html[lang^="zh"] .btn{letter-spacing:.06em;font-size:16.5px}
 html[lang^="zh"] .nav-links{font-size:15px;letter-spacing:.04em}
 html[lang^="zh"] .eyebrow{font-size:14px}
 html[lang^="zh"] .stat-l{font-size:15.5px}
+
+
+/* ---------- Line breaks and alignment (both languages) ---------- */
+.h1,.h2,.h3,.card-t,.way-t,.col-t,.mod-t{text-wrap:balance}
+.lede,.card-d,.col-d,.mod-d,.way-d,.faq details p{text-wrap:pretty}
+:is(.sec-head,.page-hero,.cta,.mvp-head,.guarantee,.panel-intro) .lede,.mode-lede{text-wrap:balance}
+.cta .h2{max-width:22ch}
+/* Chinese: widths in em, because "ch" is only half a Chinese character wide */
+html[lang^="zh"] .cta .h2{max-width:20em}
+html[lang^="zh"] .cta .lede{max-width:30em}
+html[lang^="zh"] .mvp-head .lede{max-width:30em}
+html[lang^="zh"] .guarantee .lede{max-width:32em}
+html[lang^="zh"] .faq details p{max-width:44em}
+.nb{white-space:nowrap}
+html[lang^="zh"] :is(.lede,.card-d,.col-d,.mod-d,.way-d,.list span,.faq details p){text-wrap:balance}
 
 /* ---------- Responsive ---------- */
 @media (max-width:1080px){
