@@ -950,3 +950,14 @@ html[lang^="zh"] .post-h2{font-family:"TCM XuanZhen Song","Noto Serif SC",serif}
 .tool-art{min-width:0;width:100%}
 .tool-art{display:flex;align-items:center;justify-content:center}
 @media (max-width:560px){.tool-art .clips{transform:scale(.62)}}
+
+/* Safari sizes a grid column to an image's natural width (1500px) unless the column may shrink.
+   Every two-column block collapses to one column on phones, so its items must be allowed to shrink. */
+.hero-grid>*,.split>*,.result>*,.ways>*,.svc-grid>*,.team-grid>*,.plans>*{min-width:0}
+.banner img,.hero-grid img,.hero-grid video{max-width:100%;height:auto}
+@media (max-width:900px){.hero-grid,.split,.result{grid-template-columns:minmax(0,1fr)}}
+/* The hero heading is kept on its set lines (home uses <br>), but a long heading must wrap:
+   the membership title always, and every hero title on phones. */
+.hero .h1.mem-h1,html[lang^="zh"] .hero .h1.mem-h1{text-wrap:balance;white-space:normal}
+@media (max-width:900px){.hero .h1,html[lang^="zh"] .hero .h1{text-wrap:balance;white-space:normal}}
+@media (max-width:560px){html[lang^="zh"] .hero .h1.mem-h1{font-size:28px;text-wrap:wrap}}

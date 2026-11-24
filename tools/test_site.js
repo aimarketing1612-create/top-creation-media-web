@@ -49,6 +49,9 @@ const check = (ok, msg) => { if (!ok) fails.push(msg); };
       const vw = await page.evaluate(() => innerWidth);
       check(label !== 'phone' || vw === opts.viewport.width, `${p} [${label}] page wider than the phone (${vw}px)`);
       check(await page.locator('h1').count() === 1, `${p} [${label}] needs exactly one h1`);
+      // A heading can be clipped by a parent with hidden overflow, which the scroll check cannot see.
+      const h1 = await page.evaluate(() => { const h = document.querySelector('h1'); return h ? [h.scrollWidth - h.clientWidth, Math.round(h.getBoundingClientRect().right) - innerWidth] : [0, 0]; });
+      check(h1[0] <= 2 && h1[1] <= 0, `${p} [${label}] h1 is cut off (${h1})`);
       const noAlt = await page.locator('img:not([alt])').count();
       check(noAlt === 0, `${p} [${label}] ${noAlt} images without alt`);
       (await page.$$eval('a[href^="/"]', as => as.map(a => a.getAttribute('href')))).forEach(h => links.add(h.split('#')[0] || '/'));
