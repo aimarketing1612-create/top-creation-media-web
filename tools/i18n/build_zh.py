@@ -61,7 +61,7 @@ def zh_wa(v):
 def ld(o):
     if isinstance(o, dict):
         return {k: (tr(v) if k in ('name', 'text', 'description') and isinstance(v, str)
-                    else zh_href_abs(v) if k == 'url' and isinstance(v, str) else ld(v)) for k, v in o.items()}
+                    else zh_href_abs(v) if k in ('url', 'item') and isinstance(v, str) else ld(v)) for k, v in o.items()}
     if isinstance(o, list):
         return [ld(v) for v in o]
     return o
