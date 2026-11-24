@@ -68,7 +68,7 @@ def ld(o):
 
 
 def zh_href_abs(v):
-    site = 'https://topcreation.media/'
+    site = 'https://www.topcreationmedia.com/'
     if v.startswith(site):
         slug = v[len(site):].split('#')[0].strip('/')
         if slug in PAGES:
