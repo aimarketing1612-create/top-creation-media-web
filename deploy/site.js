@@ -64,8 +64,9 @@
 
   var media = window.TCM_MEDIA || { videos: {}, testimonials: [] };
   var ZH = (document.documentElement.lang || '').indexOf('zh') === 0;
-  var T = ZH ? { on: '开声音', off: '关声音', aon: '开启声音', aoff: '关闭声音', play: '播放视频' }
-             : { on: 'Sound on', off: 'Sound off', aon: 'Turn sound on', aoff: 'Turn sound off', play: 'Play video' };
+  var T = ZH ? { on: '点击开声音', off: '声音已开', aon: '开启声音', aoff: '关闭声音', play: '播放视频' }
+             : { on: 'Tap for sound', off: 'Sound on', aon: 'Turn sound on', aoff: 'Turn sound off', play: 'Play video' };
+  var players = [];   // every autoplaying <video>, so only one has sound at a time
 
   // ---- Video slots: <div class="video" data-video="home"> (configured in site-media.js)
   // Browsers only allow autoplay when muted, so autoplay starts muted with an "unmute" button.
@@ -88,13 +89,25 @@
     if (!auto) { el.controls = true; el.play(); return; }
     el.muted = true; el.loop = true; el.autoplay = true; el.preload = 'auto';
     var snd = document.createElement('button');
-    snd.type = 'button'; snd.className = 'video-sound'; snd.setAttribute('aria-label', T.aon); snd.innerHTML = SOUND_OFF + '<span>' + T.on + '</span>';
-    snd.addEventListener('click', function () {
-      el.muted = !el.muted;
-      if (!el.muted) el.play();
-      snd.innerHTML = (el.muted ? SOUND_OFF + '<span>' + T.on + '</span>' : SOUND_ON + '<span>' + T.off + '</span>');
+    snd.type = 'button'; snd.className = 'video-sound';
+    function paint() {
+      snd.innerHTML = (el.muted ? SOUND_OFF : SOUND_ON) + '<span>' + (el.muted ? T.on : T.off) + '</span>';
       snd.setAttribute('aria-label', el.muted ? T.aon : T.aoff);
-    });
+      snd.classList.toggle('is-on', !el.muted);
+    }
+    function toggle() {
+      el.muted = !el.muted;
+      if (!el.muted) {
+        players.forEach(function (p) { if (p.el !== el && !p.el.muted) { p.el.muted = true; p.paint(); } });
+        el.play().catch(function () {});
+      }
+      paint();
+    }
+    paint();
+    players.push({ el: el, paint: paint });
+    snd.addEventListener('click', function (e) { e.stopPropagation(); toggle(); });
+    el.addEventListener('click', toggle);
+    el.style.cursor = 'pointer';
     box.appendChild(snd);
     // Pause when scrolled away, resume when back, to save data and battery.
     if ('IntersectionObserver' in window) {

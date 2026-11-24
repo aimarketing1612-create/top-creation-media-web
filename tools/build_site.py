@@ -828,11 +828,14 @@ academy_body = f'''{hero([("Home", "/"), ("Academy", "/marketing-classes"), ("Ma
 def av_samples():
     rows = [('ai-video-1', 'UGC ads', 'Creator-style clips that feel native on TikTok and Reels.'),
             ('ai-video-2', 'AI short films', 'Story-led drama that holds attention to the end.'),
-            ('ai-video-3', 'Motion graphics', 'Animated promos for any product, shop or service.')]
+            ('ai-video-3', 'Motion graphics', 'Animated promos for any product, shop or service.'),
+            ('ai-video-4', 'Outfit & background swap', 'Change the person, the outfit and the location, without a reshoot.'),
+            ('ai-video-5', 'Product footage', 'Clean product shots from every angle, no studio needed.'),
+            ('ai-video-6', 'Cinematic B-roll', 'Atmosphere shots of your shop and service, with sound.')]
     figs = ''.join(f'''<figure class="sample" data-rv>{video9(k, t + " sample").replace(' data-rv', '')}<figcaption><b>{esc(t)}</b><span>{esc(d)}</span></figcaption></figure>''' for k, t, d in rows)
     return f'''    <section class="tile tile-dark" id="ai-video-types">
       <div class="wrap">
-        {head('AI video comes in <span class="accent">many forms</span>', 'What you will make', 'Three styles you will learn to make in class. All three were made with AI.')}
+        {head('AI video comes in <span class="accent">many forms</span>', 'What you will make', 'Six styles you will learn to make in class. Every clip here was made with AI.')}
         <div class="samples">{figs}</div>
       </div>
     </section>
