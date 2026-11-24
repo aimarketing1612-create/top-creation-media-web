@@ -106,6 +106,7 @@ def nav(cur, slug=''):
     subs = '\n        '.join(f'<a href="{h}"{on(hit)}>{l}</a>' for hit, h, l in sub)
     return f'''<a class="skip" href="#main">Skip to content</a>
   <header class="nav">
+    <div class="progress" aria-hidden="true"><i></i></div>
     <div class="nav-in">
       <a class="brand" href="/" aria-label="Top Creation Media, home"><img src="/assets/tcm-wordmark.webp" alt="TCM Top Creation Media" width="960" height="401"></a>
       <nav class="nav-links" aria-label="Main">
@@ -263,9 +264,23 @@ def ticks(items):
     return '<ul class="ticks">' + ''.join(f'<li>{esc(t)}</li>' for t in items) + '</ul>'
 
 
+def arches(cls=''):
+    """Decorative line art taken from the logo: double-line arches that draw themselves, then a light runs along them."""
+    shapes = ['M40 320V170A110 110 0 0 1 260 170V320', 'M72 320V170A78 78 0 0 1 228 170V320',
+              'M260 320V170A110 110 0 0 1 480 170V320', 'M292 320V170A78 78 0 0 1 448 170V320',
+              'M480 320V170A110 110 0 0 1 700 170V320', 'M512 320V170A78 78 0 0 1 668 170V320']
+    base = ''.join(f'<path pathLength="1" style="--d:{i * 90}" d="{d}"/>' for i, d in enumerate(shapes))
+    glint = ''.join(f'<path pathLength="1" style="--d:{i * 700}" d="{d}"/>' for i, d in enumerate(shapes[::2]))
+    return (f'<svg class="arches {cls}" viewBox="0 0 740 320" fill="none" aria-hidden="true" focusable="false" data-rv>'
+            '<defs><linearGradient id="tcm-line" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="740" y2="0">'
+            '<stop offset="0" stop-color="#9327D2"/><stop offset=".5" stop-color="#5271E9"/><stop offset="1" stop-color="#2DB9DB"/></linearGradient></defs>'
+            f'<g class="arches-base" stroke="url(#tcm-line)">{base}</g><g class="arches-glint">{glint}</g></svg>')
+
+
 def hero(crumbs, h1, lede, buttons='', extra='', eyebrow=''):
     crumb = ' / '.join(f'<a href="{h}">{esc(t)}</a>' if h else esc(t) for t, h in crumbs)
     return f'''    <section class="page-hero">
+      {arches('arches-side')}
       <div class="crumbs rise">{crumb}</div>
       {f'<div class="eyebrow rise">{eyebrow}</div>' if eyebrow else ''}
       <h1 class="h1 rise" style="animation-delay:.05s">{h1}</h1>
@@ -330,6 +345,7 @@ def faq_section(items, cls='tile-dark', title='Questions, answered.'):
 
 def cta(h2, lede, label, msg):
     return f'''    <section class="cta" id="contact">
+      {arches('arches-centre')}
       <h2 class="h2" data-rv>{h2}</h2>
       <p class="lede" data-rv>{lede}</p>
       <div class="btn-row" data-rv><a class="btn btn-primary btn-lg" href="{wa(msg)}" target="_blank" rel="noopener">{esc(label)}</a></div>
@@ -552,6 +568,7 @@ def member(key, name, role, i):
 
 
 home_body = f'''    <section class="hero">
+      {arches('arches-hero')}
       <div class="hero-grid">
         <div>
           <div class="eyebrow rise">Digital marketing × Content × AI</div>
@@ -1184,6 +1201,7 @@ def plan(name, price, unit, note, msg, label, best=False):
 
 
 mem_body = f'''    <section class="hero">
+      {arches('arches-hero')}
       <div class="hero-grid">
         <div>
           <div class="crumbs rise" style="margin-bottom:14px"><a href="/">Home</a> / <a href="/marketing-classes">Academy</a> / Membership</div>

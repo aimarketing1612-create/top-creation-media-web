@@ -708,6 +708,93 @@ html[lang^="zh"] .mvp .split .lede{font-size:clamp(18px,1.4vw,23px)}
 @media (max-width:1000px){.index{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:560px){.index{grid-template-columns:1fr;gap:12px}.index-col{padding:22px}.sound-group{margin:-12px 0 22px}}
 
+
+/* =====================================================================
+   Motion layer, taken from the logo: two parallel rounded lines in
+   purple, blue and cyan. Everything here is transform/opacity (or a
+   one-off stroke draw) and has a reduced-motion fallback at the end.
+   ===================================================================== */
+:root{--ease-out:cubic-bezier(.23,1,.32,1);--ease-in-out:cubic-bezier(.77,0,.175,1)}
+
+/* Scroll progress: the logo's double line across the top of the nav */
+.progress{position:absolute;left:0;right:0;top:0;height:7px;pointer-events:none;overflow:hidden}
+.progress i{position:absolute;inset:0;transform:scaleX(0);transform-origin:0 50%;background:linear-gradient(var(--line-g)) 0 0/100% 2px no-repeat,linear-gradient(var(--line-g)) 0 5px/100% 2px no-repeat;--line-g:90deg,#9327D2,#5271E9 55%,#2DB9DB;filter:drop-shadow(0 0 6px rgba(82,113,233,.9))}
+
+/* Nav condenses once the page has scrolled */
+.nav{transition:background-color .25s var(--ease-out),box-shadow .25s var(--ease-out)}
+.nav.is-scrolled{background:rgba(10,6,28,.9);box-shadow:0 10px 40px -18px rgba(82,113,233,.55)}
+.brand img{transform-origin:0 50%;transition:transform .25s var(--ease-out)}
+.nav.is-scrolled .brand img{transform:scale(.86)}
+
+/* Logo: wipes in on load, then a light crosses it; again on hover */
+.brand{position:relative}
+.brand img{animation:logo-wipe .9s var(--ease-out) both}
+@keyframes logo-wipe{from{clip-path:inset(0 100% 0 0);opacity:.4}to{clip-path:inset(0 0 0 0);opacity:1}}
+.brand::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.95) 50%,transparent 58%) 130% 0/250% 100% no-repeat;-webkit-mask:url(/assets/tcm-wordmark.webp) left center/contain no-repeat;mask:url(/assets/tcm-wordmark.webp) left center/contain no-repeat;animation:logo-shine 1.1s var(--ease-in-out) .9s both}
+@keyframes logo-shine{from{background-position:130% 0}to{background-position:-30% 0}}
+.nav.is-scrolled .brand::after{opacity:0}
+@media (hover:hover) and (pointer:fine){.brand:hover::after{animation:logo-shine-2 .9s var(--ease-in-out)}}
+@keyframes logo-shine-2{from{background-position:130% 0}to{background-position:-30% 0}}
+
+/* Double-line arches that draw themselves, then carry a moving light */
+.hero,.page-hero,.cta{isolation:isolate}
+.cta{overflow:hidden}
+.arches{position:absolute;z-index:-1;pointer-events:none;overflow:visible}
+.js .arches[data-rv]{opacity:1;transform:none;transition:none}
+.arches path{stroke-width:9;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0}
+.arches-base{opacity:.34}
+.js .arches-base path{stroke-dashoffset:1}
+.js .arches.in .arches-base path{stroke-dashoffset:0;transition:stroke-dashoffset 1.9s var(--ease-out) calc(var(--d) * 1ms)}
+.arches-glint path{stroke:#DDF6FF;stroke-width:3;stroke-dasharray:.07 .93;stroke-dashoffset:1.07;opacity:0;filter:drop-shadow(0 0 6px #7FD4FF)}
+.arches.in .arches-glint path{opacity:.9;animation:glint 7s linear calc(1.6s + var(--d) * 1ms) infinite}
+@keyframes glint{from{stroke-dashoffset:1.07}60%,to{stroke-dashoffset:0}}
+.arches-hero{left:-6%;bottom:-2%;width:min(62vw,1100px)}
+.arches-side{right:-8%;top:8%;width:min(46vw,760px);opacity:.75}
+.arches-centre{left:50%;bottom:-12%;width:min(92vw,1300px);margin-left:calc(min(92vw,1300px) / -2)}
+.js .arches.arches-centre[data-rv]{transform:none}
+.arches-centre .arches-base{opacity:.2}
+.arches-side .arches-base{opacity:.26}
+
+/* Section headings: the double line draws out from the centre */
+.sec-head > div::after{content:"";display:block;width:76px;height:9px;margin:24px auto 0;background:linear-gradient(90deg,#9327D2,#5271E9 55%,#2DB9DB) 0 0/100% 3px no-repeat,linear-gradient(90deg,#9327D2,#5271E9 55%,#2DB9DB) 0 6px/100% 3px no-repeat;border-radius:3px;transform:scaleX(1);transform-origin:50% 50%}
+.js .sec-head > div[data-rv]::after{transform:scaleX(0);transition:transform .9s var(--ease-out) .25s}
+.js .sec-head > div[data-rv].in::after{transform:scaleX(1)}
+
+/* Scroll reveal: shorter travel, strong ease-out, children arrive one after another */
+.js [data-rv]{transform:translateY(18px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)}
+.js :is(.svc-grid,.grid,.index,.stats,.cols,.plans,.ways,.quotes,.samples) > [data-rv]:nth-child(2){transition-delay:60ms}
+.js :is(.svc-grid,.grid,.index,.stats,.cols,.plans,.ways,.quotes,.samples) > [data-rv]:nth-child(3){transition-delay:120ms}
+.js :is(.svc-grid,.grid,.index,.stats,.cols,.plans,.ways,.quotes,.samples) > [data-rv]:nth-child(4){transition-delay:180ms}
+.js :is(.svc-grid,.grid,.index,.stats,.cols,.plans,.ways,.quotes,.samples) > [data-rv]:nth-child(5){transition-delay:60ms}
+.js :is(.svc-grid,.grid,.index,.stats,.cols,.plans,.ways,.quotes,.samples) > [data-rv]:nth-child(6){transition-delay:120ms}
+.js :is(.svc-grid,.grid,.index,.stats,.cols,.plans,.ways,.quotes,.samples) > [data-rv]:nth-child(7){transition-delay:180ms}
+.js :is(.svc-grid,.grid,.index,.stats,.cols,.plans,.ways,.quotes,.samples) > [data-rv]:nth-child(8){transition-delay:240ms}
+
+/* Pointer light on cards (position comes from site.js; mouse only) */
+:is(.card,.svc,.way,.mod,.col,.stat,.plan,.index-col,.plat){position:relative;isolation:isolate}
+:is(.card,.svc,.way,.mod,.col,.stat,.plan,.index-col,.plat)::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;opacity:0;background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%),rgba(82,113,233,.30),rgba(45,185,219,.10) 45%,transparent 70%);transition:opacity .2s ease}
+.svc::before{z-index:1;mix-blend-mode:screen}
+@media (hover:hover) and (pointer:fine){:is(.card,.svc,.way,.mod,.col,.stat,.plan,.index-col,.plat):hover::before{opacity:1}}
+
+/* Buttons: press feedback */
+.btn{transition:transform .16s var(--ease-out),box-shadow .25s var(--ease-out),background-position .6s var(--ease-out),background-color .2s ease,border-color .2s ease,color .2s ease}
+.btn:active{transform:scale(.97)}
+
+@media (max-width:768px){
+  .arches-glint{display:none}
+  .arches-hero{width:120vw;left:-20%;bottom:auto;top:30%;opacity:.7}
+  .arches-side{width:90vw;right:-30%;top:4%}
+  .progress{height:6px}
+}
+@media (prefers-reduced-motion:reduce){
+  .brand img,.brand::after{animation:none !important}
+  .brand::after{display:none}
+  .js .arches-base path{stroke-dashoffset:0 !important;transition:none !important}
+  .arches-glint{display:none}
+  .js .sec-head > div[data-rv]::after{transform:scaleX(1);transition:none}
+  .js [data-rv]{transform:none}
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width:1080px){
   .nav-links{gap:20px;font-size:14px}

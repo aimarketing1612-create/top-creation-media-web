@@ -223,6 +223,32 @@
     });
   }
 
+  // ---- Motion: scroll progress (the logo's double line) and a condensed nav after scrolling
+  var bar = document.querySelector('.progress i');
+  var navEl = document.querySelector('.nav');
+  var ticking = false;
+  function onScroll() {
+    ticking = false;
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - window.innerHeight;
+    if (bar) bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, window.scrollY / max) : 0) + ')';
+    if (navEl) navEl.classList.toggle('is-scrolled', window.scrollY > 24);
+  }
+  window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  onScroll();
+
+  // ---- Motion: a soft light follows the pointer across cards (mouse only, never on touch)
+  if (window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches && !reduce) {
+    var SPOT = '.card,.svc,.way,.mod,.col,.stat,.plan,.index-col,.plat';
+    document.addEventListener('pointermove', function (e) {
+      var t = e.target.closest ? e.target.closest(SPOT) : null;
+      if (!t) return;
+      var r = t.getBoundingClientRect();
+      t.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      t.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    }, { passive: true });
+  }
+
   // ---- Footer year
   var y = document.getElementById('year');
   if (y) y.textContent = new Date().getFullYear();
