@@ -31,8 +31,8 @@ window.TCM_MEDIA = {
     home:         { youtubeId: '', driveId: '', mp4: '/assets/video/home.mp4', poster: '/assets/video/home-cover.jpg' },  // Home page intro
     social:       { youtubeId: '', driveId: '', mp4: '', poster: '' },  // Social Media page intro
     services:     { youtubeId: '', driveId: '', mp4: '', poster: '' },  // Done-For-You page
-    academy:      { youtubeId: '', driveId: '', mp4: '', poster: '' },  // Marketing Academy page
-    ai:           { youtubeId: '', driveId: '', mp4: '', poster: '' },  // AI Classes intro
+    academy:      { youtubeId: '', driveId: '', mp4: '/assets/video/academy.mp4', poster: '/assets/video/academy-cover.jpg' },  // Marketing Academy page
+    ai:           { youtubeId: '', driveId: '', mp4: '/assets/video/ai.mp4', poster: '/assets/video/ai-cover.jpg' },  // AI Classes intro
     'scan-buddy': { youtubeId: '', driveId: '', mp4: '', poster: '' },  // Scan Buddy demo
     'ai-video':   { youtubeId: '', driveId: '', mp4: '', poster: '' },  // AI Video demo
     // Home page: team intro videos (with BGM; plays muted, visitors tap "Sound on")
@@ -40,10 +40,10 @@ window.TCM_MEDIA = {
     'team-jess':   { youtubeId: '', driveId: '', mp4: '/assets/video/team-jess.mp4', poster: '/assets/video/team-jess-cover.jpg' },
     'team-mac':    { youtubeId: '', driveId: '', mp4: '/assets/video/team-mac.mp4', poster: '/assets/video/team-mac-cover.jpg' },
     'team-marcus': { youtubeId: '', driveId: '', mp4: '/assets/video/team-marcus.mp4', poster: '/assets/video/team-marcus-cover.jpg' },
-    // AI Video page: three vertical (9:16) sample videos
+    // AI Academy page: three vertical (9:16) samples: UGC ad, AI short film, motion graphic
     'ai-video-1': { youtubeId: '', driveId: '', mp4: '/assets/video/ai-video-1.mp4', poster: '/assets/video/ai-video-1-cover.jpg' },
     'ai-video-2': { youtubeId: '', driveId: '', mp4: '/assets/video/ai-video-2.mp4', poster: '/assets/video/ai-video-2-cover.jpg' },
-    'ai-video-3': { youtubeId: '', driveId: '', mp4: '', poster: '' },
+    'ai-video-3': { youtubeId: '', driveId: '', mp4: '/assets/video/ai-video-3.mp4', poster: '/assets/video/ai-video-3-cover.jpg' },
   },
 
   testimonials: [

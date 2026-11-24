@@ -74,17 +74,19 @@ def nav(cur, slug=''):
           <div class="dd-menu">
             <a class="dd-row" href="/marketing-services#facebook">{logo('meta')}Facebook &amp; Instagram</a>
             <a class="dd-row" href="/marketing-services#tiktok">{logo('tiktok')}TikTok</a>
-            <a class="dd-row" href="/marketing-services#google">{logo('google')}Google</a>
             <a class="dd-row" href="/marketing-services#xiaohongshu">{logo('xiaohongshu')}Xiaohongshu</a>
+            <a class="dd-row" href="/marketing-services#google">{logo('google')}Google SEO &amp; Ads</a>
             <hr>
-            <a href="/marketing-services#more">More services<small>Video, livestream, KOL, events</small></a>
+            <a href="/marketing-services#more">AI video production</a>
+            <a href="/marketing-services#more">Websites &amp; landing pages</a>
+            <a href="/marketing-services#more">Video, livestream, KOL &amp; events</a>
           </div>
         </div>
         <div class="dd">
           <a href="/marketing-classes"{on(cur in ACADEMY_KEYS)}>Academy</a>
           <div class="dd-menu">
-            <a href="/marketing-classes">Marketing Classes<small>Facebook, TikTok, Google, Xiaohongshu</small></a>
-            <a href="/ai-classes">AI Classes<small>7 modules, no coding needed</small></a>
+            <a href="/marketing-classes">Marketing Academy<small>Facebook, TikTok, Google, Xiaohongshu</small></a>
+            <a href="/ai-classes">AI Academy<small>7 modules, no coding needed</small></a>
             <hr>
             <a class="dd-hl" href="/membership">Membership<small>Every class and AI tool, from RM180/mo</small></a>
           </div>
@@ -98,7 +100,7 @@ def nav(cur, slug=''):
         </div>
         <a href="/portfolio"{on(cur == 'portfolio')}>Portfolio</a>'''
     sub = [(cur == 'home', '/', 'Home'), (cur == 'services', '/marketing-services', 'Services'),
-           (cur == 'academy', '/marketing-classes', 'Marketing Classes'), (cur == 'ai', '/ai-classes', 'AI Classes'),
+           (cur == 'academy', '/marketing-classes', 'Marketing Academy'), (cur == 'ai', '/ai-classes', 'AI Academy'),
            (cur == 'member', '/membership', 'Membership'), (cur in TOOL_KEYS, '/ai-tools', 'AI Tools'),
            (cur == 'portfolio', '/portfolio', 'Portfolio')]
     subs = '\n        '.join(f'<a href="{h}"{on(hit)}>{l}</a>' for hit, h, l in sub)
@@ -125,8 +127,8 @@ FOOT = f'''<footer class="foot">
     </div>
     <div class="foot-links">
       <a href="/marketing-services">Services</a>
-      <a href="/marketing-classes">Marketing Classes</a>
-      <a href="/ai-classes">AI Classes</a>
+      <a href="/marketing-classes">Marketing Academy</a>
+      <a href="/ai-classes">AI Academy</a>
       <a href="/membership">Membership</a>
       <a href="/ai-tools">AI Tools</a>
       <a href="/portfolio">Portfolio</a>
@@ -166,7 +168,7 @@ def page(slug, title, desc, cur, ld, body, scripts=()):
   <link rel="icon" href="/assets/tcm-logo.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/site.css">
   <script>document.documentElement.className='js'</script>
   <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
@@ -281,7 +283,7 @@ def _switch(links, cur, label):
 
 
 def switch(cur):
-    return _switch([('academy', '/marketing-classes', 'Marketing Classes'), ('ai', '/ai-classes', 'AI Classes'),
+    return _switch([('academy', '/marketing-classes', 'Marketing Academy'), ('ai', '/ai-classes', 'AI Academy'),
                     ('member', '/membership', 'Membership')], cur, 'Academy sections')
 
 
@@ -668,10 +670,12 @@ DFY_XHS = [
     ('Leads & conversion', 'DMs, lead forms and store links that turn attention into enquiries.'),
 ]
 TOOLKIT = [
+    ('AI video production', 'UGC ads, AI short films and motion graphics.', '/ai-classes#ai-video-types', 'photo', 'ai-video', 'Creator applying skincare in an AI-made UGC video'),
+    ('Websites & landing pages', 'Fast pages built to turn visitors into enquiries.', '#google', 'photo', 'website', 'Web designer working on a landing page design'),
     ('Video production', 'Short videos, product and brand films.', '#more', 'photo', 'production', 'Crew filming a product on a turntable in a studio'),
     ('Livestream studio', 'Hosts, scripts and crew for selling lives.', '#more', 'photo', 'livestream', 'Livestream host presenting products to a phone camera'),
     ('KOC & KOL', 'Creators shortlisted, briefed and measured.', '#more', 'photo', 'kol', 'Creator recording a product review'),
-    ('AI tools', 'Scan Buddy and AI Video, in the Membership.', '/membership', 'photo', 'ai-tools', 'Customer scanning a QR code beside a tablet making an AI product video'),
+    ('IP branding', 'Turn the founder into the face of the brand.', '#more', 'photo', 'ip-branding', 'Founder being interviewed on camera for a personal brand video'),
     ('Events, offline to online', 'Launches filmed live and amplified online.', '#more', 'photo', 'events', 'Brand launch event being filmed in a mall atrium'),
     ('Team training', 'Train your staff to take over day-to-day.', '/marketing-classes', 'photo', 'training', 'Corporate marketing and AI training workshop'),
 ]
@@ -707,8 +711,8 @@ dfy_body = f'''{hero([("Home", "/"), ("Services", "")], 'Your marketing, <span c
 
     <section class="tile tile-dark" id="more">
       <div class="wrap">
-        {head('Also in our toolkit', 'More services')}
-        {svc_cards(TOOLKIT, 'svc-grid g3')}
+        {head('Everything else we do', 'More services')}
+        {svc_cards(TOOLKIT)}
       </div>
     </section>
 
@@ -774,10 +778,10 @@ academy_ld = {'@context': 'https://schema.org', '@graph': [
      'provider': PROVIDER, 'url': SITE + 'marketing-classes'},
     faq_ld(ACADEMY_FAQ)]}
 
-academy_body = f'''{hero([("Home", "/"), ("Academy", "/marketing-classes"), ("Marketing Classes", "")], 'Learn to run your own ads, <span class="accent">A to Z.</span>',
+academy_body = f'''{hero([("Home", "/"), ("Academy", "/marketing-classes"), ("Marketing Academy", "")], 'Learn to run your own ads, <span class="accent">A to Z.</span>',
        'Facebook, Instagram, TikTok, Google and Xiaohongshu, taught hands-on on your own accounts. Save on agency fees and never waste money on the wrong strategy again.',
        btns(('Join the next class', wa("Hi, I'd like to join the marketing classes!")), ('Choose a platform', '#platforms')),
-       switch('academy') + video('academy', 'Marketing classes introduction video'), eyebrow='Academy · Marketing Classes')}
+       switch('academy') + video('academy', 'Marketing classes introduction video'), eyebrow='Marketing Academy')}
 
     <section class="tile tile-raise">
       <div class="wrap">
@@ -821,6 +825,20 @@ academy_body = f'''{hero([("Home", "/"), ("Academy", "/marketing-classes"), ("Ma
 
 {cta('Become the next professional marketer.', 'Tell us your business and goal. We will point you to the right platform to start.', 'WhatsApp Us About the Classes', "Hi, I'd like to know more about the marketing classes!")}'''
 
+def av_samples():
+    rows = [('ai-video-1', 'UGC ads', 'Creator-style clips that feel native on TikTok and Reels.'),
+            ('ai-video-2', 'AI short films', 'Story-led drama that holds attention to the end.'),
+            ('ai-video-3', 'Motion graphics', 'Animated promos for any product, shop or service.')]
+    figs = ''.join(f'''<figure class="sample" data-rv>{video9(k, t + " sample").replace(' data-rv', '')}<figcaption><b>{esc(t)}</b><span>{esc(d)}</span></figcaption></figure>''' for k, t, d in rows)
+    return f'''    <section class="tile tile-dark" id="ai-video-types">
+      <div class="wrap">
+        {head('AI video comes in <span class="accent">many forms</span>', 'What you will make', 'Three styles you will learn to make in class. All three were made with AI.')}
+        <div class="samples">{figs}</div>
+      </div>
+    </section>
+'''
+
+
 # =================================================================== AI CLASSES
 AI_MODS = [
     ('Know your AI tools', 'Start here. ChatGPT, Claude and Gemini: what each is best at, free versus paid, and how to give AI the context, examples and checks that turn generic text into usable work.', 'Your own prompt library and a brand-voice assistant.', ['ChatGPT', 'Claude', 'Gemini', 'Perplexity']),
@@ -844,10 +862,10 @@ ai_ld = {'@context': 'https://schema.org', '@graph': [
      'provider': PROVIDER, 'url': SITE + 'ai-classes'},
     faq_ld(AI_FAQ)]}
 
-ai_body = f'''{hero([("Home", "/"), ("Academy", "/marketing-classes"), ("AI Classes", "")], 'Let AI do the work. <span class="accent">You run the show.</span>',
+ai_body = f'''{hero([("Home", "/"), ("Academy", "/marketing-classes"), ("AI Academy", "")], 'Let AI do the work. <span class="accent">You run the show.</span>',
        'AI already helps businesses work smarter and replace complex manual tasks. Learn to use it for video, graphics, captions, websites and automation. No coding, no tech background.',
        btns(('Join the next class', wa("Hi, I'd like to join the AI classes!")), ('See the 7 modules', '#curriculum')),
-       switch('ai') + video('ai', 'AI Classes introduction video'), eyebrow='Academy · AI Classes')}
+       switch('ai') + video('ai', 'AI Classes introduction video'), eyebrow='AI Academy · No coding needed')}
 
     <section class="tile tile-raise">
       <div class="wrap">
@@ -861,6 +879,7 @@ ai_body = f'''{hero([("Home", "/"), ("Academy", "/marketing-classes"), ("AI Clas
       </div>
     </section>
 
+{av_samples()}
     <section class="tile tile-dark" id="curriculum">
       <div class="wrap">
         {head('Seven modules. Take one, or all', 'Curriculum', 'Every module ends with something you made, for your own business.')}
@@ -1016,20 +1035,6 @@ def av_mockup():
 '''
 
 
-def av_samples():
-    return f'''    <section class="tile tile-raise" id="samples">
-      <div class="wrap">
-        {head('See real samples', 'Samples', 'Product ads and short dramas, made with AI.')}
-        <div class="samples">
-          {video9('ai-video-1', 'AI Video sample 1')}
-          {video9('ai-video-2', 'AI Video sample 2')}
-          {video9('ai-video-3', 'AI Video sample 3')}
-        </div>
-      </div>
-    </section>
-'''
-
-
 SB_FAQ = [
     ('What is Scan Buddy?', 'A smart QR code for your business. Customers scan once to follow your social media, chat on WhatsApp or leave a Google review, and you see every scan.'),
     ('Can Scan Buddy work as a Google review QR code?', 'Yes. One tap takes happy customers straight to your Google review page while they are still in the shop, next to your social and WhatsApp links.'),
@@ -1072,7 +1077,7 @@ av_body = tool_body(
      ('UGC-style clips', 'Natural, creator-style videos that feel native on TikTok and Reels.'),
      ('Captions that sell', 'Hook, body and call to action written for you, in English, 中文 or Bahasa.'),
      ('Every format', '9:16 for TikTok and Reels, 1:1 for feeds, 16:9 for YouTube and websites.')],
-    av_samples() + av_mockup(), AV_FAQ, 'Make your next ad in minutes.', 'WhatsApp us to get AI Video for your business.', ['video', 'layers', 'users', 'sparkles', 'pen', 'zap'])
+    av_mockup(), AV_FAQ, 'Make your next ad in minutes.', 'WhatsApp us to get AI Video for your business.', ['video', 'layers', 'users', 'sparkles', 'pen', 'zap'])
 
 # =================================================================== MEMBERSHIP
 MEM_FAQ = [

@@ -4,14 +4,15 @@
 
 :root{
   --bg:#170E35; --tint:rgba(255,255,255,.035); --card:#1F1647; --card-2:#261B55; --pink:#F472B6;
-  --ink:#F8F6FF; --ink-2:#D3CDEC; --ink-3:#B0A9D2;
+  --ink:#FFFFFF; --ink-2:#ECE9FB; --ink-3:#CBC6E6;
   --line:rgba(255,255,255,.11);
   --purple:#9D7BFF; --purple-d:#C4B1FF; --blue:#4F9BFF; --cyan:#22D3EE;
-  --grad:linear-gradient(90deg,#F472B6 0%,#C084FC 34%,#8B8CFF 64%,#22D3EE 100%);
-  --btn:linear-gradient(90deg,#D946EF 0%,#9B5CF6 40%,#7C4DFF 70%,#3B8BFF 100%);
+  --grad:linear-gradient(90deg,#B455FF 0%,#8A6BFF 34%,#5C8DFF 66%,#35C4F0 100%);
+  --flow:linear-gradient(100deg,#B455FF 0%,#8A6BFF 18%,#5C8DFF 36%,#35C4F0 50%,#E4F8FF 58%,#35C4F0 66%,#5C8DFF 80%,#8A6BFF 91%,#B455FF 100%);
+  --btn:linear-gradient(90deg,#9B3BE8 0%,#7B5BF2 38%,#4F7DF0 70%,#2FB3E3 100%);
   --shadow:0 1px 2px rgba(0,0,0,.4),0 18px 40px -18px rgba(0,0,0,.7);
   --shadow-lg:0 2px 8px rgba(0,0,0,.45),0 34px 80px -26px rgba(0,0,0,.85);
-  --neon:linear-gradient(135deg,#A855F7 0%,#7C4DFF 35%,#3B8BFF 70%,#22D3EE 100%);
+  --neon:linear-gradient(135deg,#9B3BE8 0%,#6C63F5 35%,#3F8EF0 70%,#2DB9DB 100%);
   --glow:0 0 0 1px rgba(124,77,255,.12),0 14px 34px -14px rgba(124,77,255,.55),0 0 28px -10px rgba(34,211,238,.5);
   --glow-hot:0 0 0 1px rgba(124,77,255,.2),0 20px 46px -12px rgba(124,77,255,.75),0 0 44px -6px rgba(34,211,238,.7);
   --ease:cubic-bezier(.16,1,.3,1);
@@ -580,6 +581,42 @@ html[lang^="zh"] :is(.lede,.card-d,.col-d,.mod-d,.way-d,.list span,.faq details 
 .tool-art .clips{transform:scale(.72)}
 .photo img{object-position:var(--pos,50% 50%)}
 @media (max-width:560px){.seg button{white-space:normal}.tool-art{height:210px}}
+
+
+/* ---------- Logo colours flowing through type (purple to blue to cyan, with a light sweep) ---------- */
+@keyframes flow{from{background-position:0 0}to{background-position:-200% 0}}
+.accent,.eyebrow,.stat-n,.split-k,.way-k,.plan-name,.member figcaption span,.sample figcaption b{background:var(--flow);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:flow 7s linear infinite}
+.accent{filter:drop-shadow(0 0 16px rgba(92,141,255,.45))}
+.mvp-title .accent{background:var(--flow);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;animation:flow 4.5s linear infinite}
+.split-k.mvp-num{-webkit-text-fill-color:currentColor;background:none;color:var(--ink-2);animation:none}
+.nav-links > a:not(.btn):not(.lang),.dd > a{font-family:'Outfit',var(--font);font-weight:600;font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:#7FB6FF;background:var(--flow);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:flow 6s linear infinite;transition:filter .3s var(--ease)}
+.nav-links > a:not(.btn):not(.lang):hover,.dd:hover > a,.dd:focus-within > a{filter:brightness(1.35) drop-shadow(0 0 10px rgba(92,141,255,.7))}
+.dd > a::after{border-color:#7FB6FF;opacity:.9}
+.nav-links a[aria-current="page"]::before{background:var(--flow);background-size:200% 100%;animation:flow 6s linear infinite;box-shadow:0 0 10px rgba(92,141,255,.8)}
+.subnav a{font-family:'Outfit',var(--font);letter-spacing:.06em}
+.subnav a[aria-current="page"]{box-shadow:inset 0 -2px 0 #5C8DFF}
+html[lang^="zh"] .nav-links > a:not(.btn):not(.lang),html[lang^="zh"] .dd > a{font-family:var(--zh-serif);font-size:15.5px;letter-spacing:.16em;font-weight:700}
+/* English headings in a geometric face close to the logo's lettering */
+html:not([lang^="zh"]) :is(.h1,.h2,.h3,.way-t,.card-t,.col-t,.mod-t,.plan-price,.member figcaption b){font-family:'Outfit',var(--font)}
+html:not([lang^="zh"]) .h1{font-weight:700;letter-spacing:-.025em}
+html:not([lang^="zh"]) .h2{font-weight:700;letter-spacing:-.02em}
+html:not([lang^="zh"]) .eyebrow{font-family:'Outfit',var(--font);font-weight:600;letter-spacing:.28em}
+/* Brighter logo and clearer small text */
+.brand img{height:54px;filter:brightness(1.3) saturate(1.2) drop-shadow(0 0 12px rgba(120,130,255,.65))}
+.foot img{filter:brightness(1.3) saturate(1.2) drop-shadow(0 0 8px rgba(120,130,255,.5))}
+.lede{color:#F1EEFC}
+.card-d,.col-d,.mod-d,.way-d,.faq details p,.list span,.plan-note,.video-cap{color:var(--ink-2)}
+.crumbs,.cta-meta,.hero-logos p,.foot{color:var(--ink-3)}
+.btn-primary{background:var(--btn);background-size:160% 100%;transition:transform .35s var(--ease),box-shadow .35s var(--ease),background-position .6s var(--ease)}
+.btn-primary:hover{background-position:100% 0}
+/* Sample videos with labels */
+.sample{margin:0}
+.sample figcaption{padding:16px 4px 0;text-align:center}
+.sample figcaption b{display:inline-block;font-size:18px;font-weight:700}
+.sample figcaption span{display:block;margin-top:4px;font-size:14.5px;line-height:1.5;color:var(--ink-2)}
+@media (max-width:768px){.brand img{height:44px}}
+@media (max-width:560px){.sample figcaption b{font-size:14px}.sample figcaption span{display:none}}
+@media (prefers-reduced-motion:reduce){.accent,.eyebrow,.stat-n,.split-k,.way-k,.plan-name,.nav-links > a,.dd > a{animation:none !important}}
 
 /* ---------- Responsive ---------- */
 @media (max-width:1080px){
