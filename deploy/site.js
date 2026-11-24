@@ -88,6 +88,17 @@
     box.appendChild(el);
     if (!auto) { el.controls = true; el.play(); return; }
     el.muted = true; el.loop = true; el.autoplay = true; el.preload = 'auto';
+    // Videos in a [data-sound-group] share one soundtrack: one button, one audible video.
+    var gRoot = box.closest ? box.closest('[data-sound-group]') : null;
+    if (gRoot) {
+      var g = soundGroup(gRoot);
+      g.els.push(el);
+      players.push({ el: el, paint: g.paint });
+      el.addEventListener('click', g.toggle);
+      el.style.cursor = 'pointer';
+      watch(box, el);
+      return;
+    }
     var snd = document.createElement('button');
     snd.type = 'button'; snd.className = 'video-sound';
     function paint() {
@@ -109,10 +120,41 @@
     el.addEventListener('click', toggle);
     el.style.cursor = 'pointer';
     box.appendChild(snd);
-    // Pause when scrolled away, resume when back, to save data and battery.
+    watch(box, el);
+  }
+
+  // Pause when scrolled away, resume when back, to save data and battery.
+  function watch(box, el) {
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) el.play().catch(function () {}); else el.pause(); }); }, { threshold: 0.25 }).observe(box);
     } else el.play().catch(function () {});
+  }
+
+  function soundGroup(root) {
+    if (root._tcmGroup) return root._tcmGroup;
+    var g = root._tcmGroup = { els: [] };
+    var wrap = document.createElement('div'); wrap.className = 'sound-group';
+    var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'video-sound video-sound-group';
+    wrap.appendChild(btn); root.parentNode.insertBefore(wrap, root);
+    function live() { return g.els.filter(function (v) { return !v.muted; })[0]; }
+    g.paint = function () {
+      var on = !!live();
+      btn.innerHTML = (on ? SOUND_ON : SOUND_OFF) + '<span>' + (on ? T.off : T.on) + '</span>';
+      btn.setAttribute('aria-label', on ? T.aoff : T.aon);
+      btn.classList.toggle('is-on', on);
+    };
+    g.toggle = function () {
+      var cur = live();
+      if (cur) { cur.muted = true; g.paint(); return; }
+      var lead = g.els[0]; if (!lead) return;
+      players.forEach(function (p) { if (!p.el.muted) { p.el.muted = true; p.paint(); } });
+      g.els.forEach(function (v) { if (v !== lead) { try { v.currentTime = lead.currentTime; } catch (e) {} } });
+      lead.muted = false; lead.play().catch(function () {});
+      g.paint();
+    };
+    btn.addEventListener('click', g.toggle);
+    g.paint();
+    return g;
   }
 
   function mountIframe(box, src, title) {
@@ -179,6 +221,32 @@
       if (it.type === 'dashboard') img.className = 'work-img';
       a.appendChild(img); hg.appendChild(a);
     });
+  }
+
+  // ---- Motion: scroll progress (the logo's double line) and a condensed nav after scrolling
+  var bar = document.querySelector('.progress i');
+  var navEl = document.querySelector('.nav');
+  var ticking = false;
+  function onScroll() {
+    ticking = false;
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - window.innerHeight;
+    if (bar) bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, window.scrollY / max) : 0) + ')';
+    if (navEl) navEl.classList.toggle('is-scrolled', window.scrollY > 24);
+  }
+  window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  onScroll();
+
+  // ---- Motion: a soft light follows the pointer across cards (mouse only, never on touch)
+  if (window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches && !reduce) {
+    var SPOT = '.card,.svc,.way,.mod,.col,.stat,.plan,.index-col,.plat';
+    document.addEventListener('pointermove', function (e) {
+      var t = e.target.closest ? e.target.closest(SPOT) : null;
+      if (!t) return;
+      var r = t.getBoundingClientRect();
+      t.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      t.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    }, { passive: true });
   }
 
   // ---- Footer year

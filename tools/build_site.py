@@ -106,6 +106,7 @@ def nav(cur, slug=''):
     subs = '\n        '.join(f'<a href="{h}"{on(hit)}>{l}</a>' for hit, h, l in sub)
     return f'''<a class="skip" href="#main">Skip to content</a>
   <header class="nav">
+    <div class="progress" aria-hidden="true"><i></i></div>
     <div class="nav-in">
       <a class="brand" href="/" aria-label="Top Creation Media, home"><img src="/assets/tcm-wordmark.webp" alt="TCM Top Creation Media" width="960" height="401"></a>
       <nav class="nav-links" aria-label="Main">
@@ -263,9 +264,23 @@ def ticks(items):
     return '<ul class="ticks">' + ''.join(f'<li>{esc(t)}</li>' for t in items) + '</ul>'
 
 
+def arches(cls=''):
+    """Decorative line art taken from the logo: double-line arches that draw themselves, then a light runs along them."""
+    shapes = ['M40 320V170A110 110 0 0 1 260 170V320', 'M72 320V170A78 78 0 0 1 228 170V320',
+              'M260 320V170A110 110 0 0 1 480 170V320', 'M292 320V170A78 78 0 0 1 448 170V320',
+              'M480 320V170A110 110 0 0 1 700 170V320', 'M512 320V170A78 78 0 0 1 668 170V320']
+    base = ''.join(f'<path pathLength="1" style="--d:{i * 90}" d="{d}"/>' for i, d in enumerate(shapes))
+    glint = ''.join(f'<path pathLength="1" style="--d:{i * 700}" d="{d}"/>' for i, d in enumerate(shapes[::2]))
+    return (f'<svg class="arches {cls}" viewBox="0 0 740 320" fill="none" aria-hidden="true" focusable="false" data-rv>'
+            '<defs><linearGradient id="tcm-line" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="740" y2="0">'
+            '<stop offset="0" stop-color="#9327D2"/><stop offset=".5" stop-color="#5271E9"/><stop offset="1" stop-color="#2DB9DB"/></linearGradient></defs>'
+            f'<g class="arches-base" stroke="url(#tcm-line)">{base}</g><g class="arches-glint">{glint}</g></svg>')
+
+
 def hero(crumbs, h1, lede, buttons='', extra='', eyebrow=''):
     crumb = ' / '.join(f'<a href="{h}">{esc(t)}</a>' if h else esc(t) for t, h in crumbs)
     return f'''    <section class="page-hero">
+      {arches('arches-side')}
       <div class="crumbs rise">{crumb}</div>
       {f'<div class="eyebrow rise">{eyebrow}</div>' if eyebrow else ''}
       <h1 class="h1 rise" style="animation-delay:.05s">{h1}</h1>
@@ -330,6 +345,7 @@ def faq_section(items, cls='tile-dark', title='Questions, answered.'):
 
 def cta(h2, lede, label, msg):
     return f'''    <section class="cta" id="contact">
+      {arches('arches-centre')}
       <h2 class="h2" data-rv>{h2}</h2>
       <p class="lede" data-rv>{lede}</p>
       <div class="btn-row" data-rv><a class="btn btn-primary btn-lg" href="{wa(msg)}" target="_blank" rel="noopener">{esc(label)}</a></div>
@@ -460,7 +476,7 @@ HOME_FAQ = [
     ('Are you a social media agency for TikTok, Facebook, Instagram and Xiaohongshu?', 'Yes. We run all four in-house: content, ads, TikTok Live and Shop, Xiaohongshu notes and creator seeding, plus Google. You get one plan and one report instead of four agencies.'),
     ('Do you work with KOLs and influencers in Malaysia?', 'Yes. We shortlist KOLs and KOCs by audience fit, engagement quality and real followers, then manage the brief, approvals and results, so every collaboration is measured in reach and sales.'),
     ('Do you do video production and livestreaming in Malaysia?', 'Yes. Our in-house studio shoots short videos, product films and brand films, and runs TikTok and Facebook livestreams with hosts, scripts and live offers.'),
-    ('What is the TCM Membership?', 'For RM300 a month (or RM2,160 a year, 40% off) you get every TCM AI tool (Scan Buddy and AI Video), our marketing resources and the full video course library. Follow the lessons and still cannot do it? Full refund (terms apply).'),
+    ('What is the TCM Membership?', 'For RM300 a month (or RM2,160 a year, 40% off) you get every TCM AI tool (Scan Buddy and AI Video), our marketing resources, the full video course library and new hands-on classes every month. We keep teaching and updating, not one or two lessons and goodbye. Cannot learn it? Full refund (terms apply).'),
 ]
 home_ld = {'@context': 'https://schema.org', '@graph': [
     {'@type': 'ProfessionalService', 'name': 'Top Creation Media', 'url': SITE, 'logo': SITE + 'assets/tcm-logo.jpg',
@@ -468,6 +484,62 @@ home_ld = {'@context': 'https://schema.org', '@graph': [
      'description': 'Digital marketing agency and AI & marketing training studio in Malaysia.',
      'sameAs': ['https://facebook.com/topcreationmedia', 'https://instagram.com/topcreationmedia', 'https://tiktok.com/@topcreationmedia']},
     faq_ld(HOME_FAQ)]}
+
+INDEX = [
+    ('Marketing services', [
+        ('SEO agency Malaysia', '/marketing-services#google'),
+        ('Google Ads management', '/marketing-services#google'),
+        ('Facebook & Instagram ads', '/marketing-services#facebook'),
+        ('TikTok marketing & TikTok Live', '/marketing-services#tiktok'),
+        ('Xiaohongshu marketing', '/marketing-services#xiaohongshu'),
+        ('Social media management', '/marketing-services'),
+    ]),
+    ('Content & creators', [
+        ('Video production', '/marketing-services#more'),
+        ('AI video production', '/marketing-services#more'),
+        ('Livestream studio', '/marketing-services#more'),
+        ('KOL & influencer marketing', '/marketing-services#more'),
+        ('IP & personal branding', '/marketing-services#more'),
+        ('Websites & landing pages', '/marketing-services#more'),
+    ]),
+    ('Training', [
+        ('Digital marketing course', '/marketing-classes'),
+        ('Facebook ads course', '/marketing-classes#facebook'),
+        ('TikTok ads course', '/marketing-classes#tiktok'),
+        ('AI course, no coding', '/ai-classes'),
+        ('Corporate AI & marketing training', '/ai-classes'),
+        ('TCM Membership', '/membership'),
+    ]),
+    ('AI tools & proof', [
+        ('AI tools for marketing', '/ai-tools'),
+        ('Scan Buddy: Google review QR code', '/scan-buddy'),
+        ('AI Video: product photo to video', '/ai-video'),
+        ('Portfolio & campaign results', '/portfolio'),
+    ]),
+]
+
+
+def index_section():
+    cols = ''.join(
+        f'<div class="index-col" data-rv><h3>{esc(t)}</h3><ul>' + ''.join(f'<li><a href="{h}">{esc(l)}</a></li>' for l, h in links) + '</ul></div>'
+        for t, links in INDEX)
+    return f'''    <section class="tile tile-dark" id="explore">
+      <div class="wrap">
+        {head('Digital marketing in Malaysia, <span class="accent">all under one roof</span>', 'Explore TCM', 'SEO and paid ads, video and KOLs, AI tools, and training for your team.')}
+        <div class="index">{cols}</div>
+      </div>
+    </section>'''
+
+
+home_ld['@graph'][0].update({
+    'description': 'Digital marketing agency in Malaysia for SEO, Google and Meta ads, TikTok, Xiaohongshu, KOL marketing and video production, with AI and digital marketing training for teams.',
+    'availableLanguage': ['English', 'Chinese', 'Malay'],
+    'knowsAbout': [l for _, links in INDEX[:3] for l, _ in links],
+    'hasOfferCatalog': {'@type': 'OfferCatalog', 'name': 'Marketing services', 'itemListElement': [
+        {'@type': 'Offer', 'itemOffered': {'@type': 'Service', 'name': l, 'url': SITE + h.lstrip('/').split('#')[0]}}
+        for _, links in INDEX[:2] for l, h in links]},
+})
+home_ld['@graph'].insert(1, {'@type': 'WebSite', 'name': 'Top Creation Media', 'url': SITE, 'inLanguage': ['en', 'zh-Hans']})
 
 SERVICES = [
     ('Meta ads', 'Facebook and Instagram ads, tracked to the ringgit.', '/marketing-services#facebook', 'logo', 'meta', 'Meta'),
@@ -496,6 +568,7 @@ def member(key, name, role, i):
 
 
 home_body = f'''    <section class="hero">
+      {arches('arches-hero')}
       <div class="hero-grid">
         <div>
           <div class="eyebrow rise">Digital marketing × Content × AI</div>
@@ -539,7 +612,7 @@ home_body = f'''    <section class="hero">
     <section class="tile tile-dark team" id="team">
       <div class="wrap">
         {head('The people behind <span class="accent">your growth</span>', 'Meet the team')}
-        <div class="team-grid">
+        <div class="team-grid" data-sound-group>
           {''.join(member(*m, i) for i, m in enumerate(TEAM))}
         </div>
       </div>
@@ -627,6 +700,8 @@ home_body = f'''    <section class="hero">
         <div class="quotes"></div>
       </div>
     </section>
+
+{index_section()}
 
 {faq_section(HOME_FAQ, 'tile-raise')}
 
@@ -1090,7 +1165,7 @@ av_body = tool_body(
 
 # =================================================================== MEMBERSHIP
 MEM_FAQ = [
-    ('What is included in the TCM Membership?', 'Every TCM AI tool (Scan Buddy and AI Video), our marketing resources (templates, checklists and prompts) and the full video course library: marketing for every platform plus the AI classes.'),
+    ('What is included in the TCM Membership?', 'Every TCM AI tool (Scan Buddy and AI Video), our marketing resources (templates, checklists and prompts), the full video course library and new hands-on classes every month. Lessons are updated continuously, so you keep learning as the platforms change.'),
     ('How much is the TCM Membership?', 'RM300 a month, or RM2,160 a year when you subscribe yearly. That is 40% off, the same as RM180 a month.'),
     ('I joined a TCM offline course. Do I get anything?', 'Yes. Offline course participants get their first 6 months of the Membership free, so you can keep learning and use every tool after class.'),
     ('How are your video courses different?', 'They are not screen recordings. Every lesson is produced like a show: multiple camera angles, on-screen animations and real examples, in short episodes you finish in one sitting.'),
@@ -1111,7 +1186,7 @@ MEM_INSIDE = [
     ('The full course library', 'Every platform and all 7 AI classes, produced like a show.', '/marketing-classes', 'photo', 'production', 'Lesson being filmed in a studio with a cinema camera and lights'),
     ('Marketing resources', 'The templates, checklists and prompts we use for clients.', '#plans', 'photo', 'resources', 'Marketing templates, checklists and a campaign report on a desk'),
 ]
-PLAN_FEATS = ['Scan Buddy and AI Video', 'Full marketing and AI course library', 'Templates, checklists and prompts', "Can't learn it? Full refund"]
+PLAN_FEATS = ['Scan Buddy and AI Video', 'Full marketing and AI course library', 'New hands-on classes every month', 'Templates, checklists and prompts', "Can't learn it? Full refund"]
 
 
 def plan(name, price, unit, note, msg, label, best=False):
@@ -1126,6 +1201,7 @@ def plan(name, price, unit, note, msg, label, best=False):
 
 
 mem_body = f'''    <section class="hero">
+      {arches('arches-hero')}
       <div class="hero-grid">
         <div>
           <div class="crumbs rise" style="margin-bottom:14px"><a href="/">Home</a> / <a href="/marketing-classes">Academy</a> / Membership</div>
@@ -1148,7 +1224,7 @@ mem_body = f'''    <section class="hero">
         {svc_cards(MEM_INSIDE, 'svc-grid g3')}
         <ul class="facts" data-rv>
           <li><b>Not a screen recording</b>Multiple scenes and camera angles</li>
-          <li><b>Easy to follow</b>Animated on-screen guides</li>
+          <li><b>New classes every month</b>Lessons updated continuously</li>
           <li><b>Real work</b>Examples from real campaigns</li>
           <li><b>Short episodes</b>Finish each in one sitting</li>
         </ul>
@@ -1225,7 +1301,7 @@ tool_ld = lambda faq: {'@context': 'https://schema.org', '@graph': [faq_ld(faq)]
 # =================================================================== WRITE
 PAGES = [
     ('index.html', '', 'Digital Marketing Agency Malaysia | Top Creation Media',
-     'Digital marketing agency in Malaysia: Facebook & Instagram ads, TikTok Live, Google SEO, Xiaohongshu & KOL marketing, plus AI and marketing classes.',
+     'Digital marketing agency in Malaysia for SEO, Google & Meta ads, TikTok, Xiaohongshu, KOL and video, plus AI and digital marketing courses for your team.',
      'home', home_ld, home_body, ('/portfolio-data.js',)),
     ('marketing-services.html', 'marketing-services', 'Social Media Marketing Services Malaysia | TCM',
      'Done-for-you Facebook, Instagram, TikTok Live, Google SEO and Xiaohongshu marketing in Malaysia: strategy, video, ads, livestream and KOC/KOL.',
