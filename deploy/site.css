@@ -633,6 +633,81 @@ html[lang^="zh"] .video-sound{font-family:var(--zh-sans);font-size:12.5px;letter
 @media (max-width:560px){.samples{gap:18px 10px}.sample{width:calc((100% - 10px)/2)}.video-sound{bottom:8px;padding:5px 10px 5px 8px;font-size:9.5px;letter-spacing:.14em}.video-sound svg{width:11px;height:11px}.sample figcaption span{display:block;font-size:12.5px}}
 @media (prefers-reduced-motion:reduce){.video-sound span,.video-sound svg{animation:none !important}}
 
+
+/* ---------- Wide layout: fill large screens instead of a narrow centre column ---------- */
+:root{--wrap:min(1640px,92vw)}
+.wrap,.nav-in,.hero-grid,.hero-logos{max-width:var(--wrap)}
+.nav-in{padding-left:0;padding-right:0;width:var(--wrap)}
+.hero-grid{gap:clamp(40px,5vw,96px)}
+.hero .h1{font-size:clamp(42px,5.4vw,104px)}
+html[lang^="zh"] .hero .h1{font-size:clamp(38px,5vw,98px)}
+.hero .lede{font-size:clamp(17px,1.3vw,24px);max-width:34em}
+.hero .eyebrow{font-size:clamp(13px,.85vw,16px)}
+.hero .btn{min-height:clamp(52px,3.4vw,64px);padding:0 clamp(28px,2.2vw,42px);font-size:clamp(16.5px,1.05vw,19.5px)}
+.hero .video{border-radius:clamp(24px,2vw,36px)}
+/* Client logos: a full-width band, edge to edge */
+.marquee{width:100vw;margin-left:calc(50% - 50vw);padding:clamp(24px,2.2vw,40px) 0;-webkit-mask:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.marquee-group{zoom:1.25;gap:84px;padding-right:84px}
+.hero-logos{padding-top:clamp(64px,5vw,104px)}
+.hero-logos p{font-size:clamp(14px,.95vw,17px)}
+@media (min-width:1500px){
+  body{font-size:18px}
+  .marquee-group{zoom:1.5}
+  .tile{padding-top:120px;padding-bottom:120px}
+  .h2{font-size:clamp(52px,3.5vw,68px)}
+  html[lang^="zh"] .h2{font-size:clamp(40px,2.8vw,54px)}
+  .sec-head{max-width:960px;margin-bottom:64px}
+  .lede{font-size:clamp(19px,1.2vw,22px)}
+  html[lang^="zh"] .lede{font-size:clamp(18.5px,1.15vw,21.5px)}
+  .card-t,.svc .card-t{font-size:21.5px}
+  .card-d,.svc .card-d,.col-d,.mod-d{font-size:17px}
+  .svc-body{padding:24px 26px 28px}
+  .stat-n{font-size:clamp(50px,3.4vw,66px)}
+  .stat-l{font-size:17px}
+  .faq summary{font-size:20px}
+  .faq details p{font-size:17.5px}
+  .member figcaption b{font-size:26px}
+  .member figcaption span{font-size:17px}
+  .index-col h3{font-size:15px}
+  .index-col a{font-size:18px}
+}
+@media (max-width:768px){
+  .nav-in{width:auto;padding:0 16px}
+  .marquee-group{zoom:.8;gap:52px;padding-right:52px}
+  .marquee{padding:18px 0}
+}
+/* ---------- Our MVP: larger copy ---------- */
+.mvp .split{gap:clamp(48px,6vw,112px)}
+.mvp .split .h2{font-size:clamp(32px,3.5vw,60px)}
+.mvp .split .lede{font-size:clamp(18px,1.45vw,24px)}
+.mvp .ticks li{font-size:clamp(17px,1.25vw,21px);padding-left:36px}
+.mvp .ticks li::before{top:.12em;width:24px;height:24px}
+.mvp .split-k{font-size:clamp(13px,.95vw,16px)}
+html[lang^="zh"] .mvp .split .h2{font-size:clamp(28px,3.1vw,52px)}
+html[lang^="zh"] .mvp .split .lede{font-size:clamp(18px,1.4vw,23px)}
+/* ---------- One sound button for a group of videos; labels sit clear of burnt-in subtitles ---------- */
+.sound-group{display:flex;justify-content:center;margin:-28px 0 30px}
+.video-sound.video-sound-group{position:static;transform:none;padding:10px 20px 10px 16px;font-size:12.5px}
+.video-sound.video-sound-group:hover{transform:translateY(-2px)}
+.video-sound.video-sound-group svg{width:16px;height:16px}
+.video:not(.v916) .video-sound{top:14px;bottom:auto;right:14px;transform:none}
+.video:not(.v916) .video-sound:hover{transform:translateY(-2px)}
+.video.v916 .video-sound{top:12px;bottom:auto}
+.h1 .accent,.h2 .accent{display:inline-block}
+.lede{text-wrap:balance}
+/* ---------- Home: index of everything we do ---------- */
+.index{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.index-col{padding:28px;border-radius:22px;border:1px solid var(--line);background:rgba(255,255,255,.035)}
+.index-col h3{margin-bottom:16px;font-size:13.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;background:var(--flow);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:flow 7s linear infinite}
+.index-col ul{list-style:none;display:grid;gap:2px}
+.index-col a{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:16.5px;font-weight:600;color:var(--ink)}
+.index-col li:last-child a{border-bottom:0}
+.index-col a::after{content:"→";color:#7FB6FF;opacity:.55;transition:transform .3s var(--ease),opacity .3s var(--ease)}
+.index-col a:hover{color:#fff}
+.index-col a:hover::after{transform:translateX(4px);opacity:1}
+@media (max-width:1000px){.index{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.index{grid-template-columns:1fr;gap:12px}.index-col{padding:22px}.sound-group{margin:-12px 0 22px}}
+
 /* ---------- Responsive ---------- */
 @media (max-width:1080px){
   .nav-links{gap:20px;font-size:14px}
