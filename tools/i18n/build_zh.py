@@ -191,6 +191,8 @@ def build_all():
     missing.clear()
     for f in sorted(glob.glob(os.path.join(OUT, '*.html'))):
         name = os.path.basename(f)
+        if name == '404.html':   # one bilingual 404 page, served by Vercel for any unknown path
+            continue
         slug = '' if name == 'index.html' else name[:-5]
         p = Tr('/' + slug)
         p.feed(open(f, encoding='utf8').read())
