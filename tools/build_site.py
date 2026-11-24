@@ -1380,13 +1380,18 @@ def _card(a):
         </a>'''
 
 
+def h1_accent(key):
+    first, second = INS.H1_PARTS[key]
+    return f'{esc(first)} <span class="accent">{esc(second)}</span>'
+
+
 def article_body(a):
     meta = (f'<div class="post-meta rise" style="animation-delay:.3s"><span><span>{esc(INS_LBL["updated"])}</span> <time datetime="{INS.DATE}">{esc(INS_DATE_TXT)}</time></span>'
             f'<span>{_mins(a)} <span>{esc(INS_LBL["read"])}</span></span><span>{esc(INS_LBL["by"])}</span></div>')
     href, nh, nl, nb = a['next']
     others = ''.join(_card(o) for o in INS.ARTICLES if o is not a)
     blocks = '\n          '.join(_block(b) for b in a['blocks'])
-    return f'''{hero([(INS_LBL['home'], '/'), (INS_LBL['insights'], '/insights'), (a['short'], '')], esc(a['h1']), esc(a['lede']), extra=meta)}
+    return f'''{hero([(INS_LBL['home'], '/'), (INS_LBL['insights'], '/insights'), (a['short'], '')], h1_accent(a['slug']), esc(a['lede']), extra=meta)}
     <section class="tile post-wrap">
       <article class="post">
           {blocks}
@@ -1415,7 +1420,7 @@ def article_ld(a):
         faq_ld(a['faq'])]}
 
 
-insights_body = f'''{hero([(INS_LBL['home'], '/'), (INS_LBL['insights'], '')], esc(INS.INDEX['h1']), esc(INS.INDEX['lede']), eyebrow=esc(INS_LBL['insights']))}
+insights_body = f'''{hero([(INS_LBL['home'], '/'), (INS_LBL['insights'], '')], h1_accent('index'), esc(INS.INDEX['lede']), eyebrow=esc(INS_LBL['insights']))}
     <section class="tile">
       <div class="post-grid">{''.join(_card(a) for a in INS.ARTICLES)}</div>
     </section>

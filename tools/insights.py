@@ -282,3 +282,11 @@ for en, zh in [
     ('TCM Insights', 'TCM 文章'),
 ]:
     T(en, zh)
+
+# Titles in two parts: the second part takes the TCM accent colour (the flowing logo gradient).
+H1_PARTS = {
+    'chatgpt-vs-gemini-vs-claude': (T('ChatGPT vs Gemini vs Claude:', 'ChatGPT、Gemini 还是 Claude：'), T('which AI should your business use?', '你的生意该用哪个 AI？')),
+    'what-is-aeo-geo': (T('What is AEO and GEO?', '什么是 AEO 和 GEO？'), T('How to get your business recommended by AI', '让 AI 推荐你的生意')),
+    'kling-ai-veo-3-product-video': (T('Kling AI and Veo 3:', 'Kling AI 与 Veo 3：'), T('how to turn a product photo into a video ad', '把产品照片变成视频广告')),
+    'index': (T('Insights on', 'AI 与营销，'), T('AI and marketing.', '讲清楚。')),
+}
