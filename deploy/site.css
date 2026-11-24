@@ -748,7 +748,6 @@ html[lang^="zh"] .mvp .split .lede{font-size:clamp(18px,1.4vw,23px)}
 .arches-glint path{stroke:#DDF6FF;stroke-width:3;stroke-dasharray:.07 .93;stroke-dashoffset:1.07;opacity:0;filter:drop-shadow(0 0 6px #7FD4FF)}
 .arches.in .arches-glint path{opacity:.9;animation:glint 7s linear calc(1.6s + var(--d) * 1ms) infinite}
 @keyframes glint{from{stroke-dashoffset:1.07}60%,to{stroke-dashoffset:0}}
-.arches-hero{left:-6%;bottom:-2%;width:min(62vw,1100px)}
 .arches-side{right:-8%;top:8%;width:min(46vw,760px);opacity:.75}
 .arches-centre{left:50%;bottom:-12%;width:min(92vw,1300px);margin-left:calc(min(92vw,1300px) / -2)}
 .js .arches.arches-centre[data-rv]{transform:none}
@@ -782,7 +781,6 @@ html[lang^="zh"] .mvp .split .lede{font-size:clamp(18px,1.4vw,23px)}
 
 @media (max-width:768px){
   .arches-glint{display:none}
-  .arches-hero{width:120vw;left:-20%;bottom:auto;top:30%;opacity:.7}
   .arches-side{width:90vw;right:-30%;top:4%}
   .progress{height:6px}
 }
