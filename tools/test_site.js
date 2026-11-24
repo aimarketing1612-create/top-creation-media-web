@@ -8,7 +8,7 @@ const { chromium, devices } = require('playwright');
 
 const root = path.join(__dirname, '..', 'deploy');
 const PORT = 8790, BASE = 'http://127.0.0.1:' + PORT;
-const EN = ['/', '/ai-tools', '/marketing-services', '/marketing-classes', '/ai-classes', '/portfolio', '/scan-buddy', '/ai-video', '/membership'];
+const EN = ['/', '/ai-tools', '/marketing-services', '/marketing-classes', '/ai-classes', '/portfolio', '/scan-buddy', '/ai-video', '/membership', '/insights', '/insights/chatgpt-vs-gemini-vs-claude', '/insights/what-is-aeo-geo', '/insights/kling-ai-veo-3-product-video'];
 const PAGES = EN.concat(EN.map(p => '/zh' + (p === '/' ? '/' : p)));
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.xml': 'application/xml', '.txt': 'text/plain' };
 
@@ -45,6 +45,9 @@ const check = (ok, msg) => { if (!ok) fails.push(msg); };
       check(errs.length === 0, `${p} [${label}] JS errors: ${errs.join(' | ')}`);
       const over = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
       check(over <= 0, `${p} [${label}] sideways scroll ${over}px`);
+      // A phone silently zooms out when something is too wide; the layout viewport then grows past the device width.
+      const vw = await page.evaluate(() => innerWidth);
+      check(label !== 'phone' || vw === opts.viewport.width, `${p} [${label}] page wider than the phone (${vw}px)`);
       check(await page.locator('h1').count() === 1, `${p} [${label}] needs exactly one h1`);
       const noAlt = await page.locator('img:not([alt])').count();
       check(noAlt === 0, `${p} [${label}] ${noAlt} images without alt`);

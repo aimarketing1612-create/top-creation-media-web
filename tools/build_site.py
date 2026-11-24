@@ -58,7 +58,7 @@ ARROW = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="cur
 PLAY = '<svg width="30" height="30" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>'
 
 # ---------------------------------------------------------------- shared parts
-ACADEMY_KEYS = ('academy', 'ai', 'member')
+ACADEMY_KEYS = ('academy', 'ai', 'member', 'insights')
 TOOL_KEYS = ('tools', 'scan', 'aivideo')
 
 
@@ -87,6 +87,7 @@ def nav(cur, slug=''):
           <div class="dd-menu">
             <a href="/marketing-classes">Marketing Academy<small>Facebook, TikTok, Google, Xiaohongshu</small></a>
             <a href="/ai-classes">AI Academy<small>7 modules, no coding needed</small></a>
+            <a href="/insights">Insights<small>Guides on AI and marketing</small></a>
             <hr>
             <a class="dd-hl" href="/membership">Membership<small>Every class and AI tool, from RM180/mo</small></a>
           </div>
@@ -101,7 +102,7 @@ def nav(cur, slug=''):
         <a href="/portfolio"{on(cur == 'portfolio')}>Portfolio</a>'''
     sub = [(cur == 'home', '/', 'Home'), (cur == 'services', '/marketing-services', 'Services'),
            (cur == 'academy', '/marketing-classes', 'Marketing Academy'), (cur == 'ai', '/ai-classes', 'AI Academy'),
-           (cur == 'member', '/membership', 'Membership'), (cur in TOOL_KEYS, '/ai-tools', 'AI Tools'),
+           (cur == 'member', '/membership', 'Membership'), (cur == 'insights', '/insights', 'Insights'), (cur in TOOL_KEYS, '/ai-tools', 'AI Tools'),
            (cur == 'portfolio', '/portfolio', 'Portfolio')]
     subs = '\n        '.join(f'<a href="{h}"{on(hit)}>{l}</a>' for hit, h, l in sub)
     return f'''<a class="skip" href="#main">Skip to content</a>
@@ -133,6 +134,7 @@ FOOT = f'''<footer class="foot">
       <a href="/membership">Membership</a>
       <a href="/ai-tools">AI Tools</a>
       <a href="/portfolio">Portfolio</a>
+      <a href="/insights">Insights</a>
       <a href="https://facebook.com/topcreationmedia" target="_blank" rel="noopener">Facebook</a>
       <a href="https://instagram.com/topcreationmedia" target="_blank" rel="noopener">Instagram</a>
       <a href="https://tiktok.com/@topcreationmedia" target="_blank" rel="noopener">TikTok</a>
@@ -536,6 +538,7 @@ INDEX = [
         ('Scan Buddy: Google review QR code', '/scan-buddy'),
         ('AI Video: product photo to video', '/ai-video'),
         ('Portfolio & campaign results', '/portfolio'),
+        ('Insights: AI & marketing guides', '/insights'),
     ]),
 ]
 
@@ -1318,6 +1321,119 @@ tools_body = f'''{hero([("Home", "/"), ("AI Tools", "")], 'AI tools that <span c
 tool_ld = lambda faq: {'@context': 'https://schema.org', '@graph': [faq_ld(faq)]}
 
 # =================================================================== WRITE
+# ---------------------------------------------------------------- Insights (articles)
+import insights as INS
+import datetime as _dt
+
+INS_LBL = INS.LABELS
+_d = _dt.date.fromisoformat(INS.DATE)
+INS_DATE_TXT = INS.T(_d.strftime('%-d %b %Y'), f'{_d.year}年{_d.month}月{_d.day}日')
+
+
+def _plain(a):
+    """All English text of an article, for the reading time."""
+    out = [a['h1'], a['lede']]
+    for b in a['blocks']:
+        for x in b[1:]:
+            if isinstance(x, str):
+                out.append(x)
+            elif isinstance(x, list):
+                for y in x:
+                    out.extend(y if isinstance(y, tuple) else [y])
+    return ' '.join(s for s in out if isinstance(s, str))
+
+
+def _mins(a):
+    return max(3, round(len(_plain(a).split()) / 200))
+
+
+def _block(b):
+    k = b[0]
+    if k == 'tldr':
+        return f'<div class="post-tldr" data-rv><b>{esc(b[1])}</b><p>{esc(b[2])}</p></div>'
+    if k == 'h2':
+        return f'<h2 class="post-h2">{esc(b[1])}</h2>'
+    if k == 'p':
+        return f'<p>{esc(b[1])}</p>'
+    if k == 'tip':
+        return f'<aside class="post-tip"><p>{esc(b[1])}</p></aside>'
+    if k == 'prompt':
+        return f'<div class="post-prompt"><span>{esc(INS_LBL["prompt"])}</span><p>{esc(b[1])}</p></div>'
+    if k in ('ul', 'ol'):
+        items = ''.join(f'<li><b>{esc(lead)}</b> {esc(text)}</li>' for lead, text in b[1])
+        return f'<{k} class="post-list">{items}</{k}>'
+    if k == 'table':
+        cols, rows = b[1], b[2]
+        th = '<th></th>' + ''.join(f'<th scope="col">{esc(c)}</th>' for c in cols)
+        tr = ''.join(f'<tr><th scope="row">{esc(r)}</th>' + ''.join(f'<td>{esc(c)}</td>' for c in cells) + '</tr>' for r, cells in rows)
+        return f'<div class="post-table"><table><thead><tr>{th}</tr></thead><tbody>{tr}</tbody></table></div>'
+    raise ValueError(k)
+
+
+def _card(a):
+    tags = ''.join(f'<span>{esc(t)}</span>' for t in a['tags'])
+    return f'''<a class="post-card" href="/insights/{a['slug']}" data-rv>
+          <div class="post-tags">{tags}</div>
+          <h3 class="h3">{esc(a['short'])}</h3>
+          <p>{esc(a['card'])}</p>
+          <span class="post-more">{esc(INS_LBL['readmore'])} {ARROW}</span>
+        </a>'''
+
+
+def h1_accent(key):
+    first, second = INS.H1_PARTS[key]
+    return f'{esc(first)} <span class="accent">{esc(second)}</span>'
+
+
+def article_body(a):
+    meta = (f'<div class="post-meta rise" style="animation-delay:.3s"><span><span>{esc(INS_LBL["updated"])}</span> <time datetime="{INS.DATE}">{esc(INS_DATE_TXT)}</time></span>'
+            f'<span>{_mins(a)} <span>{esc(INS_LBL["read"])}</span></span><span>{esc(INS_LBL["by"])}</span></div>')
+    href, nh, nl, nb = a['next']
+    others = ''.join(_card(o) for o in INS.ARTICLES if o is not a)
+    blocks = '\n          '.join(_block(b) for b in a['blocks'])
+    return f'''{hero([(INS_LBL['home'], '/'), (INS_LBL['insights'], '/insights'), (a['short'], '')], h1_accent(a['slug']), esc(a['lede']), extra=meta)}
+    <section class="tile post-wrap">
+      <article class="post">
+          {blocks}
+          <div class="post-next" data-rv>
+            <h2 class="h3">{esc(nh)}</h2>
+            <p>{esc(nl)}</p>
+            <a class="btn btn-primary" href="{href}">{esc(nb)} {ARROW}</a>
+          </div>
+      </article>
+    </section>
+{faq_section(a['faq'], title=INS_LBL['faq'])}
+    <section class="tile">
+      {head(esc(INS_LBL['more']), esc(INS_LBL['insights']))}
+      <div class="post-grid">{others}</div>
+    </section>
+{cta('Not sure where to start? <span class="accent">Ask us.</span>', 'Tell us about your business and we will point you to the right next step: a service, a class or a tool.', 'WhatsApp us', "Hi, I read your article and have a question.")}'''
+
+
+def article_ld(a):
+    url = SITE + 'insights/' + a['slug']
+    return {'@context': 'https://schema.org', '@graph': [
+        {'@type': 'BlogPosting', '@id': url + '#article', 'headline': a['h1'], 'description': a['desc'], 'url': url,
+         'mainEntityOfPage': url, 'datePublished': INS.DATE, 'dateModified': INS.DATE, 'inLanguage': 'en',
+         'image': SITE + 'assets/tcm-logo.jpg', 'keywords': ', '.join(a['tags']),
+         'author': {'@id': ORG_ID}, 'publisher': {'@id': ORG_ID}, 'isPartOf': {'@id': SITE + 'insights#blog'}},
+        faq_ld(a['faq'])]}
+
+
+insights_body = f'''{hero([(INS_LBL['home'], '/'), (INS_LBL['insights'], '')], h1_accent('index'), esc(INS.INDEX['lede']), eyebrow=esc(INS_LBL['insights']))}
+    <section class="tile">
+      <div class="post-grid">{''.join(_card(a) for a in INS.ARTICLES)}</div>
+    </section>
+{cta('Want this done for you? <span class="accent">Let&#8217;s talk.</span>', 'Our team runs SEO, ads, content and AI for brands in Malaysia and Singapore, or teaches your team to do it.', 'WhatsApp us', "Hi, I'd like to talk about my marketing.")}'''
+insights_ld = {'@context': 'https://schema.org', '@graph': [
+    {'@type': 'Blog', '@id': SITE + 'insights#blog', 'name': 'TCM Insights', 'url': SITE + 'insights', 'publisher': {'@id': ORG_ID},
+     'description': INS.INDEX['desc'], 'inLanguage': ['en', 'zh-Hans'],
+     'blogPost': [{'@type': 'BlogPosting', 'headline': a['h1'], 'url': SITE + 'insights/' + a['slug'], 'datePublished': INS.DATE} for a in INS.ARTICLES]}]}
+
+INSIGHT_PAGES = [('insights.html', 'insights', INS.INDEX['title'], INS.INDEX['desc'], 'insights', insights_ld, insights_body, ())] + [
+    (f'insights/{a["slug"]}.html', f'insights/{a["slug"]}', a['title'], a['desc'], 'insights', article_ld(a), article_body(a), ()) for a in INS.ARTICLES]
+
+
 # ---------------------------------------------------------------- SEO, AEO and GEO layer
 # One Organization entity (@id ORG_ID) that every page points to, so Google and AI
 # answer engines see a single, consistent "Top Creation Media" with its people,
@@ -1471,7 +1587,7 @@ PAGES = [
     ('membership.html', 'membership', 'TCM Membership | AI Tools & Marketing Courses from RM180/mo',
      'TCM Membership: every AI tool, the full marketing and AI video course library and marketing resources. RM300/month or RM2,160/year (save 40%).',
      'member', mem_ld, mem_body, ()),
-]
+] + INSIGHT_PAGES
 
 NOT_FOUND_LINKS = [
     ('/', 'Home', '首页'),
@@ -1510,12 +1626,15 @@ def not_found_page():
 
 if __name__ == '__main__':
     for fname, slug, title, desc, cur, ld, body, scripts in PAGES:
+        os.makedirs(os.path.dirname(os.path.join(OUT, fname)), exist_ok=True)
         with open(os.path.join(OUT, fname), 'w', encoding='utf8') as f:
             f.write(page(slug, title, desc, cur, ld, body, scripts))
         print(f'wrote {fname:24} title={len(title):3} desc={len(desc):3}')
     import sys
     sys.path.insert(0, os.path.join(ROOT, 'tools', 'i18n'))
     import build_zh
+    build_zh.ZH.update(INS.PAIRS)
+    build_zh.PAGES.update(slug for _, slug, *_ in INSIGHT_PAGES)
     build_zh.build_all()
     with open(os.path.join(OUT, '404.html'), 'w', encoding='utf8') as f:
         f.write(not_found_page())
