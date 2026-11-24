@@ -927,7 +927,7 @@ html[lang^="zh"] .mvp .split .lede{font-size:clamp(18px,1.4vw,23px)}
 .post-prompt{position:relative;border-radius:16px;padding:20px 22px 18px;background:#120A2C;border:1px dashed rgba(53,196,240,.45)}
 .post-prompt span{position:absolute;top:-11px;left:16px;padding:2px 10px;border-radius:999px;background:#35C4F0;color:#0B0620;font:700 .72rem Outfit,sans-serif;letter-spacing:.12em;text-transform:uppercase}
 .post-prompt p{margin:0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.92rem;line-height:1.7;color:#DDEBFF}
-.post-tip{border-left:3px solid #B455FF;padding:6px 0 6px 18px;color:var(--ink)}
+.post-tip{padding:16px 20px;border-radius:16px;background:rgba(138,107,255,.10);border:1px solid rgba(138,107,255,.22);color:var(--ink)}
 .post-tip p{margin:0}
 .post-next{margin-top:48px;border-radius:22px;padding:28px;background:var(--card);border:1px solid rgba(255,255,255,.1)}
 .post-next .h3{margin:0 0 8px}
