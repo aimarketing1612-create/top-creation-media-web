@@ -189,7 +189,14 @@ def page(slug, title, desc, cur, ld, body, scripts=()):
 
 
 # ---------------------------------------------------------------- helpers
+_MEDIA = open(os.path.join(OUT, 'site-media.js'), encoding='utf8').read()
+HAS_VIDEO = {m.group(1) for m in __import__('re').finditer(r"\n\s+'?([\w-]+)'?:\s*\{ youtubeId: '([^']*)', driveId: '([^']*)', mp4: '([^']*)'", _MEDIA)
+             if m.group(2) or m.group(3) or m.group(4)}
+
+
 def video(key, label):
+    if key not in HAS_VIDEO:   # no empty "coming soon" frames
+        return ''
     return f'''<div class="video" data-video="{key}" aria-label="{esc(label)}" data-rv>
         <button class="video-btn video-soon" type="button" aria-label="{esc(label)}"><span class="play">{PLAY}</span><span class="video-cap">Video coming soon</span></button>
       </div>'''
@@ -670,7 +677,7 @@ DFY_XHS = [
     ('Leads & conversion', 'DMs, lead forms and store links that turn attention into enquiries.'),
 ]
 TOOLKIT = [
-    ('AI video production', 'UGC ads, AI short films and motion graphics.', '/ai-classes#ai-video-types', 'photo', 'ai-video', 'Creator applying skincare in an AI-made UGC video'),
+    ('AI video production', 'UGC ads, AI short films and product videos.', '/ai-classes#ai-video-types', 'photo', 'ai-video', 'Three AI-made videos: an outfit and background swap, product footage and salon B-roll'),
     ('Websites & landing pages', 'Fast pages built to turn visitors into enquiries.', '#google', 'photo', 'website', 'Web designer working on a landing page design'),
     ('Video production', 'Short videos, product and brand films.', '#more', 'photo', 'production', 'Crew filming a product on a turntable in a studio'),
     ('Livestream studio', 'Hosts, scripts and crew for selling lives.', '#more', 'photo', 'livestream', 'Livestream host presenting products to a phone camera'),
@@ -828,14 +835,13 @@ academy_body = f'''{hero([("Home", "/"), ("Academy", "/marketing-classes"), ("Ma
 def av_samples():
     rows = [('ai-video-1', 'UGC ads', 'Creator-style clips that feel native on TikTok and Reels.'),
             ('ai-video-2', 'AI short films', 'Story-led drama that holds attention to the end.'),
-            ('ai-video-3', 'Motion graphics', 'Animated promos for any product, shop or service.'),
             ('ai-video-4', 'Outfit & background swap', 'Change the person, the outfit and the location, without a reshoot.'),
             ('ai-video-5', 'Product footage', 'Clean product shots from every angle, no studio needed.'),
             ('ai-video-6', 'Cinematic B-roll', 'Atmosphere shots of your shop and service, with sound.')]
     figs = ''.join(f'''<figure class="sample" data-rv>{video9(k, t + " sample").replace(' data-rv', '')}<figcaption><b>{esc(t)}</b><span>{esc(d)}</span></figcaption></figure>''' for k, t, d in rows)
     return f'''    <section class="tile tile-dark" id="ai-video-types">
       <div class="wrap">
-        {head('AI video comes in <span class="accent">many forms</span>', 'What you will make', 'Six styles you will learn to make in class. Every clip here was made with AI.')}
+        {head('AI video comes in <span class="accent">many forms</span>', 'What you will make', 'Five styles you will learn to make in class. Every clip here was made with AI.')}
         <div class="samples">{figs}</div>
       </div>
     </section>

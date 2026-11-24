@@ -18,7 +18,7 @@
       reaches them, MUTED (browsers block autoplay with sound). Visitors tap
       the video or its "Tap for sound" label to hear it; only one plays sound at a time. To turn autoplay off for one
       video, add  autoplay: false
-      Leave all empty ('') and the page shows a "Video coming soon" frame.
+      Leave all empty ('') and that video frame is left out of the page (run python3 tools/build_site.py after changing this file).
 
    2) TESTIMONIALS. Only add REAL client reviews (with permission).
       The section stays hidden until at least one is added. Template:
@@ -40,10 +40,9 @@ window.TCM_MEDIA = {
     'team-jess':   { youtubeId: '', driveId: '', mp4: '/assets/video/team-jess.mp4', poster: '/assets/video/team-jess-cover.jpg' },
     'team-mac':    { youtubeId: '', driveId: '', mp4: '/assets/video/team-mac.mp4', poster: '/assets/video/team-mac-cover.jpg' },
     'team-marcus': { youtubeId: '', driveId: '', mp4: '/assets/video/team-marcus.mp4', poster: '/assets/video/team-marcus-cover.jpg' },
-    // AI Academy page: six vertical (9:16) samples: UGC ad, AI short film, motion graphic, outfit & background swap, product footage, B-roll
+    // AI Academy page: five vertical (9:16) samples: 1 UGC ad, 2 AI short film, 4 outfit & background swap, 5 product footage, 6 B-roll
     'ai-video-1': { youtubeId: '', driveId: '', mp4: '/assets/video/ai-video-1.mp4', poster: '/assets/video/ai-video-1-cover.jpg' },
     'ai-video-2': { youtubeId: '', driveId: '', mp4: '/assets/video/ai-video-2.mp4', poster: '/assets/video/ai-video-2-cover.jpg' },
-    'ai-video-3': { youtubeId: '', driveId: '', mp4: '/assets/video/ai-video-3.mp4', poster: '/assets/video/ai-video-3-cover.jpg' },
     'ai-video-4': { youtubeId: '', driveId: '', mp4: '/assets/video/ai-video-4.mp4', poster: '/assets/video/ai-video-4-cover.jpg' },
     'ai-video-5': { youtubeId: '', driveId: '', mp4: '/assets/video/ai-video-5.mp4', poster: '/assets/video/ai-video-5-cover.jpg' },
     'ai-video-6': { youtubeId: '', driveId: '', mp4: '/assets/video/ai-video-6.mp4', poster: '/assets/video/ai-video-6-cover.jpg' },

@@ -628,8 +628,9 @@ html:not([lang^="zh"]) .eyebrow{font-family:'Outfit',var(--font);font-weight:600
 .video-sound:not(.is-on) svg{animation:nudge 2.4s ease-in-out infinite}
 @keyframes nudge{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
 html[lang^="zh"] .video-sound{font-family:var(--zh-sans);font-size:12.5px;letter-spacing:.14em}
-.samples{grid-template-columns:repeat(3,1fr);gap:28px 22px;max-width:940px}
-@media (max-width:560px){.samples{grid-template-columns:repeat(2,1fr);gap:18px 10px}.video-sound{bottom:8px;padding:5px 10px 5px 8px;font-size:9.5px;letter-spacing:.14em}.video-sound svg{width:11px;height:11px}.sample figcaption span{display:block;font-size:12.5px}}
+.samples{display:flex;flex-wrap:wrap;justify-content:center;gap:28px 22px;max-width:940px}
+.sample{width:calc((100% - 44px)/3)}
+@media (max-width:560px){.samples{gap:18px 10px}.sample{width:calc((100% - 10px)/2)}.video-sound{bottom:8px;padding:5px 10px 5px 8px;font-size:9.5px;letter-spacing:.14em}.video-sound svg{width:11px;height:11px}.sample figcaption span{display:block;font-size:12.5px}}
 @media (prefers-reduced-motion:reduce){.video-sound span,.video-sound svg{animation:none !important}}
 
 /* ---------- Responsive ---------- */
