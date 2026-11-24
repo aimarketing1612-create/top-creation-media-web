@@ -890,3 +890,13 @@ html[lang^="zh"] .mvp .split .lede{font-size:clamp(18px,1.4vw,23px)}
   .marquee{-webkit-mask:none;mask:none}
   .marquee-group{flex-wrap:wrap;justify-content:center;gap:28px 48px;padding:0}
 }
+
+/* 404 page */
+.nf{min-height:72vh;display:flex;align-items:center;text-align:center}
+.nf-wrap{width:100%;min-width:0;max-width:880px;margin:0 auto;padding:0 16px}
+.nf .h1{white-space:normal;font-size:clamp(2.4rem,7vw,5rem)}
+.nf .lede{margin-left:auto;margin-right:auto}
+.nf-zh{font-family:"Noto Sans SC",system-ui,sans-serif;margin-top:-6px}
+.nf-links{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:28px 0 22px}
+.nf-links .btn span{opacity:.7;font-weight:500}
+.nf .btn-row{justify-content:center}

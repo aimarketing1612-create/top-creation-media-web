@@ -1327,6 +1327,41 @@ PAGES = [
      'member', mem_ld, mem_body, ()),
 ]
 
+NOT_FOUND_LINKS = [
+    ('/', 'Home', '首页'),
+    ('/marketing-services', 'Marketing services', '营销服务'),
+    ('/marketing-classes', 'Marketing Academy', '营销课程'),
+    ('/ai-classes', 'AI Academy', 'AI 课程'),
+    ('/membership', 'Membership', '会员'),
+    ('/portfolio', 'Portfolio', '作品集'),
+]
+nf_links = ''.join(f'<a class="btn btn-ghost" href="{h}">{esc(en)} <span lang="zh-Hans">· {zh}</span></a>' for h, en, zh in NOT_FOUND_LINKS)
+nf_body = f'''    <section class="hero nf">
+      <div class="wrap nf-wrap">
+        <div class="eyebrow rise">404</div>
+        <h1 class="h1 rise" style="animation-delay:.05s">This page has <span class="accent">moved.</span></h1>
+        <p class="lede rise" style="animation-delay:.15s">The link may be from our old website. Pick where you were heading, or message us and we will help.</p>
+        <p class="lede rise nf-zh" lang="zh-Hans" style="animation-delay:.2s"><span class="nb">这个页面已经搬家或不存在。</span><span class="nb">请从下面选择，</span><span class="nb">或直接 WhatsApp 我们。</span></p>
+        <div class="nf-links rise" style="animation-delay:.3s">{nf_links}</div>
+        <div class="btn-row rise" style="animation-delay:.4s">
+          <a class="btn btn-primary" href="{wa("Hi, I found a broken link on your website.")}" target="_blank" rel="noopener">WhatsApp us {ARROW}</a>
+        </div>
+      </div>
+    </section>
+'''
+
+
+def not_found_page():
+    """deploy/404.html: Vercel serves it for any unknown path. Not indexed, no canonical."""
+    html_ = page('', 'Page not found | Top Creation Media', 'This page has moved or no longer exists.', '', {}, nf_body)
+    import re as _re
+    html_ = _re.sub(r'  <link rel="(canonical|alternate)"[^>]*>\n', '', html_)
+    html_ = html_.replace('<meta property="og:url" content="' + SITE + '">\n  ', '')
+    html_ = html_.replace('  <meta name="theme-color"', '  <meta name="robots" content="noindex">\n  <meta name="theme-color"', 1)
+    html_ = html_.replace('<script type="application/ld+json">{}</script>\n', '')
+    return html_
+
+
 if __name__ == '__main__':
     for fname, slug, title, desc, cur, ld, body, scripts in PAGES:
         with open(os.path.join(OUT, fname), 'w', encoding='utf8') as f:
@@ -1336,6 +1371,9 @@ if __name__ == '__main__':
     sys.path.insert(0, os.path.join(ROOT, 'tools', 'i18n'))
     import build_zh
     build_zh.build_all()
+    with open(os.path.join(OUT, '404.html'), 'w', encoding='utf8') as f:
+        f.write(not_found_page())
+    print('wrote 404.html')
     urls = ''.join(f'  <url><loc>{SITE}{pre}{slug}</loc></url>\n' for pre in ('', 'zh/') for _, slug, *_ in PAGES)
     with open(os.path.join(OUT, 'sitemap.xml'), 'w', encoding='utf8') as f:
         f.write(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
