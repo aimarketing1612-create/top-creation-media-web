@@ -141,8 +141,28 @@ FOOT = f'''<footer class="foot">
   <a class="wa-float" href="{wa("Hi, I'd like to know more!")}" onclick="{CONV}" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp"><svg width="30" height="30" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="{WA_PATH}"/></svg></a>'''
 
 
+def crumbs_ld(body, slug):
+    """BreadcrumbList from the visible breadcrumb line of a page."""
+    import re as _re
+    m = _re.search(r'<div class="crumbs[^>]*>(.*?)</div>', body, _re.S)
+    if not m:
+        return None
+    items = []
+    for i, part in enumerate(m.group(1).split(' / '), 1):
+        a = _re.match(r'\s*<a href="([^"]+)">(.*?)</a>\s*$', part, _re.S)
+        name = H.unescape(_re.sub('<[^>]+>', '', a.group(2) if a else part)).strip()
+        url = SITE + (a.group(1).lstrip('/') if a else slug)
+        items.append({'@type': 'ListItem', 'position': i, 'name': name, 'item': url})
+    return {'@type': 'BreadcrumbList', 'itemListElement': items}
+
+
 def page(slug, title, desc, cur, ld, body, scripts=()):
     canon = SITE + slug
+    bc = crumbs_ld(body, slug)
+    if bc and ld:
+        ld = dict(ld)
+        ld['@graph'] = list(ld['@graph']) + [bc] if '@graph' in ld else [{k: v for k, v in ld.items() if k != '@context'}, bc]
+        ld['@context'] = 'https://schema.org'
     tags = '\n  '.join(f'<script src="{s}"></script>' for s in ('/site-media.js', *scripts, '/site.js'))
     return f'''<!DOCTYPE html>
 <html lang="en">
@@ -410,7 +430,8 @@ def panel_intro(h3, lede):
     return f'        <div class="panel-intro"><h3 class="h3">{h3}</h3><p class="lede">{lede}</p></div>'
 
 
-PROVIDER = {'@type': 'Organization', 'name': 'Top Creation Media', 'url': SITE}
+ORG_ID = SITE + '#org'
+PROVIDER = {'@type': 'Organization', '@id': ORG_ID, 'name': 'Top Creation Media', 'url': SITE}
 STEPS3 = '''        <div class="cols">
           <div class="col" data-rv><div class="col-n">1</div><div class="col-t">Strategy &amp; discussion</div><p class="col-d">We study your market, define the offer and agree the goals before a single asset is made.</p></div>
           <div class="col" data-rv><div class="col-n">2</div><div class="col-t">Planning &amp; approval</div><p class="col-d">Content calendar, creative direction and media plan, mapped, budgeted and signed off with you.</p></div>
@@ -468,7 +489,7 @@ RES_GG = ('google-dashboard.webp', 'Google Search Console dashboard showing orga
 # =================================================================== HOME
 HOME_FAQ = [
     ('Do you work with large companies and franchise brands in Malaysia?', 'Yes. We run marketing for multi-outlet and franchise brands and for companies with 50+ staff: one strategy for the whole brand, local ads for each outlet, and training so your in-house team can run the day-to-day work.'),
-    ('What does a digital marketing agency in Malaysia do for my business?', 'We plan your strategy, produce the content, run ads on Facebook, Instagram, TikTok, Google and Xiaohongshu, work with KOLs and report the leads and sales each ringgit brings back. One team, every channel.'),
+    ('What does a digital marketing agency in Malaysia and Singapore do for my business?', 'We plan your strategy, produce the content, run ads on Facebook, Instagram, TikTok, Google and Xiaohongshu, work with KOLs and report the leads and sales each ringgit or dollar brings back. One team, every channel, for brands in Malaysia and Singapore.'),
     ('Do you offer SEO services in Malaysia?', 'Yes. Technical SEO, content, Google Business Profile and AI search (AEO and GEO), so you show up on Google and in ChatGPT and Gemini answers. We pair it with Google Ads when you need leads this month.'),
     ('Can you train our staff in AI and digital marketing?', 'Yes. We run corporate AI and marketing training for teams and departments, hands-on with your own accounts, products and data rules. Your staff leave able to make the video, launch the ad and read the report themselves.'),
     ('Do I need experience or coding to join your AI course in Malaysia?', 'No. Every class starts from zero. If you can use WhatsApp and a browser, you can follow along, and if you follow the class and still cannot do it, we refund you in full (terms apply).'),
@@ -570,7 +591,7 @@ def member(key, name, role, i):
 home_body = f'''    <section class="hero">
       <div class="hero-grid">
         <div>
-          <div class="eyebrow rise">Digital marketing × Content × AI</div>
+          <div class="eyebrow rise eb-split"><span class="nb">Digital marketing agency</span> <span class="eb-dot">·</span> <span class="nb">Malaysia &amp; Singapore</span></div>
           <h1 class="h1 rise" style="animation-delay:.05s">Your Marketing,<br><span class="accent">Simplified.</span></h1>
           <p class="lede rise" style="animation-delay:.15s">From offline to fully online: ads, videos, livestream, KOC/KOL and AI automation. Let our team run it for you, or learn to run it yourself in just a few clicks.</p>
           <div class="btn-row rise" style="animation-delay:.3s">
@@ -1297,31 +1318,156 @@ tools_body = f'''{hero([("Home", "/"), ("AI Tools", "")], 'AI tools that <span c
 tool_ld = lambda faq: {'@context': 'https://schema.org', '@graph': [faq_ld(faq)]}
 
 # =================================================================== WRITE
+# ---------------------------------------------------------------- SEO, AEO and GEO layer
+# One Organization entity (@id ORG_ID) that every page points to, so Google and AI
+# answer engines see a single, consistent "Top Creation Media" with its people,
+# services, languages and markets (Malaysia and Singapore).
+SOCIAL = ['https://facebook.com/topcreationmedia', 'https://instagram.com/topcreationmedia', 'https://tiktok.com/@topcreationmedia']
+MARKETS = [{'@type': 'Country', 'name': 'Malaysia'}, {'@type': 'Country', 'name': 'Singapore'}]
+ORG = {
+    '@type': ['Organization', 'ProfessionalService'], '@id': ORG_ID,
+    'name': 'Top Creation Media', 'alternateName': ['TCM', 'Top Creation Media Sdn Bhd'],
+    'url': SITE, 'logo': SITE + 'assets/tcm-logo.jpg', 'image': SITE + 'assets/tcm-logo.jpg',
+    'slogan': 'Your Marketing, Simplified.',
+    'description': 'Top Creation Media (TCM) is a digital marketing agency and AI and marketing training studio serving Malaysia and Singapore: SEO, social media marketing, Google and Meta ads, TikTok, Xiaohongshu, KOL marketing, video and livestream production, plus hands-on AI and digital marketing courses and corporate training.',
+    'telephone': '+' + PHONE, 'areaServed': MARKETS,
+    'address': {'@type': 'PostalAddress', 'addressCountry': 'MY'},
+    'contactPoint': [{'@type': 'ContactPoint', 'contactType': 'sales', 'telephone': '+' + PHONE, 'url': f'https://wa.me/{PHONE}',
+                      'areaServed': ['MY', 'SG'], 'availableLanguage': ['English', 'Chinese', 'Malay']}],
+    'availableLanguage': ['English', 'Chinese', 'Malay'],
+    'sameAs': SOCIAL,
+    'employee': [{'@type': 'Person', 'name': n, 'jobTitle': r, 'worksFor': {'@id': ORG_ID}} for _, n, r in TEAM],
+    'knowsAbout': [l for _, links in INDEX[:3] for l, _ in links] + ['Answer engine optimisation (AEO)', 'Generative engine optimisation (GEO)'],
+    'hasOfferCatalog': {'@type': 'OfferCatalog', 'name': 'Marketing services', 'itemListElement': [
+        {'@type': 'Offer', 'itemOffered': {'@type': 'Service', 'name': l, 'url': SITE + h.lstrip('/').split('#')[0], 'areaServed': MARKETS, 'provider': {'@id': ORG_ID}}}
+        for _, links in INDEX[:2] for l, h in links]},
+}
+home_ld['@graph'][0] = ORG
+home_ld['@graph'][1] = {'@type': 'WebSite', '@id': SITE + '#website', 'name': 'Top Creation Media', 'url': SITE,
+                        'inLanguage': ['en', 'zh-Hans'], 'publisher': {'@id': ORG_ID}}
+
+# Services: one Service per platform and offer, all in Malaysia and Singapore
+dfy_ld['@graph'][0].update({'areaServed': MARKETS, 'name': 'Digital marketing services: SEO, social media, ads, video and KOL',
+    'hasOfferCatalog': {'@type': 'OfferCatalog', 'name': 'Done-For-You marketing', 'itemListElement': [
+        {'@type': 'Offer', 'itemOffered': {'@type': 'Service', 'name': n, 'serviceType': n, 'areaServed': MARKETS, 'provider': {'@id': ORG_ID}}}
+        for n in ['Facebook & Instagram ads', 'TikTok marketing & TikTok Live', 'Google SEO & Google Ads', 'Xiaohongshu (RED) marketing',
+                  'AI video production', 'Websites & landing pages', 'Video production', 'Livestream studio', 'KOC & KOL marketing',
+                  'IP & personal branding', 'Events', 'Corporate AI & marketing training']]}})
+
+# Courses: who teaches, in which languages, how they are run
+def course_extra(teaches):
+    return {'inLanguage': ['en', 'zh'], 'educationalLevel': 'Beginner', 'teaches': teaches, 'isAccessibleForFree': False,
+            'audience': {'@type': 'Audience', 'audienceType': 'Business owners, marketing teams and staff in Malaysia and Singapore'},
+            'hasCourseInstance': [
+                {'@type': 'CourseInstance', 'courseMode': 'Onsite', 'location': {'@type': 'Place', 'name': 'Top Creation Media studio', 'address': {'@type': 'PostalAddress', 'addressCountry': 'MY'}}},
+                {'@type': 'CourseInstance', 'courseMode': 'Online', 'courseWorkload': 'PT1H'}]}
+academy_ld['@graph'][0].update(course_extra(['Facebook and Instagram ads', 'TikTok ads and TikTok Live', 'Google Ads and SEO', 'Xiaohongshu marketing', 'Ad tracking and reporting']))
+ai_ld['@graph'][0].update(course_extra(['ChatGPT, Claude and Gemini for business', 'AI video', 'AI graphics', 'AI captions and copywriting', 'AI websites and SEO', 'AI automation', 'AI marketing']))
+ai_ld['@graph'][0]['name'] = 'AI Course & AI Training: AI Video, Graphics, Captions, Websites & Automation'
+mem_ld['@graph'][0]['brand'] = {'@id': ORG_ID}
+pf_ld.update({'isPartOf': {'@id': SITE + '#website'}, 'about': {'@id': ORG_ID}})
+
+# AI tools as web apps, available through the Membership
+def app_ld(name, desc, slug):
+    return {'@type': 'SoftwareApplication', 'name': name, 'description': desc, 'url': SITE + slug, 'applicationCategory': 'BusinessApplication',
+            'operatingSystem': 'Web', 'publisher': {'@id': ORG_ID},
+            'offers': {'@type': 'Offer', 'price': '300', 'priceCurrency': 'MYR', 'description': 'Included in the TCM Membership (RM300 a month)', 'url': SITE + 'membership'}}
+SB_APP = app_ld('Scan Buddy', 'One smart QR code that turns offline customers into followers, WhatsApp chats and Google reviews, with scan tracking.', 'scan-buddy')
+AV_APP = app_ld('AI Video', 'Turns a product photo into ready-to-post marketing videos: showcases, new backgrounds, model try-ons, UGC-style clips and captions.', 'ai-video')
+tools_ld['@graph'].insert(0, {'@type': 'ItemList', 'name': 'TCM AI tools', 'itemListElement': [
+    {'@type': 'ListItem', 'position': 1, 'item': SB_APP}, {'@type': 'ListItem', 'position': 2, 'item': AV_APP}]})
+
+
+def build_seo_files(pages):
+    """sitemap.xml (with lastmod and en/zh alternates), robots.txt and llms.txt."""
+    import hashlib
+    import datetime
+    state_f = os.path.join(ROOT, 'tools', 'sitemap_state.json')
+    state = json.load(open(state_f)) if os.path.exists(state_f) else {}
+    today = datetime.date.today().isoformat()
+    rows = []
+    for fname, slug, *_ in pages:
+        for pre in ('', 'zh/'):
+            f = os.path.join(OUT, pre + fname)
+            h = hashlib.sha1(open(f, 'rb').read()).hexdigest()
+            key = pre + fname
+            if state.get(key, [None])[0] != h:
+                state[key] = [h, today]
+            en, zh = SITE + slug, SITE + 'zh/' + slug
+            rows.append(f'  <url>\n    <loc>{SITE}{pre}{slug}</loc>\n    <lastmod>{state[key][1]}</lastmod>\n'
+                        f'    <xhtml:link rel="alternate" hreflang="en" href="{en}"/>\n'
+                        f'    <xhtml:link rel="alternate" hreflang="zh-Hans" href="{zh}"/>\n'
+                        f'    <xhtml:link rel="alternate" hreflang="x-default" href="{en}"/>\n  </url>\n')
+    json.dump(state, open(state_f, 'w'), indent=1, sort_keys=True)
+    with open(os.path.join(OUT, 'sitemap.xml'), 'w', encoding='utf8') as f:
+        f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
+                'xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + ''.join(rows) + '</urlset>\n')
+
+    # Search and AI answer engines are welcome: being cited by ChatGPT, Gemini, Perplexity
+    # and Claude is part of the GEO plan.
+    bots = ['Googlebot', 'Bingbot', 'GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot', 'Claude-User',
+            'PerplexityBot', 'Perplexity-User', 'Google-Extended', 'Applebot', 'Applebot-Extended', 'DuckDuckBot', 'YandexBot']
+    robots = ''.join(f'User-agent: {b}\n' for b in bots) + 'Allow: /\n\nUser-agent: *\nAllow: /\n\n' + f'Sitemap: {SITE}sitemap.xml\n'
+    open(os.path.join(OUT, 'robots.txt'), 'w').write(robots)
+
+    # llms.txt: a plain summary for AI assistants (llmstxt.org format)
+    def ans(faq):
+        return ''.join(f'- **{q}** {a}\n' for q, a in faq)
+    page_lines = ''.join(f'- [{t.split(" | ")[0]}]({SITE}{slug}): {d}\n' for _, slug, t, d, *_ in pages)
+    zh_lines = ''.join(f'- [{t.split(" | ")[0]} (中文)]({SITE}zh/{slug})\n' for _, slug, t, d, *_ in pages)
+    team = ''.join(f'- {n}: {r}\n' for _, n, r in TEAM)
+    llms = f'''# Top Creation Media (TCM)
+
+> Digital marketing agency and AI & marketing training studio serving Malaysia and Singapore. TCM runs SEO, social media marketing, Google and Meta ads, TikTok and TikTok Live, Xiaohongshu (RED), KOL/KOC campaigns, video and livestream production for brands, and teaches business owners and staff to do it themselves through hands-on marketing and AI courses, corporate training and the TCM Membership.
+
+## Key facts
+- Name: Top Creation Media (TCM), Top Creation Media Sdn Bhd
+- Markets: Malaysia and Singapore
+- Languages: English, Chinese (中文), Malay
+- Contact: WhatsApp +{PHONE} (https://wa.me/{PHONE})
+- Website: {SITE} (Chinese: {SITE}zh/)
+- Social: {", ".join(SOCIAL)}
+- Two ways to work with TCM: Done-For-You marketing services, or learn it yourself in the Marketing Academy and AI Academy
+- TCM Membership: RM300 a month, or RM2,160 a year (40% off, RM180 a month). Includes every TCM AI tool (Scan Buddy, AI Video), the full course library and new hands-on classes every month. Offline course participants get the first 6 months free.
+- Courses: beginner-friendly, no coding needed, taught hands-on on your own accounts; full refund if you follow the class and still cannot do it (terms apply)
+- In-house video and livestream studio
+
+## Team
+{team}
+## Pages
+{page_lines}
+## Chinese pages
+{zh_lines}
+## Frequently asked questions
+{ans(HOME_FAQ)}'''
+    open(os.path.join(OUT, 'llms.txt'), 'w', encoding='utf8').write(llms)
+
+
 PAGES = [
-    ('index.html', '', 'Digital Marketing Agency Malaysia | Top Creation Media',
-     'Digital marketing agency in Malaysia for SEO, Google & Meta ads, TikTok, Xiaohongshu, KOL and video, plus AI and digital marketing courses for your team.',
+    ('index.html', '', 'Digital Marketing Agency Malaysia & Singapore | Top Creation Media',
+     'Digital marketing agency in Malaysia and Singapore: SEO, social media, Google & Meta ads, TikTok, Xiaohongshu, KOL and video, plus AI training for your team.',
      'home', home_ld, home_body, ('/portfolio-data.js',)),
-    ('marketing-services.html', 'marketing-services', 'Social Media Marketing Services Malaysia | TCM',
-     'Done-for-you Facebook, Instagram, TikTok Live, Google SEO and Xiaohongshu marketing in Malaysia: strategy, video, ads, livestream and KOC/KOL.',
+    ('marketing-services.html', 'marketing-services', 'SEO, Social Media & Ads Agency Malaysia | Top Creation Media',
+     'SEO and social media agency in Malaysia and Singapore: Facebook, Instagram, TikTok Live, Google SEO & Ads, Xiaohongshu, video, livestream and KOL, done for you.',
      'services', dfy_ld, dfy_body, ()),
-    ('marketing-classes.html', 'marketing-classes', 'Marketing Classes Malaysia | Facebook, TikTok, Google & RED',
+    ('marketing-classes.html', 'marketing-classes', 'Digital Marketing Course Malaysia | Facebook, TikTok, Google & RED',
      'Learn Facebook, Instagram, TikTok, Google and Xiaohongshu marketing from A to Z, hands-on. Beginner-friendly classes in Malaysia with a 100% refund guarantee.',
      'academy', academy_ld, academy_body, ()),
-    ('ai-classes.html', 'ai-classes', 'AI Classes Malaysia | AI Video, Graphics & Automation',
-     'AI classes in Malaysia, no coding needed: ChatGPT, Claude, Gemini, AI video, AI graphics, AI captions, AI websites and automation. 100% refund guarantee.',
+    ('ai-classes.html', 'ai-classes', 'AI Course & AI Training Malaysia | No Coding Needed | TCM',
+     'AI course and corporate AI training in Malaysia, no coding needed: ChatGPT, Claude, Gemini, AI video, graphics, captions, websites and automation. Full refund guarantee.',
      'ai', ai_ld, ai_body, ()),
-    ('portfolio.html', 'portfolio', 'Portfolio | Videos, Ad Results & Brand Work | TCM',
+    ('portfolio.html', 'portfolio', 'Portfolio | Video, Ads & KOL Work in Malaysia & Singapore | TCM',
      'See Top Creation Media work: short-form videos, ad results dashboards and brand projects for clients across Malaysia and Singapore.',
      'portfolio', pf_ld, pf_body, ('/portfolio-data.js', '/portfolio.js')),
     ('scan-buddy.html', 'scan-buddy', 'Scan Buddy | Smart QR Code for Social Media | TCM',
      'Scan Buddy: one smart QR code that turns offline customers into followers, WhatsApp chats and Google reviews, with scan tracking. For TCM subscribers.',
-     'scan', tool_ld(SB_FAQ), sb_body, ()),
+     'scan', {'@context': 'https://schema.org', '@graph': [SB_APP, faq_ld(SB_FAQ)]}, sb_body, ()),
     ('ai-tools.html', 'ai-tools', 'AI Tools for Business Malaysia | Scan Buddy & AI Video | TCM',
      'TCM AI tools for Malaysian businesses: Scan Buddy smart QR codes and AI Video, which turns product photos into video ads. Included in the Membership.',
      'tools', tools_ld, tools_body, ()),
     ('ai-video.html', 'ai-video', 'AI Video | Turn Product Photos into Video Ads | TCM',
      'AI Video turns a product photo into ready-to-post marketing videos: showcases, new backgrounds, model try-ons, UGC-style clips and captions.',
-     'aivideo', tool_ld(AV_FAQ), av_body, ()),
+     'aivideo', {'@context': 'https://schema.org', '@graph': [AV_APP, faq_ld(AV_FAQ)]}, av_body, ()),
     ('membership.html', 'membership', 'TCM Membership | AI Tools & Marketing Courses from RM180/mo',
      'TCM Membership: every AI tool, the full marketing and AI video course library and marketing resources. RM300/month or RM2,160/year (save 40%).',
      'member', mem_ld, mem_body, ()),
@@ -1374,7 +1520,5 @@ if __name__ == '__main__':
     with open(os.path.join(OUT, '404.html'), 'w', encoding='utf8') as f:
         f.write(not_found_page())
     print('wrote 404.html')
-    urls = ''.join(f'  <url><loc>{SITE}{pre}{slug}</loc></url>\n' for pre in ('', 'zh/') for _, slug, *_ in PAGES)
-    with open(os.path.join(OUT, 'sitemap.xml'), 'w', encoding='utf8') as f:
-        f.write(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
-    print('wrote sitemap.xml')
+    build_seo_files(PAGES)
+    print('wrote sitemap.xml, robots.txt, llms.txt')

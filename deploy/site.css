@@ -900,3 +900,6 @@ html[lang^="zh"] .mvp .split .lede{font-size:clamp(18px,1.4vw,23px)}
 .nf-links{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:28px 0 22px}
 .nf-links .btn span{opacity:.7;font-weight:500}
 .nf .btn-row{justify-content:center}
+
+/* Home eyebrow: two tidy lines on phones (English), no dangling dot */
+@media (max-width:560px){html:not([lang^="zh"]) .eb-split .eb-dot{display:none}html:not([lang^="zh"]) .eb-split .nb{display:block}}
