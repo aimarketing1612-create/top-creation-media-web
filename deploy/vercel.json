@@ -2,6 +2,39 @@
   "cleanUrls": true,
   "redirects": [
     {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "topcreation.media"
+        }
+      ],
+      "destination": "https://www.topcreationmedia.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.topcreation.media"
+        }
+      ],
+      "destination": "https://www.topcreationmedia.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "topcreationmedia.com"
+        }
+      ],
+      "destination": "https://www.topcreationmedia.com/:path*",
+      "permanent": true
+    },
+    {
       "source": "/social-media",
       "destination": "/marketing-services",
       "permanent": true

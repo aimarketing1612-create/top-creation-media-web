@@ -1,4 +1,4 @@
-"""Builds every page of topcreation.media into deploy/.
+"""Builds every page of www.topcreationmedia.com into deploy/.
 
 Run:  python3 tools/build_site.py
 Edit the text below, run it again, commit. Videos and testimonials live in
@@ -13,7 +13,7 @@ from urllib.parse import quote
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, 'deploy')
-SITE = 'https://topcreation.media/'
+SITE = 'https://www.topcreationmedia.com/'  # main domain; topcreation.media redirects here (deploy/vercel.json)
 TRACK = open(os.path.join(ROOT, 'tools', 'partials', 'tracking.html'), encoding='utf8').read().strip()
 
 PHONE = '60127816121'
