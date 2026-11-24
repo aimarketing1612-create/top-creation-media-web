@@ -103,7 +103,9 @@
     var keys = Object.keys(data.types).filter(function (k) { return present[k]; });
     // Types used by items but missing from `types` still get a tab.
     Object.keys(present).forEach(function (k) { if (keys.indexOf(k) < 0) keys.push(k); });
-    var all = [['all', 'All']].concat(keys.map(function (k) { return [k, data.types[k] || k]; }));
+    var zh = (document.documentElement.lang || '').indexOf('zh') === 0;
+    var ZHT = { all: '全部', video: '视频', poster: '海报', branding: '品牌', website: '网站', event: '活动', dashboard: '成效' };
+    var all = [['all', zh ? ZHT.all : 'All']].concat(keys.map(function (k) { return [k, (zh && ZHT[k]) || data.types[k] || k]; }));
     filters.textContent = '';
     all.forEach(function (pair, i) {
       var b = el('button', '', pair[1]);
@@ -119,6 +121,7 @@
   }
 
   function buildClients() {
+    if (!clientsEl) return;
     clientsEl.textContent = '';
     data.clients.forEach(function (c) {
       var d = el('div', 'client');
