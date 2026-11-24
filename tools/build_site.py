@@ -568,7 +568,6 @@ def member(key, name, role, i):
 
 
 home_body = f'''    <section class="hero">
-      {arches('arches-hero')}
       <div class="hero-grid">
         <div>
           <div class="eyebrow rise">Digital marketing × Content × AI</div>
@@ -1201,7 +1200,6 @@ def plan(name, price, unit, note, msg, label, best=False):
 
 
 mem_body = f'''    <section class="hero">
-      {arches('arches-hero')}
       <div class="hero-grid">
         <div>
           <div class="crumbs rise" style="margin-bottom:14px"><a href="/">Home</a> / <a href="/marketing-classes">Academy</a> / Membership</div>

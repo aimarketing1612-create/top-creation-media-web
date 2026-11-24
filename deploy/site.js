@@ -123,11 +123,16 @@
     watch(box, el);
   }
 
-  // Pause when scrolled away, resume when back, to save data and battery.
+  // Pause and rewind when scrolled away, so the video plays from the start when the visitor comes back.
   function watch(box, el) {
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) el.play().catch(function () {}); else el.pause(); }); }, { threshold: 0.25 }).observe(box);
-    } else el.play().catch(function () {});
+    if (!('IntersectionObserver' in window)) { el.play().catch(function () {}); return; }
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) { el.play().catch(function () {}); return; }
+        el.pause();
+        if (el.currentTime > 0) { try { el.currentTime = 0; } catch (err) {} }
+      });
+    }, { threshold: 0.25 }).observe(box);
   }
 
   function soundGroup(root) {
