@@ -1,74 +1,106 @@
 {
  "ai-classes.html": [
-  "bccbdad1f959e6ca5ed6b492f44b9898a17c05c6",
+  "35d3186895fedde2c34ebec06e950f048c2f4581",
   "2026-11-24"
  ],
  "ai-tools.html": [
-  "68b59a76d1d06ca9cf80800ff2b8eb83da7b6221",
+  "257cb5b177070c9a78abd87077a87f98b4ff53eb",
   "2026-11-24"
  ],
  "ai-video.html": [
-  "ad832d0d4ec4a54aa7f4ef2487f039f4e2703c30",
+  "7a909647e727c79585d818ac3110b0b57ba0ddde",
   "2026-11-24"
  ],
  "index.html": [
-  "9a57a450e512ccc3fd53467c2b24176d68abae00",
+  "bf0cb7d1bab447d59aac1386d864ff040ff4fe22",
+  "2026-11-24"
+ ],
+ "insights.html": [
+  "7d5cb855619b2bbd7b16d60c101d8751098d4fc1",
+  "2026-11-24"
+ ],
+ "insights/chatgpt-vs-gemini-vs-claude.html": [
+  "0d451c725c529ba1e4c7af2146974ec50e731bfa",
+  "2026-11-24"
+ ],
+ "insights/kling-ai-veo-3-product-video.html": [
+  "a2bc10e189ba16e17e99b0348959f5d53b8d1faf",
+  "2026-11-24"
+ ],
+ "insights/what-is-aeo-geo.html": [
+  "7964f6cfab3dc704d47aa95fd5a20f66f3a64093",
   "2026-11-24"
  ],
  "marketing-classes.html": [
-  "7f251c80879b3a1f8826bc86f32b2c952f6a83a3",
+  "b3b891484f47da1d9c8b43e8b3fac6e6f1375138",
   "2026-11-24"
  ],
  "marketing-services.html": [
-  "2d4ca980b3d7dd88a792cd364728ad4195ca74d5",
+  "1051d8a80cfb69ec6c29526a141e7c8dad204ddf",
   "2026-11-24"
  ],
  "membership.html": [
-  "39542bc11999052277ffd65a21e3587c1f5d3f31",
+  "17e0a9eaa36664783da8eadc37fca8733571d9f1",
   "2026-11-24"
  ],
  "portfolio.html": [
-  "55e13ec3e5e2c213ca3994b6ce4c95976bdca87d",
+  "6e3a88b08ba0951ed78fc8c6e00f91e4517d1832",
   "2026-11-24"
  ],
  "scan-buddy.html": [
-  "6a90ca6e7a3f9d906f6432ae6a63c09605cd750d",
+  "8df34aa3a4cf4e5873c259f65b489d6116b5364e",
   "2026-11-24"
  ],
  "zh/ai-classes.html": [
-  "b633f3849beaaa5e4042bd04bead7083c2fa0e84",
+  "32f294813500bb059d177a8fda3081a97149115f",
   "2026-11-24"
  ],
  "zh/ai-tools.html": [
-  "3a0d4a23bb8fd5632b1db196209f020e39f71ec0",
+  "5dc299f1ea28d4e79d1f02d75c2174f63bc0fb6f",
   "2026-11-24"
  ],
  "zh/ai-video.html": [
-  "a857f08255277719a5e4e4e7c132a6cfc8edc373",
+  "b9aaba01da00e08f863152807f932520f42eeb76",
   "2026-11-24"
  ],
  "zh/index.html": [
-  "c4815dab4e8f1806d516ab96bbbbe814812e07b0",
+  "319da5a00994c7b2dae3b5e0e22d3c4a02ad9ba4",
+  "2026-11-24"
+ ],
+ "zh/insights.html": [
+  "f8cdeb6c7341a31cd6a0e6d45a28b73e5baaf755",
+  "2026-11-24"
+ ],
+ "zh/insights/chatgpt-vs-gemini-vs-claude.html": [
+  "df4d30ac2d1df03ada6e013cb109d447e954ca67",
+  "2026-11-24"
+ ],
+ "zh/insights/kling-ai-veo-3-product-video.html": [
+  "7a254dbb1f5c5a3fec8206a2cf210849dec3aedd",
+  "2026-11-24"
+ ],
+ "zh/insights/what-is-aeo-geo.html": [
+  "c478acb4f69eb087bfd1b797b2e4e2cec4416e12",
   "2026-11-24"
  ],
  "zh/marketing-classes.html": [
-  "e6a30c59c0440b2308599548babf3b372904e726",
+  "a37a3fad28c79c6d0eecd074e7305457e4f3006b",
   "2026-11-24"
  ],
  "zh/marketing-services.html": [
-  "4658901c27e9be862277294168c7b073c84dbdc2",
+  "25af1147e3eebed38ba31c28c77907054d2a8830",
   "2026-11-24"
  ],
  "zh/membership.html": [
-  "c83f0ee1df521c9121c660edda352f400be30f2b",
+  "e1927e49fe409dd64b6086ac3ea44f721e1ab0ed",
   "2026-11-24"
  ],
  "zh/portfolio.html": [
-  "914b255695487fd9427c5c48794c27680232dad0",
+  "18432bf234aba9229cc2d9a62ce67c41edc02e55",
   "2026-11-24"
  ],
  "zh/scan-buddy.html": [
-  "b23f991b45114b71023df23bce491e57d5ce9eec",
+  "d1bed815bf9302a27ad1e836b20df1169a5cab46",
   "2026-11-24"
  ]
 }

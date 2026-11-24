@@ -174,29 +174,40 @@ def phrase_wrap(t, stack):
     else:
         return esc
     parts, cur = [], ''
-    for c in t:
+    closers = '”’」』）)'
+    for i, c in enumerate(t):
         cur += c
-        if c in CJK_PUNCT:
+        nxt = t[i + 1] if i + 1 < len(t) else ''
+        # Cut after punctuation, but keep a closing quote or bracket with it (it may not start a line).
+        if (c in CJK_PUNCT or (c in closers and cur[:-1][-1:] in CJK_PUNCT)) and nxt not in closers:
             parts.append(cur); cur = ''
     if cur:
         parts.append(cur)
     def width(x):  # a Latin letter is about half a Chinese character wide
         return sum(1 if ord(c) > 0x2e80 else .55 for c in x.strip())
-    return ''.join(f'<span class="nb">{html.escape(x, quote=False)}</span>' if 1.5 <= width(x) <= limit else html.escape(x, quote=False)
-                   for x in parts)
+    # Browsers treat curly quotes as "never break here"; <wbr> after a closing quote restores a break point.
+    def wrap(x):
+        # Spaces stay outside the nowrap span, so the line can still break there.
+        core = x.strip()
+        lead, trail = x[:len(x) - len(x.lstrip())], x[len(x.rstrip()):]
+        inner = f'<span class="nb">{html.escape(core, quote=False)}</span>' if 1.5 <= width(core) <= limit else html.escape(core, quote=False)
+        return lead + inner + trail + ('<wbr>' if core[-1:] in '”’' else '')
+    return ''.join(wrap(x) for x in parts)
 
 
 def build_all():
     os.makedirs(os.path.join(OUT, 'zh'), exist_ok=True)
     missing.clear()
-    for f in sorted(glob.glob(os.path.join(OUT, '*.html'))):
-        name = os.path.basename(f)
+    files = sorted(glob.glob(os.path.join(OUT, '*.html')) + glob.glob(os.path.join(OUT, 'insights', '*.html')))
+    for f in files:
+        name = os.path.relpath(f, OUT)
         if name == '404.html':   # one bilingual 404 page, served by Vercel for any unknown path
             continue
         slug = '' if name == 'index.html' else name[:-5]
         p = Tr('/' + slug)
         p.feed(open(f, encoding='utf8').read())
         p.close()
+        os.makedirs(os.path.dirname(os.path.join(OUT, 'zh', name)), exist_ok=True)
         with open(os.path.join(OUT, 'zh', name), 'w', encoding='utf8') as w:
             # A comma before the coloured phrase is hidden when that phrase drops to its own line (phones).
             out = ''.join(p.out).replace('，<span class="accent">', '<span class="zh-p">，</span><span class="accent">')

@@ -903,3 +903,50 @@ html[lang^="zh"] .mvp .split .lede{font-size:clamp(18px,1.4vw,23px)}
 
 /* Home eyebrow: two tidy lines on phones (English), no dangling dot */
 @media (max-width:560px){html:not([lang^="zh"]) .eb-split .eb-dot{display:none}html:not([lang^="zh"]) .eb-split .nb{display:block}}
+
+/* ---------------- Insights: article pages and cards ---------------- */
+.post-meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;color:var(--ink-3);font-size:.92rem}
+.post-meta>span{display:inline-flex;gap:6px;align-items:center}
+.post-meta>span+span::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--ink-3);opacity:.6;margin-right:12px}
+.post{max-width:760px;margin:0 auto;font-size:1.08rem;line-height:1.8;color:var(--ink-2)}
+.post>p,.post .post-list,.post .post-table,.post .post-prompt,.post .post-tip{margin:0 0 22px}
+.post-h2{font-family:Outfit,sans-serif;font-size:clamp(1.5rem,2.6vw,2rem);line-height:1.25;color:var(--ink);margin:52px 0 18px;letter-spacing:-.01em}
+.post-tldr{border:1px solid rgba(138,107,255,.45);background:linear-gradient(135deg,rgba(180,85,255,.14),rgba(53,196,240,.08));border-radius:20px;padding:22px 26px;margin:0 0 30px;box-shadow:0 0 40px rgba(138,107,255,.12)}
+.post-tldr b{display:block;font-family:Outfit,sans-serif;letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;color:#9FD8FF;margin-bottom:8px}
+.post-tldr p{margin:0;color:var(--ink);font-size:1.1rem;line-height:1.75}
+.post-list{padding-left:1.3em}
+.post-list li{margin:0 0 12px;padding-left:.3em}
+.post-list li::marker{color:#8A6BFF;font-weight:700}
+.post-list b{color:var(--ink)}
+.post-table{overflow-x:auto;border:1px solid rgba(255,255,255,.12);border-radius:16px;-webkit-overflow-scrolling:touch}
+.post-table table{width:100%;border-collapse:collapse;min-width:560px;font-size:.96rem;line-height:1.55}
+.post-table th,.post-table td{padding:14px 16px;text-align:left;vertical-align:top;border-bottom:1px solid rgba(255,255,255,.08)}
+.post-table thead th{font-family:Outfit,sans-serif;color:var(--ink);background:rgba(138,107,255,.14)}
+.post-table tbody th{color:#B9C8FF;font-weight:600;white-space:nowrap}
+.post-table tbody tr:last-child>*{border-bottom:0}
+.post-prompt{position:relative;border-radius:16px;padding:20px 22px 18px;background:#120A2C;border:1px dashed rgba(53,196,240,.45)}
+.post-prompt span{position:absolute;top:-11px;left:16px;padding:2px 10px;border-radius:999px;background:#35C4F0;color:#0B0620;font:700 .72rem Outfit,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.post-prompt p{margin:0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.92rem;line-height:1.7;color:#DDEBFF}
+.post-tip{border-left:3px solid #B455FF;padding:6px 0 6px 18px;color:var(--ink)}
+.post-tip p{margin:0}
+.post-next{margin-top:48px;border-radius:22px;padding:28px;background:var(--card);border:1px solid rgba(255,255,255,.1)}
+.post-next .h3{margin:0 0 8px}
+.post-next p{margin:0 0 18px;color:var(--ink-3)}
+.post-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:20px;max-width:1200px;margin:0 auto}
+.post-card{display:flex;flex-direction:column;gap:12px;padding:26px;border-radius:22px;background:var(--card);border:1px solid rgba(255,255,255,.1);color:var(--ink-2);text-decoration:none;transition:transform .35s var(--ease-out),border-color .35s}
+.post-card:hover{transform:translateY(-4px);border-color:rgba(138,107,255,.6)}
+.post-card .h3{margin:0;color:var(--ink)}
+.post-card p{margin:0;flex:1;line-height:1.65}
+.post-tags{display:flex;flex-wrap:wrap;gap:6px}
+.post-tags span{font-size:.75rem;padding:4px 10px;border-radius:999px;background:rgba(138,107,255,.16);color:#CFC4FF}
+.post-more{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:#9FD8FF}
+@media (prefers-reduced-motion:reduce){.post-card,.post-card:hover{transition:none;transform:none}}
+html[lang^="zh"] .post{line-height:1.95}
+html[lang^="zh"] .post-h2{font-family:"TCM XuanZhen Song","Noto Serif SC",serif}
+.page-hero .post-meta{justify-content:center}
+.post-wrap{padding-top:clamp(12px,3vw,40px)}
+/* AI Tools cards: the scaled clip preview must not set the card's minimum width on phones */
+.ways>.way{min-width:0}
+.tool-art{min-width:0;width:100%}
+.tool-art{display:flex;align-items:center;justify-content:center}
+@media (max-width:560px){.tool-art .clips{transform:scale(.62)}}

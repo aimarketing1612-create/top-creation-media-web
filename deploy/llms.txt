@@ -30,6 +30,10 @@
 - [AI Tools for Business Malaysia](https://www.topcreationmedia.com/ai-tools): TCM AI tools for Malaysian businesses: Scan Buddy smart QR codes and AI Video, which turns product photos into video ads. Included in the Membership.
 - [AI Video](https://www.topcreationmedia.com/ai-video): AI Video turns a product photo into ready-to-post marketing videos: showcases, new backgrounds, model try-ons, UGC-style clips and captions.
 - [TCM Membership](https://www.topcreationmedia.com/membership): TCM Membership: every AI tool, the full marketing and AI video course library and marketing resources. RM300/month or RM2,160/year (save 40%).
+- [Insights: AI and Marketing Guides for Business](https://www.topcreationmedia.com/insights): Practical guides on AI and marketing for business owners in Malaysia and Singapore: ChatGPT vs Gemini vs Claude, AEO and GEO, AI product videos and more.
+- [ChatGPT vs Gemini vs Claude for Business (Malaysia Guide)](https://www.topcreationmedia.com/insights/chatgpt-vs-gemini-vs-claude): ChatGPT, Gemini or Claude? A plain comparison for business owners in Malaysia and Singapore: what each does best, how to choose and how to use it safely.
+- [What is AEO & GEO? Get Recommended by ChatGPT and Gemini](https://www.topcreationmedia.com/insights/what-is-aeo-geo): AEO and GEO explained for businesses in Malaysia and Singapore: how ChatGPT, Gemini and Google AI Overviews pick who to recommend, and 7 steps to get there.
+- [Kling AI & Veo 3 Tutorial: Product Video Ads with AI](https://www.topcreationmedia.com/insights/kling-ai-veo-3-product-video): A step-by-step Kling AI and Veo 3 workflow: turn one product photo into short video ads, with a prompt template and what AI video still gets wrong.
 
 ## Chinese pages
 - [Digital Marketing Agency Malaysia & Singapore (中文)](https://www.topcreationmedia.com/zh/)
@@ -41,6 +45,10 @@
 - [AI Tools for Business Malaysia (中文)](https://www.topcreationmedia.com/zh/ai-tools)
 - [AI Video (中文)](https://www.topcreationmedia.com/zh/ai-video)
 - [TCM Membership (中文)](https://www.topcreationmedia.com/zh/membership)
+- [Insights: AI and Marketing Guides for Business (中文)](https://www.topcreationmedia.com/zh/insights)
+- [ChatGPT vs Gemini vs Claude for Business (Malaysia Guide) (中文)](https://www.topcreationmedia.com/zh/insights/chatgpt-vs-gemini-vs-claude)
+- [What is AEO & GEO? Get Recommended by ChatGPT and Gemini (中文)](https://www.topcreationmedia.com/zh/insights/what-is-aeo-geo)
+- [Kling AI & Veo 3 Tutorial: Product Video Ads with AI (中文)](https://www.topcreationmedia.com/zh/insights/kling-ai-veo-3-product-video)
 
 ## Frequently asked questions
 - **Do you work with large companies and franchise brands in Malaysia?** Yes. We run marketing for multi-outlet and franchise brands and for companies with 50+ staff: one strategy for the whole brand, local ads for each outlet, and training so your in-house team can run the day-to-day work.
