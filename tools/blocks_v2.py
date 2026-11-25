@@ -111,7 +111,10 @@ POSTERS = [('poster-skin', Z('Luxury skincare launch', '高端护肤品上市海
            ('poster-gym', Z('Fitness campaign', '健身品牌海报'), Z('AI-made poster: athlete with chalk dust and the headline No more Mondays', 'AI 制作的海报：运动员与飞扬的镁粉，标题为 No more Mondays'))]
 SITES = [('site-dining', Z('Fine-dining restaurant', '高级餐厅'), Z('Sample home page for a tasting-menu restaurant, dark with serif type', '品尝菜单餐厅的首页样本，深色配衬线字体')),
          ('site-villa', Z('Luxury property launch', '高端房产项目'), Z('Sample home page for a rainforest villa development', '雨林别墅项目的首页样本')),
-         ('site-derma', Z('Aesthetic clinic', '医美诊所'), Z('Sample home page for a doctor-led aesthetic clinic', '医美诊所的首页样本'))]
+         ('site-skin', Z('Skincare brand', '护肤品牌'), Z('Sample home page for a skincare brand in pink and wood tones', '粉色与木色系的护肤品牌首页样本'))]
+FLOWS = [('flow-wa', Z('WhatsApp AI auto-reply', 'WhatsApp AI 自动回复'), Z('Sample system: an AI assistant answers a price question on WhatsApp and books the slot', '系统样本：AI 助理在 WhatsApp 回答价格问题并完成预约')),
+         ('flow-book', Z('Online booking system', '线上预约系统'), Z('Sample system: a weekly booking calendar with automatic confirmations and reminders', '系统样本：每周预约日历，自动确认和提醒')),
+         ('flow-mail', Z('Auto-send Gmail follow-up', '自动发送 Gmail 跟进'), Z('Sample system: a new lead triggers an AI-written email from Gmail, a CRM row and a team alert', '系统样本：新顾客触发 AI 撰写的 Gmail 邮件、CRM 记录和团队通知'))]
 AV_ROWS = [('ai-video-1', 'UGC ads', 'Creator-style clips that feel native on TikTok and Reels.'),
            ('ai-video-2', 'AI short films', 'Story-led drama that holds attention to the end.'),
            ('ai-video-4', 'Outfit & background swap', 'Change the person, the outfit and the location, without a reshoot.'),
@@ -152,7 +155,7 @@ def module_samples():
         f'''<div class="smp-card" data-rv><h3 class="smp-t">{esc(t)}</h3><dl class="kv">{"".join(f"<dt>{esc(k)}</dt><dd>{esc(v)}</dd>" for k, v in rows)}</dl></div>''' for t, rows in PLAN_SAMPLES) + '</div>'
     panels = [('s-tools', Z('AI tools', 'AI 工具'), chat), ('s-video', Z('AI video', 'AI 视频'), f'<div class="samples">{av_figs()}</div>'),
               ('s-graphics', Z('AI graphics', 'AI 设计'), _imgs(POSTERS, 'g3 posters')), ('s-web', Z('AI website', 'AI 网站'), _imgs(SITES, 'g3 sites')),
-              ('s-captions', Z('AI captions', 'AI 文案'), caps), ('s-flow', Z('AI system flow', 'AI 自动化'), flows), ('s-marketing', Z('AI marketing', 'AI 营销'), plans)]
+              ('s-captions', Z('AI captions', 'AI 文案'), caps), ('s-flow', Z('AI system flow', 'AI 自动化'), _imgs(FLOWS, 'g3 flowimgs')), ('s-marketing', Z('AI marketing', 'AI 营销'), plans)]
     return f'''    <section class="tile tile-dark" id="samples">
       <div class="wrap">
         {head(esc(Z('See what you will', '看看你将会')) + ' <span class="accent">' + esc(Z('make in class.', '在课堂上做出什么。')) + '</span>', esc(Z('Sample work', '作品样本')), esc(Z('Three samples from every module. All of it was made with AI.', '每个单元 3 个样本，全部用 AI 完成。')), style='margin-bottom:40px')}
