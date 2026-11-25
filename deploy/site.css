@@ -1067,3 +1067,13 @@ html[lang^="zh"] .mvp-head .lede{max-width:none}
 .plan-secure{margin-top:10px;font-size:13px;text-align:center;color:var(--ink-3)}
 .smp-img a{display:block;cursor:zoom-in}
 @media (max-width:900px){.smp-grid.flowimgs,.smp-grid.sites{grid-template-columns:1fr}}
+
+/* =================== QA pass: no page may be wider than its screen =================== */
+/* Grid children may shrink; short Chinese no-wrap phrases may wrap inside narrow cards. */
+.index{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:1000px){.index{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.index{grid-template-columns:minmax(0,1fr)}}
+.index-col,.join li,.join li>div,.stepc,.smp-card,.promises li>div,.cshot,.plan,.apply>div{min-width:0}
+.index .nb,.join .nb,.svc .nb,.smp-card .nb,.stepc .nb,.promises .nb,.cshot .nb,.plan .nb,.apply .nb,.offer .nb,.col .nb,.mod .nb,.card .nb,.faq .nb{white-space:normal}
+/* Tablet: the full menu (with Insights) must fit between 769 and 960px */
+@media (max-width:960px) and (min-width:769px){.nav-in{padding-left:16px;padding-right:16px}.nav-links{gap:10px;font-size:13px;letter-spacing:.04em}.nav-links .btn-sm{padding:0 12px;font-size:13px}.nav-links .dd>a::after{margin-left:2px}.brand img{height:38px}.nav-links .lang{padding:0 9px}}
