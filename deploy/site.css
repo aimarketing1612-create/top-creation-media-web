@@ -1077,3 +1077,6 @@ html[lang^="zh"] .mvp-head .lede{max-width:none}
 .index .nb,.join .nb,.svc .nb,.smp-card .nb,.stepc .nb,.promises .nb,.cshot .nb,.plan .nb,.apply .nb,.offer .nb,.col .nb,.mod .nb,.card .nb,.faq .nb{white-space:normal}
 /* Tablet: the full menu (with Insights) must fit between 769 and 960px */
 @media (max-width:960px) and (min-width:769px){.nav-in{padding-left:16px;padding-right:16px}.nav-links{gap:10px;font-size:13px;letter-spacing:.04em}.nav-links .btn-sm{padding:0 12px;font-size:13px}.nav-links .dd>a::after{margin-left:2px}.brand img{height:38px}.nav-links .lang{padding:0 9px}}
+/* Phone: the three-way section switch stays on one line; class photo keeps the trainer in frame */
+@media (max-width:480px){.switch{flex-wrap:nowrap;max-width:100%}.switch a{padding:9px 11px;font-size:12.5px;white-space:nowrap}}
+.cshot img[src$="mission.jpg"]{object-position:72% 50%}
