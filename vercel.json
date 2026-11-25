@@ -76,16 +76,6 @@
       "source": "/zh/social-media",
       "destination": "/zh/marketing-services",
       "permanent": true
-    },
-    {
-      "source": "/membership",
-      "destination": "/marketing-classes",
-      "permanent": false
-    },
-    {
-      "source": "/zh/membership",
-      "destination": "/zh/marketing-classes",
-      "permanent": false
     }
   ]
 }
