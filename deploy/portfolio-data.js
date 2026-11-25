@@ -47,6 +47,13 @@ window.TCM_PORTFOLIO = {
   },
 
   items: [
+    // Featured work, with designed covers in assets/portfolio/
+    { type: 'video', title: 'Hairz: service promo', sub: 'Hair removal salon · Short-form video', image: 'assets/portfolio/pf-hairz.webp', driveVideoId: '14ozeN9GmtkQD6OEwY714gRlgMM_sv1WY' },
+    { type: 'video', title: 'Restaurant food film', sub: 'F&B · Cinematic short', image: 'assets/portfolio/pf-dining.webp', driveVideoId: '1ehz0jn8law-C5c5fPj0hTapO8KaiED_h' },
+    { type: 'video', title: 'Fit Garden: brand film', sub: 'Gym & fitness · Brand video', image: 'assets/portfolio/pf-gym.webp', driveVideoId: '135j1pCCJF1z2zzGQ-NStASPWeynLXPqU' },
+    { type: 'video', title: 'Interior design: project walkthrough', sub: 'Renovation · Founder-led video', image: 'assets/portfolio/pf-interior.webp', driveVideoId: '1-ZkKyaAoc2_R5hWLodueSnjDYCIZtE_Z' },
+    { type: 'video', title: 'Night Burn Extreme: UGC ad', sub: 'Health supplement · UGC-style ad', image: 'assets/portfolio/pf-supplement.webp', driveVideoId: '1Qzr2C9JChL0ZvrmwRorUc-Dk9yBino9c' },
+
     // ---- Videos (from the homepage "Selected Work") ----
     { type: 'video', title: 'Short-form video 01', driveThumbId: '1c9Hv7y2g-ToOAJzCW4QK9nXNM19fSQwP', driveVideoId: '1Ty-LZuJjQtZOWxmzonxD0yxITzRKPxSh' },
     { type: 'video', title: 'Short-form video 02', driveThumbId: '1QjgHN5wtQrwgiAICEtYhPXuZpwUILGyT', driveVideoId: '1AIzBUTbEfXdvnCavm7ZvhScY3rUD93Sg' },
@@ -90,3 +97,11 @@ window.TCM_PORTFOLIO = {
     { name: 'Haroma Signature', logo: 'assets/logos/haroma.jpg' }
   ]
 };
+
+// File paths above are written without a leading slash. Make them absolute, so they also
+// load on pages inside a folder (the Chinese pages under /zh/).
+(function (d) {
+  function abs(p) { return p && !/^(https?:)?\/\//.test(p) && p.charAt(0) !== '/' ? '/' + p : p; }
+  (d.items || []).forEach(function (it) { if (it.image) it.image = abs(it.image); });
+  (d.clients || []).forEach(function (c) { if (c.logo) c.logo = abs(c.logo); });
+})(window.TCM_PORTFOLIO);
