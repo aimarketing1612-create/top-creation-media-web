@@ -1247,8 +1247,8 @@ mem_body = f'''    <section class="hero">
       <div class="wrap">
         {head('Choose your plan', 'Pricing')}
         <div class="plans">
-          {price_plan(Z('Monthly', '月付'), MEM['m'], Z('/month', '/月'), esc(Z('Billed monthly. Cancel anytime.', '按月付款，随时可以取消。')), MEM_FEATS, MEM_M, Z('Subscribe monthly', '订阅月付'))}
-          {price_plan(Z('Yearly', '年付'), MEM['y'], Z('/month', '/月'), esc(Z('RM' + MEM['ytotal'] + ' billed yearly.', '每年付 RM' + MEM['ytotal'] + '。')) + f' <s>RM{MEM["full"]}</s>', MEM_FEATS, MEM_Y, Z('Subscribe yearly', '订阅年付'), flag=Z('Save RM' + MEM['save'], '省 RM' + MEM['save']), best=True)}
+          {price_plan(Z('Monthly', '月付'), MEM['m'], Z('/month', '/月'), esc(Z('Billed monthly. Cancel anytime.', '按月付款，随时可以取消。')), MEM_FEATS, MEM_M, Z('Subscribe monthly', '订阅月付'), pay='mem_m')}
+          {price_plan(Z('Yearly', '年付'), MEM['y'], Z('/month', '/月'), esc(Z('RM' + MEM['ytotal'] + ' billed yearly.', '每年付 RM' + MEM['ytotal'] + '。')) + f' <s>RM{MEM["full"]}</s>', MEM_FEATS, MEM_Y, Z('Subscribe yearly', '订阅年付'), flag=Z('Save RM' + MEM['save'], '省 RM' + MEM['save']), best=True, pay='mem_y')}
         </div>
         {join_steps('mem')}
         <div class="offer" data-rv>
@@ -1620,6 +1620,30 @@ def not_found_page():
     return html_
 
 
+TY_MSG = "Hi, I have just paid. Please send me my invite code."
+ty_body = f'''    <section class="hero nf">
+      <div class="wrap nf-wrap">
+        <div class="eyebrow rise">Payment received · 已收到付款</div>
+        <h1 class="h1 rise" style="animation-delay:.05s">Thank you. <span class="accent">One last step.</span></h1>
+        <p class="lede rise" style="animation-delay:.15s">WhatsApp us now and our admin will send your personal invite code. Use it to log in and start.</p>
+        <p class="lede rise nf-zh" lang="zh-Hans" style="animation-delay:.2s"><span class="nb">谢谢你的订阅。</span><span class="nb">请现在 WhatsApp 我们，</span><span class="nb">客服会发给你专属邀请码，</span><span class="nb">用它登入就可以开始。</span></p>
+        <div class="btn-row rise" style="animation-delay:.3s">
+          <a class="btn btn-primary btn-lg" href="{wa(TY_MSG)}" target="_blank" rel="noopener">Get my invite code · 领取邀请码 {ARROW}</a>
+        </div>
+      </div>
+    </section>
+'''
+
+
+def thank_you_page():
+    """deploy/thank-you.html: where Stripe sends a customer after payment. Not indexed."""
+    import re as _re
+    h = page('thank-you', 'Thank you | Top Creation Media', 'Payment received. WhatsApp us for your invite code.', '', {}, ty_body)
+    h = _re.sub(r'  <link rel="(canonical|alternate)"[^>]*>\n', '', h)
+    h = h.replace('  <meta name="theme-color"', '  <meta name="robots" content="noindex">\n  <meta name="theme-color"', 1)
+    return h.replace('<script type="application/ld+json">{}</script>\n', '')
+
+
 if __name__ == '__main__':
     for fname, slug, title, desc, cur, ld, body, scripts in PAGES:
         os.makedirs(os.path.dirname(os.path.join(OUT, fname)), exist_ok=True)
@@ -1635,5 +1659,7 @@ if __name__ == '__main__':
     with open(os.path.join(OUT, '404.html'), 'w', encoding='utf8') as f:
         f.write(not_found_page())
     print('wrote 404.html')
+    with open(os.path.join(OUT, 'thank-you.html'), 'w', encoding='utf8') as f:
+        f.write(thank_you_page())
     build_seo_files(PAGES)
     print('wrote sitemap.xml, robots.txt, llms.txt')

@@ -1064,3 +1064,5 @@ html[lang^="zh"] .mvp-head .lede{max-width:none}
 #samples .samples{max-width:1100px}
 @media (max-width:900px){.smp-grid.g3{grid-template-columns:1fr}.smp-grid.posters{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.smp-grid.posters figcaption{font-size:12.5px;padding:8px 4px}}
 .hero .mem-h1~.lede{font-size:clamp(19px,1.6vw,25px)}
+.plan-secure{margin-top:10px;font-size:13px;text-align:center;color:var(--ink-3)}
+.smp-img a{display:block;cursor:zoom-in}

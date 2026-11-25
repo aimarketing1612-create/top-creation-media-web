@@ -201,7 +201,7 @@ def build_all():
     files = sorted(glob.glob(os.path.join(OUT, '*.html')) + glob.glob(os.path.join(OUT, 'insights', '*.html')))
     for f in files:
         name = os.path.relpath(f, OUT)
-        if name == '404.html':   # one bilingual 404 page, served by Vercel for any unknown path
+        if name in ('404.html', 'thank-you.html'):   # one bilingual 404 page, served by Vercel for any unknown path
             continue
         slug = '' if name == 'index.html' else name[:-5]
         p = Tr('/' + slug)

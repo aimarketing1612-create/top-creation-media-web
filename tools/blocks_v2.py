@@ -8,6 +8,9 @@ from insights import T as Z
 MEM = dict(m=350, y=250, ytotal='3,000', full='4,200', save='1,200')
 SB = dict(m=150, y=999, full='1,800', save=801, pct=44)
 KONGSIKAN = 'https://kongsikan.cfd/'
+# Stripe Payment Links. While a value is empty, that plan's button opens WhatsApp instead.
+# In Stripe, set each link's "after payment" redirect to https://www.topcreationmedia.com/thank-you
+PAY = {'mem_m': '', 'mem_y': '', 'sb_m': '', 'sb_y': ''}
 MEM_M = f"Hi, I'd like to subscribe to the TCM Membership, monthly plan (RM{MEM['m']}/month)."
 MEM_Y = f"Hi, I'd like to subscribe to the TCM Membership, yearly plan (RM{MEM['ytotal']}/year)."
 SB_M = f"Hi, I'd like to try Scan Buddy, monthly plan (RM{SB['m']}/month)."
@@ -78,20 +81,20 @@ CHAT_SAMPLES = [
 ]
 CAPTION_SAMPLES = [
     (Z('Skincare serum', '护肤精华'),
-     Z('Your skin is not tired. It is thirsty.', '你的皮肤不是累，是渴了。'),
-     Z('Our Vitamin C serum brightens dull skin in 7 days. Light, no sticky feel, safe for sensitive skin.', '我们的维 C 精华 7 天提亮暗沉肌肤。质地轻盈不黏腻，敏感肌也适用。'),
-     Z('Tap "Shop now" and get 20% off your first bottle.', '点击"立即购买"，首瓶享 20% 折扣。'),
-     '#skincaremalaysia #vitaminc #glowingskin #kulitcerah'),
+     Z('Sold out 3 times. Back for 2 days only.', '断货 3 次。这次只回来 2 天。'),
+     Z('The vitamin C serum everyone is fighting for is finally back in stock. Brighter skin in 7 days, light, never sticky. Last time it was gone in 48 hours.', '全网都在抢的维 C 精华终于补货了。7 天提亮，质地轻盈不黏腻。上一次 48 小时就卖光。'),
+     Z('Tap "Shop now" before it sells out again. 20% off ends Sunday.', '趁还没再断货，点击"立即购买"。20% 折扣星期天截止。'),
+     '#skincaremalaysia #vitaminc #backinstock #viralskincare'),
     (Z('Bubble tea shop', '奶茶店'),
-     Z('Friday at 3pm. You know what that means.', '星期五下午三点，你懂的。'),
-     Z('Buy 1 free 1 on every brown sugar boba, 3pm to 6pm. Bring the colleague who always says "just one sip".', '黑糖珍珠奶茶全线买一送一，下午三点到六点。带上那个老是说"喝一口就好"的同事。'),
-     Z('Tag your boba buddy and come by today.', '标记你的奶茶搭子，今天就来。'),
-     '#bobamalaysia #buy1free1 #klfoodie #奶茶控'),
+     Z('Buy 1 Free 1. Only 2 days left.', '买一送一，只剩最后 2 天。'),
+     Z('Every brown sugar boba, all day, until Sunday night. After that it goes back to full price, and you will wish you had come.', '黑糖珍珠奶茶全线、全天买一送一，到星期天晚上为止。之后恢复原价，到时候你会后悔没来。'),
+     Z('Tag the friend who owes you a drink and come today.', '标记那个还欠你一杯的朋友，今天就来。'),
+     '#bobamalaysia #buy1free1 #last2days #奶茶控'),
     (Z('Gym membership', '健身房会员'),
-     Z('The hardest rep is walking through the door.', '最难的一下，是走进门的那一步。'),
-     Z('First month RM1, no joining fee. A coach plans your first 4 weeks, so you never wonder what to do next.', '首月 RM1，免入会费。教练为你规划头 4 个星期，不用烦恼下一步练什么。'),
-     Z('Book your free trial class on WhatsApp.', 'WhatsApp 预约免费体验课。'),
-     '#gymmalaysia #fitnessjourney #starttoday #健身'),
+     Z('Why did 300 people join this gym in one week?', '为什么一个星期内有 300 人加入这家健身房？'),
+     Z('First month RM1. No joining fee. A coach plans your first 4 weeks for you. Only 37 spots are left at this price.', '首月只要 RM1，免入会费，教练帮你规划头 4 个星期。这个价格只剩 37 个名额。'),
+     Z('WhatsApp "RM1" now to lock your spot before midnight.', '现在就 WhatsApp "RM1"，午夜前锁定你的名额。'),
+     '#gymmalaysia #rm1 #limitedspots #健身'),
 ]
 FLOW_SAMPLES = [
     (Z('WhatsApp auto-reply', 'WhatsApp 自动回复'), [Z('Customer sends a message', '顾客发来信息'), Z('AI reads the question', 'AI 读懂问题'), Z('Replies with price and stock', '回复价格和库存'), Z('Hot lead? Alerts your sales team', '高意向顾客？通知销售团队')]),
@@ -103,12 +106,12 @@ PLAN_SAMPLES = [
     (Z('7-day content calendar', '7 天内容日历'), [(Z('Mon', '周一'), Z('Behind the scenes video', '幕后花絮视频')), (Z('Wed', '周三'), Z('Customer story', '顾客故事')), (Z('Fri', '周五'), Z('Weekend promo post', '周末促销贴文')), (Z('Sun', '周日'), Z('Tips carousel', '实用贴士图集'))]),
     (Z('Ad campaign plan', '广告活动规划'), [(Z('Goal', '目标'), Z('100 WhatsApp leads a month', '每月 100 个 WhatsApp 询问')), (Z('Budget', '预算'), Z('RM50 a day on Meta', 'Meta 每天 RM50')), (Z('Test', '测试'), Z('3 videos x 2 audiences', '3 支视频 × 2 组受众')), (Z('Track', '追踪'), Z('CPL, CTR and ROAS weekly', '每周看 CPL、CTR 和 ROAS'))]),
 ]
-POSTERS = [('poster-skin', Z('Skincare poster', '护肤品海报'), Z('AI-made poster for a vitamin C serum with a 20% off badge', 'AI 制作的维 C 精华海报，附 20% 折扣标签')),
-           ('poster-boba', Z('Food & drink poster', '餐饮海报'), Z('AI-made poster for a bubble tea buy 1 free 1 promotion', 'AI 制作的奶茶买一送一促销海报')),
-           ('poster-gym', Z('Fitness poster', '健身海报'), Z('AI-made poster for a gym first-month offer', 'AI 制作的健身房首月优惠海报'))]
-SITES = [('site-dental', Z('Dental clinic', '牙科诊所'), Z('Sample home page for a family dental clinic', '家庭牙科诊所的首页样本')),
-         ('site-bakery', Z('Bakery & café', '面包咖啡店'), Z('Sample home page for an artisan bakery', '手工面包店的首页样本')),
-         ('site-interior', Z('Interior design studio', '室内设计公司'), Z('Sample home page for an interior design studio', '室内设计公司的首页样本'))]
+POSTERS = [('poster-skin', Z('Luxury skincare launch', '高端护肤品上市海报'), Z('AI-made poster: a gold serum bottle with the headline Sold out 3 times', 'AI 制作的海报：金色精华瓶，标题为"断货 3 次"')),
+           ('poster-boba', Z('Food & drink promotion', '餐饮促销海报'), Z('AI-made poster: bubble tea splash with Buy 1 Free 1, only 2 days left', 'AI 制作的海报：奶茶飞溅画面，买一送一只剩 2 天')),
+           ('poster-gym', Z('Fitness campaign', '健身品牌海报'), Z('AI-made poster: athlete with chalk dust and the headline No more Mondays', 'AI 制作的海报：运动员与飞扬的镁粉，标题为 No more Mondays'))]
+SITES = [('site-dining', Z('Fine-dining restaurant', '高级餐厅'), Z('Sample home page for a tasting-menu restaurant, dark with serif type', '品尝菜单餐厅的首页样本，深色配衬线字体')),
+         ('site-villa', Z('Luxury property launch', '高端房产项目'), Z('Sample home page for a rainforest villa development', '雨林别墅项目的首页样本')),
+         ('site-derma', Z('Aesthetic clinic', '医美诊所'), Z('Sample home page for a doctor-led aesthetic clinic', '医美诊所的首页样本'))]
 AV_ROWS = [('ai-video-1', 'UGC ads', 'Creator-style clips that feel native on TikTok and Reels.'),
            ('ai-video-2', 'AI short films', 'Story-led drama that holds attention to the end.'),
            ('ai-video-4', 'Outfit & background swap', 'Change the person, the outfit and the location, without a reshoot.'),
@@ -132,7 +135,7 @@ def av_samples():
 
 def _imgs(rows, cls):
     return f'<div class="smp-grid {cls}">' + ''.join(
-        f'<figure class="smp-img" data-rv><img src="/assets/samples/{f}.webp" alt="{esc(alt)}" loading="lazy"><figcaption>{esc(t)}</figcaption></figure>' for f, t, alt in rows) + '</div>'
+        f'<figure class="smp-img" data-rv><a href="/assets/samples/{f}.webp" target="_blank" rel="noopener"><img src="/assets/samples/{f}.webp" alt="{esc(alt)}" loading="lazy"></a><figcaption>{esc(t)}</figcaption></figure>' for f, t, alt in rows) + '</div>'
 
 
 def module_samples():
@@ -142,7 +145,7 @@ def module_samples():
           <div class="chat-q"><span>{lbl["prompt"]}</span><p>{esc(q)}</p></div><div class="chat-a">{"".join(f"<p>{esc(x)}</p>" for x in a)}</div></div>''' for tool, t, q, a in CHAT_SAMPLES) + '</div>'
     caps = '<div class="smp-grid g3">' + ''.join(
         f'''<div class="smp-card" data-rv><div class="smp-k">{esc(prod)}</div>
-          <dl class="cap"><dt>{lbl["hook"]}</dt><dd class="cap-hook">{esc(h)}</dd><dt>{lbl["body"]}</dt><dd>{esc(b)}</dd><dt>{lbl["cta"]}</dt><dd>{esc(c)}</dd><dt>{lbl["tags"]}</dt><dd class="cap-tags">{tags}</dd></dl></div>''' for prod, h, b, c, tags in CAPTION_SAMPLES) + '</div>'
+          <dl class="cap"><dt>{lbl["hook"]}</dt><dd class="cap-hook">{esc(h)}</dd><dt>{lbl["body"]}</dt><dd>{esc(b)}</dd><dt>{lbl["cta"]}</dt><dd>{esc(c)}</dd><dt>{lbl["tags"]}</dt><dd class="cap-tags">{Z(tags, tags)}</dd></dl></div>''' for prod, h, b, c, tags in CAPTION_SAMPLES) + '</div>'
     flows = '<div class="smp-grid g3">' + ''.join(
         f'''<div class="smp-card" data-rv><h3 class="smp-t">{esc(t)}</h3><ol class="flow">{"".join(f"<li>{esc(x)}</li>" for x in st)}</ol></div>''' for t, st in FLOW_SAMPLES) + '</div>'
     plans = '<div class="smp-grid g3">' + ''.join(
@@ -160,14 +163,16 @@ def module_samples():
 
 
 # ------------------------------------------------ plans
-def price_plan(name, price, unit, note, feats, msg, label, flag='', best=False):
+def price_plan(name, price, unit, note, feats, msg, label, flag='', best=False, pay=''):
+    href = PAY.get(pay) or wa(msg)
+    secure = f'<p class="plan-secure">{esc(Z("Secure checkout by Stripe: card, FPX or GrabPay", "由 Stripe 安全结账：信用卡、FPX 或 GrabPay"))}</p>' if PAY.get(pay) else ''
     fl = f'<span class="plan-flag">{esc(flag)}</span>' if flag else ''
     return f'''<div class="plan{' plan-best' if best else ''}" data-rv>
             <div class="plan-top"><span class="plan-name">{esc(name)}</span>{fl}</div>
             <div class="plan-price"><span class="plan-cur">RM</span>{price}<span class="plan-unit">{esc(unit)}</span></div>
             <p class="plan-note">{note}</p>
             {ticks(feats)}
-            <a class="btn {'btn-primary' if best else 'btn-ghost'}" href="{wa(msg)}" onclick="{CONV}" target="_blank" rel="noopener">{esc(label)}</a>
+            <a class="btn {'btn-primary' if best else 'btn-ghost'}" href="{href}" onclick="{CONV}" target="_blank" rel="noopener">{esc(label)}</a>{secure}
           </div>'''
 
 
@@ -189,8 +194,8 @@ def sb_plans():
       <div class="wrap">
         {head(esc(Z('Simple pricing.', '价格简单。')) + ' <span class="accent">' + esc(Z('Start with a trial.', '先试用再决定。')) + '</span>', esc(Z('Scan Buddy plans', 'Scan Buddy 配套')))}
         <div class="plans">
-          {price_plan(Z('Monthly trial', '月付试用'), SB['m'], Z('/month', '/月'), esc(Z('Try it for a month. Cancel anytime.', '先试一个月，随时可以取消。')), feats, SB_M, Z('Start the trial', '开始试用'))}
-          {price_plan(Z('Yearly', '年付'), SB['y'], Z('/year', '/年'), esc(Z('About RM' + str(per) + ' a month.', '约每月 RM' + str(per) + '。')) + f' <s>RM{SB["full"]}</s>', feats, SB_Y, Z('Subscribe yearly', '订阅年付'), flag=Z('Save RM' + str(SB['save']) + ' (' + str(SB['pct']) + '%)', '省 RM' + str(SB['save']) + '（' + str(SB['pct']) + '%）'), best=True)}
+          {price_plan(Z('Monthly trial', '月付试用'), SB['m'], Z('/month', '/月'), esc(Z('Try it for a month. Cancel anytime.', '先试一个月，随时可以取消。')), feats, SB_M, Z('Start the trial', '开始试用'), pay='sb_m')}
+          {price_plan(Z('Yearly', '年付'), SB['y'], Z('/year', '/年'), esc(Z('About RM' + str(per) + ' a month.', '约每月 RM' + str(per) + '。')) + f' <s>RM{SB["full"]}</s>', feats, SB_Y, Z('Subscribe yearly', '订阅年付'), flag=Z('Save RM' + str(SB['save']) + ' (' + str(SB['pct']) + '%)', '省 RM' + str(SB['save']) + '（' + str(SB['pct']) + '%）'), best=True, pay='sb_y')}
         </div>
         <div class="apply" data-rv>
           <div class="apply-qr">{qr}</div>
