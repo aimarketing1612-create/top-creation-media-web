@@ -1080,3 +1080,6 @@ html[lang^="zh"] .mvp-head .lede{max-width:none}
 /* Phone: the three-way section switch stays on one line; class photo keeps the trainer in frame */
 @media (max-width:480px){.switch{flex-wrap:nowrap;max-width:100%}.switch a{padding:9px 11px;font-size:12.5px;white-space:nowrap}}
 .cshot img[src$="mission.jpg"]{object-position:72% 50%}
+/* Membership: Chinese title fits its column without splitting 课程; the three cards stack on phones */
+html[lang^="zh"] .hero .h1.mem-h1{font-size:clamp(28px,3.1vw,46px);text-wrap:wrap}
+@media (max-width:560px){.svc-grid.mem-cards{grid-template-columns:minmax(0,1fr)}.mem-cards .svc-media{aspect-ratio:16/10}}

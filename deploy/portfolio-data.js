@@ -55,21 +55,21 @@ window.TCM_PORTFOLIO = {
     { type: 'video', title: 'Nano Singapore: Night Burn Extreme', sub: 'Health supplement · UGC-style ad', image: 'assets/portfolio/pf-supplement.webp', driveVideoId: '1Qzr2C9JChL0ZvrmwRorUc-Dk9yBino9c' },
 
     // ---- Videos (from the homepage "Selected Work") ----
-    { type: 'video', title: 'Short-form video 01', driveThumbId: '1c9Hv7y2g-ToOAJzCW4QK9nXNM19fSQwP', driveVideoId: '1Ty-LZuJjQtZOWxmzonxD0yxITzRKPxSh' },
-    { type: 'video', title: 'Short-form video 02', driveThumbId: '1QjgHN5wtQrwgiAICEtYhPXuZpwUILGyT', driveVideoId: '1AIzBUTbEfXdvnCavm7ZvhScY3rUD93Sg' },
-    { type: 'video', title: 'Short-form video 03', driveThumbId: '1W9vw0f0eblulrzguykCulbxX9uHAcn7V', driveVideoId: '1SvmH1l3jeTb-LqXkCdXGydT2EMNEV6bP' },
-    { type: 'video', title: 'Short-form video 04', driveThumbId: '1V3jWuCXdGTNwYd6aajXcMSctBP1Jw4y9', driveVideoId: '1TOVDmNekJaqW8W3NvhbVr0vW_s3ggaj0' },
-    { type: 'video', title: 'Short-form video 05', driveThumbId: '1rsu4a8sG8J_96kOz_EhMVqIIchzZ51ep', driveVideoId: '1sg0BvCMg9dG06Q7GmgJbXZv9gMOhwXL9' },
-    { type: 'video', title: 'Short-form video 06', driveThumbId: '15eQtE6Txe7JD3Ql6aCwyf6B0h5MtkEVi', driveVideoId: '1DFUPUcqCcqD_sx37gCxlynC_3prWrF6b' },
-    { type: 'video', title: 'Short-form video 07', driveThumbId: '1EA9zExnNeEaPP4CgheXOSIF8jrAtce1O', driveVideoId: '1-c37q5wlcpH_k2srd8gF0RsYuOYSV-N3' },
-    { type: 'video', title: 'Short-form video 08', driveThumbId: '1OMMDkhvSRUXvlvKI3isX7wKUvzXvu5Sz', driveVideoId: '1bBietGo_NAcehlakaW-4TuskE0yQNzMn' },
-    { type: 'video', title: 'Short-form video 09', driveThumbId: '1ywOaqWZs5Tk5sizyexR6ynGP-pXAG38L', driveVideoId: '1ssZ2tW9awvhQM-wAIOKLQQjuMmMR8REU' },
-    { type: 'video', title: 'Short-form video 10', driveThumbId: '16RKEKhPVyUTBk9k3-G_dIK576VMsiYyA', driveVideoId: '1A-hUcTIR8xdjBrnS8Q6QlrgIw9vNYdem' },
-    { type: 'video', title: 'Short-form video 11', driveThumbId: '1b5BtjW8rUZT2_7Ns5s_r8FtGt3qZvgsT', driveVideoId: '1aOQy5d4iiKFi25jfMY_fRze_hw-swrkL' },
-    { type: 'video', title: 'Short-form video 12', driveThumbId: '1p9azCWx6TpYyaMLSDq-cgcEA26F5OOgM', driveVideoId: '1Fn6Ee_SIf8CzHIgy9DnzrHyn9DINr-tp' },
-    { type: 'video', title: 'Short-form video 13', driveThumbId: '12aOLaL3S7-mtPQs7nOO5aqFBA_z6oREe', driveVideoId: '1ToM2cy8Y07o2I9Q0eUl5xN4rFn2s4VPs' },
-    { type: 'video', title: 'Short-form video 14', driveThumbId: '1jpNh9M25rCNBnVLvJ5jV0EjkkEBpoVDE', driveVideoId: '1_XELLEYZQag8Maeip_AWVgWaKSQa42qJ' },
-    { type: 'video', title: 'Short-form video 15', driveThumbId: '1dhR8VyqeZAsr2RIqWFmXcD6EwO68clKm', driveVideoId: '1vUaPoibc1qNdlP_9PoSRqk7HZcycOA7l' }
+    { type: 'video', title: 'Short-form video 01', image: 'assets/portfolio/short-01.webp', driveThumbId: '1c9Hv7y2g-ToOAJzCW4QK9nXNM19fSQwP', driveVideoId: '1Ty-LZuJjQtZOWxmzonxD0yxITzRKPxSh' },
+    { type: 'video', title: 'Short-form video 02', image: 'assets/portfolio/short-02.webp', driveThumbId: '1QjgHN5wtQrwgiAICEtYhPXuZpwUILGyT', driveVideoId: '1AIzBUTbEfXdvnCavm7ZvhScY3rUD93Sg' },
+    { type: 'video', title: 'Short-form video 03', image: 'assets/portfolio/short-03.webp', driveThumbId: '1W9vw0f0eblulrzguykCulbxX9uHAcn7V', driveVideoId: '1SvmH1l3jeTb-LqXkCdXGydT2EMNEV6bP' },
+    { type: 'video', title: 'Short-form video 04', image: 'assets/portfolio/short-04.webp', driveThumbId: '1V3jWuCXdGTNwYd6aajXcMSctBP1Jw4y9', driveVideoId: '1TOVDmNekJaqW8W3NvhbVr0vW_s3ggaj0' },
+    { type: 'video', title: 'Short-form video 05', image: 'assets/portfolio/short-05.webp', driveThumbId: '1rsu4a8sG8J_96kOz_EhMVqIIchzZ51ep', driveVideoId: '1sg0BvCMg9dG06Q7GmgJbXZv9gMOhwXL9' },
+    { type: 'video', title: 'Short-form video 06', image: 'assets/portfolio/short-06.webp', driveThumbId: '15eQtE6Txe7JD3Ql6aCwyf6B0h5MtkEVi', driveVideoId: '1DFUPUcqCcqD_sx37gCxlynC_3prWrF6b' },
+    { type: 'video', title: 'Short-form video 07', image: 'assets/portfolio/short-07.webp', driveThumbId: '1EA9zExnNeEaPP4CgheXOSIF8jrAtce1O', driveVideoId: '1-c37q5wlcpH_k2srd8gF0RsYuOYSV-N3' },
+    { type: 'video', title: 'Short-form video 08', image: 'assets/portfolio/short-08.webp', driveThumbId: '1OMMDkhvSRUXvlvKI3isX7wKUvzXvu5Sz', driveVideoId: '1bBietGo_NAcehlakaW-4TuskE0yQNzMn' },
+    { type: 'video', title: 'Short-form video 09', image: 'assets/portfolio/short-09.webp', driveThumbId: '1ywOaqWZs5Tk5sizyexR6ynGP-pXAG38L', driveVideoId: '1ssZ2tW9awvhQM-wAIOKLQQjuMmMR8REU' },
+    { type: 'video', title: 'Short-form video 10', image: 'assets/portfolio/short-10.webp', driveThumbId: '16RKEKhPVyUTBk9k3-G_dIK576VMsiYyA', driveVideoId: '1A-hUcTIR8xdjBrnS8Q6QlrgIw9vNYdem' },
+    { type: 'video', title: 'Short-form video 11', image: 'assets/portfolio/short-11.webp', driveThumbId: '1b5BtjW8rUZT2_7Ns5s_r8FtGt3qZvgsT', driveVideoId: '1aOQy5d4iiKFi25jfMY_fRze_hw-swrkL' },
+    { type: 'video', title: 'Short-form video 12', image: 'assets/portfolio/short-12.webp', driveThumbId: '1p9azCWx6TpYyaMLSDq-cgcEA26F5OOgM', driveVideoId: '1Fn6Ee_SIf8CzHIgy9DnzrHyn9DINr-tp' },
+    { type: 'video', title: 'Short-form video 13', image: 'assets/portfolio/short-13.webp', driveThumbId: '12aOLaL3S7-mtPQs7nOO5aqFBA_z6oREe', driveVideoId: '1ToM2cy8Y07o2I9Q0eUl5xN4rFn2s4VPs' },
+    { type: 'video', title: 'Short-form video 14', image: 'assets/portfolio/short-14.webp', driveThumbId: '1jpNh9M25rCNBnVLvJ5jV0EjkkEBpoVDE', driveVideoId: '1_XELLEYZQag8Maeip_AWVgWaKSQa42qJ' },
+    { type: 'video', title: 'Short-form video 15', image: 'assets/portfolio/short-15.webp', driveThumbId: '1dhR8VyqeZAsr2RIqWFmXcD6EwO68clKm', driveVideoId: '1vUaPoibc1qNdlP_9PoSRqk7HZcycOA7l' }
 
     // ---- Results dashboards (from the homepage "Real dashboards. Real numbers.") ----
 
