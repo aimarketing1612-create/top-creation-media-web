@@ -400,10 +400,8 @@ body::after{opacity:.75;background-image:
 /* ---------- Client logo marquee (moves right, loops) ---------- */
 .marquee{overflow:hidden;padding:30px 0;background:linear-gradient(180deg,rgba(244,240,255,0) 0%,rgba(244,240,255,.92) 22%,rgba(244,240,255,.92) 78%,rgba(244,240,255,0) 100%);-webkit-mask:linear-gradient(90deg,transparent,#000 18%,#000 82%,transparent);mask:linear-gradient(90deg,transparent,#000 18%,#000 82%,transparent)}
 .marquee-track{display:flex;width:max-content;animation:marquee 45s linear infinite}
-.marquee:hover .marquee-track{animation-play-state:paused}
 .marquee-group{display:flex;align-items:center;gap:72px;padding-right:72px}
 .marquee img{flex:none;max-width:none;opacity:1;transition:transform .3s var(--ease)}
-.marquee img:hover{transform:scale(1.06)}
 @keyframes marquee{from{transform:translateX(-50%)}to{transform:translateX(0)}}
 .hero-logos .marquee{margin-top:8px}
 
@@ -961,3 +959,127 @@ html[lang^="zh"] .post-h2{font-family:"TCM XuanZhen Song","Noto Serif SC",serif}
 .hero .h1.mem-h1,html[lang^="zh"] .hero .h1.mem-h1{text-wrap:balance;white-space:normal}
 @media (max-width:900px){.hero .h1,html[lang^="zh"] .hero .h1{text-wrap:balance;white-space:normal}}
 @media (max-width:560px){html[lang^="zh"] .hero .h1.mem-h1{font-size:28px;text-wrap:wrap}}
+
+/* ---- Home MVP: larger labels and copy; the intro line stays on one line on wide screens ---- */
+.mvp-head .lede{max-width:none;font-size:clamp(18px,1.5vw,24px)}
+@media (min-width:900px){.mvp-head .lede{white-space:nowrap}}
+.mvp .split-k{font-size:clamp(16px,1.25vw,21px);letter-spacing:.14em}
+.mvp-num b{width:42px;height:42px;font-size:15px;border-radius:12px}
+.mvp .split .lede{font-size:clamp(19px,1.6vw,26px);line-height:1.6;color:var(--ink)}
+.mvp .ticks li{font-size:clamp(18px,1.4vw,23px);color:var(--ink)}
+html[lang^="zh"] .mvp .split .lede{font-size:clamp(19px,1.55vw,25px)}
+html[lang^="zh"] .mvp-head .lede{max-width:none}
+
+/* =================== v2: promise, membership, step cards, samples, plans =================== */
+/* Refund promise */
+.promise{position:relative;max-width:1080px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;gap:clamp(28px,4vw,64px);align-items:center;padding:clamp(32px,4vw,60px);border-radius:32px;border:1.5px solid transparent;background:radial-gradient(80% 120% at 0% 0%,rgba(180,85,255,.26),transparent 60%) padding-box,radial-gradient(70% 100% at 100% 100%,rgba(53,196,240,.16),transparent 60%) padding-box,linear-gradient(var(--card),var(--card)) padding-box,var(--neon) border-box;box-shadow:var(--glow-hot)}
+.promise-seal{position:relative;display:grid;place-content:center;justify-items:center;width:clamp(150px,16vw,210px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 30% 25%,#2A1D63,#120A2C 70%);text-align:center}
+.promise-seal::before{content:"";position:absolute;inset:-5px;border-radius:50%;padding:5px;background:conic-gradient(from 0deg,#B455FF,#5C8DFF,#35C4F0,#B455FF);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 9s linear infinite}
+.promise-seal b{font-family:'Unbounded',var(--font);font-size:clamp(34px,3.6vw,50px);line-height:1;letter-spacing:-.04em;background:var(--flow);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:flow 4.5s linear infinite}
+.promise-seal span{margin-top:8px;font:700 12.5px 'Outfit',var(--font);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-2)}
+@keyframes spin{to{transform:rotate(1turn)}}
+.promise .h2{margin-top:10px;font-size:clamp(30px,3.6vw,52px)}
+.promise .lede{margin-top:16px;max-width:none;font-size:clamp(17px,1.4vw,21px)}
+.promise-steps{list-style:none;display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.promise-steps li{display:flex;align-items:center;gap:10px;padding:10px 16px 10px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);font-size:15.5px;font-weight:600;color:var(--ink)}
+.promise-steps b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--btn);font-size:13px;color:#fff}
+.promise-steps li:last-child{background:linear-gradient(90deg,rgba(180,85,255,.3),rgba(53,196,240,.24));border-color:rgba(138,107,255,.6)}
+.promise-terms{margin-top:18px;font-size:14px;color:var(--ink-3)}
+@media (max-width:760px){.promise{grid-template-columns:1fr;justify-items:center;text-align:center}.promise-steps{justify-content:center}}
+@media (prefers-reduced-motion:reduce){.promise-seal::before,.promise-seal b{animation:none}}
+
+/* Membership page: larger type */
+.mem .sec-head .h2{font-size:clamp(34px,4.2vw,64px)}
+.mem .sec-head .lede{font-size:clamp(18px,1.5vw,23px);max-width:60ch}
+.mem-cards .card-t{font-size:clamp(22px,2vw,30px)}
+.mem-cards .card-d{font-size:clamp(16.5px,1.25vw,19.5px);line-height:1.55;color:var(--ink-2)}
+.mem-cards .svc-media{aspect-ratio:4/3}
+.why-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(28px,4vw,72px);align-items:center}
+.why-split .banner{margin:0}
+.promises{list-style:none;display:grid;gap:clamp(18px,2vw,30px)}
+.promises li{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start}
+.promises b{display:grid;place-items:center;width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,rgba(180,85,255,.34),rgba(53,196,240,.2));border:1px solid rgba(138,107,255,.5);font:800 17px 'Outfit',var(--font);color:#fff}
+.promises h3{font-family:'Outfit',var(--font);font-size:clamp(23px,2.2vw,34px);line-height:1.15;letter-spacing:-.02em;color:var(--ink)}
+.promises p{margin-top:8px;font-size:clamp(16.5px,1.3vw,20px);line-height:1.6;color:var(--ink-2)}
+.mem .plan-price{font-size:clamp(60px,6vw,84px)}
+.plan .ticks li{font-size:clamp(15.5px,1.15vw,18px)}
+.plan-note{font-size:15.5px}
+.plans{max-width:980px}
+.offer{max-width:980px}
+.join{list-style:none;max-width:980px;margin:28px auto 0;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.join li{display:flex;gap:14px;padding:20px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12)}
+.join b{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--btn);color:#fff;font-size:15px}
+.join strong{display:block;font-size:17.5px;color:var(--ink)}
+.join span{display:block;margin-top:4px;font-size:15px;line-height:1.5;color:var(--ink-2)}
+.apply{max-width:980px;margin:20px auto 0;display:flex;align-items:center;gap:20px;padding:18px 24px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.14)}
+.apply-qr{flex:none;padding:6px;border-radius:12px;background:#fff;line-height:0}
+.apply-qr img{width:112px;height:112px}
+.apply b{display:block;font-size:18px;color:#fff}.apply span{font-size:15px;color:var(--ink-2)}
+.apply .btn{margin-left:auto;flex:none}
+@media (max-width:860px){.why-split,.join{grid-template-columns:1fr}.apply{flex-wrap:wrap}.apply .btn{margin-left:0}}
+
+/* Marketing Academy: step cards and class photos */
+.stepcs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
+.stepc{padding:22px;border-radius:20px;background:var(--card);border:1px solid rgba(255,255,255,.1)}
+.stepc-n{font:800 13px 'Outfit',var(--font);letter-spacing:.16em;color:#9FD8FF}
+.stepc-t{margin-top:8px;font-family:'Outfit',var(--font);font-size:clamp(19px,1.6vw,23px);line-height:1.2;color:var(--ink)}
+.stepc-b{margin-top:8px;font-size:15.5px;line-height:1.5;color:var(--ink-2)}
+.stepc details{margin-top:12px}
+.stepc summary{cursor:pointer;font-size:14px;font-weight:600;color:#CFC4FF;list-style:none}
+.stepc summary::after{content:" +"}.stepc details[open] summary::after{content:" –"}
+.stepc summary::-webkit-details-marker{display:none}
+.stepc details p{margin-top:8px;font-size:14.5px;line-height:1.55;color:var(--ink-3)}
+.cshots{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.cshot{margin:0;border-radius:22px;overflow:hidden;background:var(--card);border:1px solid rgba(255,255,255,.1)}
+.cshot img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.cshot figcaption{padding:18px 20px 20px}
+.cshot b{display:block;font-family:'Outfit',var(--font);font-size:clamp(19px,1.6vw,23px);color:var(--ink)}
+.cshot span{display:block;margin-top:4px;font-size:15.5px;line-height:1.5;color:var(--ink-2)}
+@media (max-width:900px){.stepcs{grid-template-columns:1fr 1fr}.cshots{grid-template-columns:1fr}}
+@media (max-width:560px){.stepcs{grid-template-columns:1fr}}
+
+/* AI Academy: module samples */
+.smp-grid{display:grid;gap:18px}.smp-grid.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.smp-card{padding:24px;border-radius:22px;background:var(--card);border:1px solid rgba(255,255,255,.1);min-width:0}
+.smp-k{display:inline-block;padding:4px 12px;border-radius:999px;background:rgba(138,107,255,.18);font:700 12.5px 'Outfit',var(--font);letter-spacing:.1em;text-transform:uppercase;color:#CFC4FF}
+.smp-t{margin-top:12px;font-family:'Outfit',var(--font);font-size:clamp(19px,1.6vw,23px);line-height:1.2;color:var(--ink)}
+.chat-q{position:relative;margin-top:18px;padding:16px 16px 14px;border-radius:14px;background:#120A2C;border:1px dashed rgba(53,196,240,.45)}
+.chat-q span{position:absolute;top:-10px;left:12px;padding:1px 9px;border-radius:999px;background:#35C4F0;color:#0B0620;font:700 11px 'Outfit',var(--font);letter-spacing:.1em;text-transform:uppercase}
+.chat-q p{font-size:14.5px;line-height:1.55;color:#DDEBFF}
+.chat-a{margin-top:12px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.05)}
+.chat-a p{font-size:14.5px;line-height:1.55;color:var(--ink-2)}.chat-a p+p{margin-top:8px}
+.cap{margin-top:14px}.cap dt{margin-top:14px;font:700 11.5px 'Outfit',var(--font);letter-spacing:.16em;text-transform:uppercase;color:#9FD8FF}
+.cap dd{margin:4px 0 0;font-size:15.5px;line-height:1.55;color:var(--ink-2)}
+.cap .cap-hook{font-size:18px;font-weight:700;color:var(--ink)}.cap .cap-tags{font-size:14px;color:#CFC4FF;overflow-wrap:anywhere}
+.flow{list-style:none;margin-top:16px;display:grid;gap:26px}
+.flow li{position:relative;padding:13px 16px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(138,107,255,.35);font-size:15.5px;font-weight:600;color:var(--ink)}
+.flow li+li::before{content:"";position:absolute;left:24px;top:-20px;width:2px;height:14px;background:linear-gradient(#B455FF,#35C4F0)}
+.flow li:last-child{background:linear-gradient(90deg,rgba(180,85,255,.26),rgba(53,196,240,.2))}
+.kv{margin-top:14px;display:grid;grid-template-columns:auto 1fr;gap:10px 14px;align-items:baseline}
+.kv dt{font:700 12px 'Outfit',var(--font);letter-spacing:.12em;text-transform:uppercase;color:#9FD8FF}.kv dd{margin:0;font-size:15.5px;line-height:1.5;color:var(--ink)}
+.smp-img{margin:0;border-radius:20px;overflow:hidden;background:var(--card);border:1px solid rgba(255,255,255,.12)}
+.smp-img img{display:block;width:100%;height:auto}
+.smp-img figcaption{padding:12px 16px 14px;font-weight:600;font-size:16px;text-align:center;color:var(--ink)}
+.smp-grid.posters{max-width:1040px;margin:0 auto}
+#samples .samples{max-width:1100px}
+@media (max-width:900px){.smp-grid.g3{grid-template-columns:1fr}.smp-grid.posters{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.smp-grid.posters figcaption{font-size:12.5px;padding:8px 4px}}
+.hero .mem-h1~.lede{font-size:clamp(19px,1.6vw,25px)}
+.plan-secure{margin-top:10px;font-size:13px;text-align:center;color:var(--ink-3)}
+.smp-img a{display:block;cursor:zoom-in}
+@media (max-width:900px){.smp-grid.flowimgs,.smp-grid.sites{grid-template-columns:1fr}}
+
+/* =================== QA pass: no page may be wider than its screen =================== */
+/* Grid children may shrink; short Chinese no-wrap phrases may wrap inside narrow cards. */
+.index{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:1000px){.index{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.index{grid-template-columns:minmax(0,1fr)}}
+.index-col,.join li,.join li>div,.stepc,.smp-card,.promises li>div,.cshot,.plan,.apply>div{min-width:0}
+.index .nb,.join .nb,.svc .nb,.smp-card .nb,.stepc .nb,.promises .nb,.cshot .nb,.plan .nb,.apply .nb,.offer .nb,.col .nb,.mod .nb,.card .nb,.faq .nb{white-space:normal}
+/* Tablet: the full menu (with Insights) must fit between 769 and 960px */
+@media (max-width:960px) and (min-width:769px){.nav-in{padding-left:16px;padding-right:16px}.nav-links{gap:10px;font-size:13px;letter-spacing:.04em}.nav-links .btn-sm{padding:0 12px;font-size:13px}.nav-links .dd>a::after{margin-left:2px}.brand img{height:38px}.nav-links .lang{padding:0 9px}}
+/* Phone: the three-way section switch stays on one line; class photo keeps the trainer in frame */
+@media (max-width:480px){.switch{flex-wrap:nowrap;max-width:100%}.switch a{padding:9px 11px;font-size:12.5px;white-space:nowrap}}
+.cshot img[src$="mission.jpg"]{object-position:72% 50%}
+/* Membership: Chinese title fits its column without splitting 课程; the three cards stack on phones */
+html[lang^="zh"] .hero .h1.mem-h1{font-size:clamp(28px,3.1vw,46px);text-wrap:wrap}
+@media (max-width:560px){.svc-grid.mem-cards{grid-template-columns:minmax(0,1fr)}.mem-cards .svc-media{aspect-ratio:16/10}}

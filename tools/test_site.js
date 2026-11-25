@@ -34,7 +34,7 @@ const check = (ok, msg) => { if (!ok) fails.push(msg); };
   const browser = await chromium.launch();
   const links = new Set();
 
-  for (const [label, opts] of [['desktop', { viewport: { width: 1440, height: 900 } }], ['phone', devices['iPhone 13']]]) {
+  for (const [label, opts] of [['desktop', { viewport: { width: 1440, height: 900 } }], ['laptop', { viewport: { width: 1024, height: 768 } }], ['tablet', { viewport: { width: 820, height: 1180 } }], ['phone', devices['iPhone 13']]]) {
     const ctx = await browser.newContext(opts);
     for (const p of PAGES) {
       const page = await ctx.newPage();
@@ -98,5 +98,5 @@ const check = (ok, msg) => { if (!ok) fails.push(msg); };
   await browser.close();
   srv.close();
   if (fails.length) { console.log('FAIL\n- ' + fails.join('\n- ')); process.exit(1); }
-  console.log(`PASS: ${PAGES.length} pages x 2 widths, ${links.size} internal links, nav, tabs, deep link, WhatsApp`);
+  console.log(`PASS: ${PAGES.length} pages x 4 widths, ${links.size} internal links, nav, tabs, deep link, WhatsApp`);
 })();
