@@ -69,12 +69,9 @@ window.TCM_PORTFOLIO = {
     { type: 'video', title: 'Short-form video 12', driveThumbId: '1p9azCWx6TpYyaMLSDq-cgcEA26F5OOgM', driveVideoId: '1Fn6Ee_SIf8CzHIgy9DnzrHyn9DINr-tp' },
     { type: 'video', title: 'Short-form video 13', driveThumbId: '12aOLaL3S7-mtPQs7nOO5aqFBA_z6oREe', driveVideoId: '1ToM2cy8Y07o2I9Q0eUl5xN4rFn2s4VPs' },
     { type: 'video', title: 'Short-form video 14', driveThumbId: '1jpNh9M25rCNBnVLvJ5jV0EjkkEBpoVDE', driveVideoId: '1_XELLEYZQag8Maeip_AWVgWaKSQa42qJ' },
-    { type: 'video', title: 'Short-form video 15', driveThumbId: '1dhR8VyqeZAsr2RIqWFmXcD6EwO68clKm', driveVideoId: '1vUaPoibc1qNdlP_9PoSRqk7HZcycOA7l' },
+    { type: 'video', title: 'Short-form video 15', driveThumbId: '1dhR8VyqeZAsr2RIqWFmXcD6EwO68clKm', driveVideoId: '1vUaPoibc1qNdlP_9PoSRqk7HZcycOA7l' }
 
     // ---- Results dashboards (from the homepage "Real dashboards. Real numbers.") ----
-    { type: 'dashboard', title: 'Google Ecosystem', sub: '+108% organic clicks within 12 months', image: 'assets/google-dashboard.webp' },
-    { type: 'dashboard', title: 'Meta Ads Mastery', sub: 'Scaling conversions', image: 'assets/meta-dashboard.webp' },
-    { type: 'dashboard', title: 'TikTok Growth Engine', sub: 'Viral reach & live sales', image: 'assets/tiktok-dashboard.webp' }
 
     // ---- ADD NEW WORK ABOVE THIS LINE (remember the comma after the previous item) ----
   ],
