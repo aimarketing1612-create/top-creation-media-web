@@ -48,11 +48,11 @@ window.TCM_PORTFOLIO = {
 
   items: [
     // Featured work, with designed covers in assets/portfolio/
-    { type: 'video', title: 'Hairz: service promo', sub: 'Hair removal salon · Short-form video', image: 'assets/portfolio/pf-hairz.webp', driveVideoId: '14ozeN9GmtkQD6OEwY714gRlgMM_sv1WY' },
-    { type: 'video', title: 'Restaurant food film', sub: 'F&B · Cinematic short', image: 'assets/portfolio/pf-dining.webp', driveVideoId: '1ehz0jn8law-C5c5fPj0hTapO8KaiED_h' },
-    { type: 'video', title: 'Fit Garden: brand film', sub: 'Gym & fitness · Brand video', image: 'assets/portfolio/pf-gym.webp', driveVideoId: '135j1pCCJF1z2zzGQ-NStASPWeynLXPqU' },
-    { type: 'video', title: 'Interior design: project walkthrough', sub: 'Renovation · Founder-led video', image: 'assets/portfolio/pf-interior.webp', driveVideoId: '1-ZkKyaAoc2_R5hWLodueSnjDYCIZtE_Z' },
-    { type: 'video', title: 'Night Burn Extreme: UGC ad', sub: 'Health supplement · UGC-style ad', image: 'assets/portfolio/pf-supplement.webp', driveVideoId: '1Qzr2C9JChL0ZvrmwRorUc-Dk9yBino9c' },
+    { type: 'video', title: 'Hairz: hair removal for men', sub: 'Hair removal salon · Short-form video', image: 'assets/portfolio/pf-hairz.webp', driveVideoId: '14ozeN9GmtkQD6OEwY714gRlgMM_sv1WY' },
+    { type: 'video', title: 'Ritzy Restaurant & Bar: sky dining', sub: 'F&B · Cinematic food film', image: 'assets/portfolio/pf-dining.webp', driveVideoId: '1ehz0jn8law-C5c5fPj0hTapO8KaiED_h' },
+    { type: 'video', title: 'FitGarden 健身农场: a modern gym', sub: 'Gym & fitness · Brand film', image: 'assets/portfolio/pf-gym.webp', driveVideoId: '135j1pCCJF1z2zzGQ-NStASPWeynLXPqU' },
+    { type: 'video', title: 'Deinspiration: design to renovation', sub: 'Interior design · Founder-led video', image: 'assets/portfolio/pf-interior.webp', driveVideoId: '1-ZkKyaAoc2_R5hWLodueSnjDYCIZtE_Z' },
+    { type: 'video', title: 'Nano Singapore: Night Burn Extreme', sub: 'Health supplement · UGC-style ad', image: 'assets/portfolio/pf-supplement.webp', driveVideoId: '1Qzr2C9JChL0ZvrmwRorUc-Dk9yBino9c' },
 
     // ---- Videos (from the homepage "Selected Work") ----
     { type: 'video', title: 'Short-form video 01', driveThumbId: '1c9Hv7y2g-ToOAJzCW4QK9nXNM19fSQwP', driveVideoId: '1Ty-LZuJjQtZOWxmzonxD0yxITzRKPxSh' },
