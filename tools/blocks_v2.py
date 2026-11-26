@@ -10,13 +10,15 @@ SB = dict(m=150, y=999, full='1,800', save=801, pct=44)
 KONGSIKAN = 'https://kongsikan.cfd/'
 # Stripe Payment Links. While a value is empty, that plan's button opens WhatsApp instead.
 # In Stripe, set each link's "after payment" redirect to https://www.topcreationmedia.com/thank-you
-PAY = {'mem_m': '', 'mem_y': '', 'sb_m': '', 'sb_y': ''}
+PAY = {'mem_m': '', 'mem_y': '', 'sb_m': '', 'sb_y': '', 'live': ''}
+LIVE = dict(price='2,500', months=6, worth='{:,}'.format(MEM['m'] * 6))
+LIVE_MSG = "Hi, I'd like to join the TCM Live Class (offline + Zoom, RM2,500)."
 MEM_M = f"Hi, I'd like to subscribe to the TCM Membership, monthly plan (RM{MEM['m']}/month)."
 MEM_Y = f"Hi, I'd like to subscribe to the TCM Membership, yearly plan (RM{MEM['ytotal']}/year)."
 SB_M = f"Hi, I'd like to try Scan Buddy, monthly plan (RM{SB['m']}/month)."
 SB_Y = f"Hi, I'd like to subscribe to Scan Buddy, yearly plan (RM{SB['y']}/year)."
 for _en, _zh in [(MEM_M, f"你好，我想订阅 TCM 会员月付配套（每月 RM{MEM['m']}）。"), (MEM_Y, f"你好，我想订阅 TCM 会员年付配套（每年 RM{MEM['ytotal']}）。"),
-                 (SB_M, f"你好，我想试用 Scan Buddy 月付配套（每月 RM{SB['m']}）。"), (SB_Y, f"你好，我想订阅 Scan Buddy 年付配套（每年 RM{SB['y']}）。")]:
+                 (LIVE_MSG, '你好，我想报名 TCM 线下实战班（线下 + Zoom，RM2,500）。'), (SB_M, f"你好，我想试用 Scan Buddy 月付配套（每月 RM{SB['m']}）。"), (SB_Y, f"你好，我想订阅 Scan Buddy 年付配套（每年 RM{SB['y']}）。")]:
     Z(_en, _zh)
 
 
@@ -166,11 +168,11 @@ def module_samples():
 
 
 # ------------------------------------------------ plans
-def price_plan(name, price, unit, note, feats, msg, label, flag='', best=False, pay=''):
+def price_plan(name, price, unit, note, feats, msg, label, flag='', best=False, pay='', cls=''):
     href = PAY.get(pay) or wa(msg)
     secure = f'<p class="plan-secure">{esc(Z("Secure checkout by Stripe: card, FPX or GrabPay", "由 Stripe 安全结账：信用卡、FPX 或 GrabPay"))}</p>' if PAY.get(pay) else ''
     fl = f'<span class="plan-flag">{esc(flag)}</span>' if flag else ''
-    return f'''<div class="plan{' plan-best' if best else ''}" data-rv>
+    return f'''<div class="plan{' plan-best' if best else ''}{' ' + cls if cls else ''}" data-rv>
             <div class="plan-top"><span class="plan-name">{esc(name)}</span>{fl}</div>
             <div class="plan-price"><span class="plan-cur">RM</span>{price}<span class="plan-unit">{esc(unit)}</span></div>
             <p class="plan-note">{note}</p>
@@ -217,3 +219,29 @@ def sb_plans():
 
 def tool_extra(key):
     return sb_plans() if key == 'scan-buddy' else av_samples()
+
+
+# ------------------------------------------------ Membership vs Live Class (offline + Zoom)
+MEM_FEATS2 = [Z('Scan Buddy and AI Video', 'Scan Buddy 和 AI Video'), Z('Full course library and replays', '完整课程库与回放'), Z('A monthly livestream with Q&A', '每月一场直播与问答'),
+              Z('Templates, checklists and prompts', '模板、清单和提示词'), Z('100% refund promise', '100% 退款承诺')]
+LIVE_FEATS = [Z('6 months of the Membership included', '包含 6 个月会员'), Z('A class every month, in person or on Zoom', '每月一堂课，线下或 Zoom'),
+              Z('Trainers teach you face to face, hands-on', '导师面对面手把手教'), Z('1-to-1 Q&A, in person or on Zoom', '一对一答疑，线下或 Zoom'),
+              Z('Every AI tool, the course library and replays', '所有 AI 工具、课程库和回放'), Z('100% refund promise', '100% 退款承诺')]
+CMP_ROWS = [
+    (Z('Every AI tool (Scan Buddy, AI Video)', '所有 AI 工具（Scan Buddy、AI Video）'), True, True),
+    (Z('Course library and replays', '课程库与回放'), True, True),
+    (Z('Monthly livestream with Q&A', '每月直播与问答'), True, True),
+    (Z('A class every month, in person or on Zoom', '每月一堂课，线下或 Zoom'), False, True),
+    (Z('Trainer teaches you face to face', '导师面对面教你'), False, True),
+    (Z('1-to-1 Q&A, in person or on Zoom', '一对一答疑，线下或 Zoom'), False, True),
+]
+
+
+def compare_table():
+    yes = '<span class="cmp-y" aria-label="Included">&#10003;</span>'; no = '<span class="cmp-n" aria-label="Not included">&mdash;</span>'
+    rows = ''.join(f'<tr><th scope="row">{esc(t)}</th><td>{yes if a else no}</td><td>{yes if b else no}</td></tr>' for t, a, b in CMP_ROWS)
+    rows += (f'<tr class="cmp-price"><th scope="row">{esc(Z("Price", "价格"))}</th><td>{esc(Z("RM350 a month, or RM250 a month yearly", "每月 RM350，年付每月 RM250"))}</td>'
+             f'<td>{esc(Z("RM2,500 for 6 months, then the Membership", "RM2,500 包 6 个月，之后续订会员"))}</td></tr>')
+    return f'''<div class="cmp" data-rv><table>
+          <thead><tr><th></th><th scope="col">{esc(Z('Membership', '会员'))}<small>{esc(Z('Learn online, at your pace', '线上自学'))}</small></th><th scope="col" class="cmp-live">{esc(Z('Live Class', '线下实战班'))}<small>{esc(Z('Offline + Zoom, with a trainer', '线下 + Zoom，导师带你'))}</small></th></tr></thead>
+          <tbody>{rows}</tbody></table></div>'''
