@@ -224,16 +224,16 @@ def tool_extra(key):
 # ------------------------------------------------ Membership vs Live Class (offline + Zoom)
 MEM_FEATS2 = [Z('Scan Buddy and AI Video', 'Scan Buddy 和 AI Video'), Z('Full course library and replays', '完整课程库与回放'), Z('A monthly livestream with Q&A', '每月一场直播与问答'),
               Z('Templates, checklists and prompts', '模板、清单和提示词'), Z('100% refund promise', '100% 退款承诺')]
-LIVE_FEATS = [Z('6 months of the Membership included', '包含 6 个月会员'), Z('A class every month, in person or on Zoom', '每月一堂课，线下或 Zoom'),
-              Z('Trainers teach you face to face, hands-on', '导师面对面手把手教'), Z('1-to-1 Q&A, in person or on Zoom', '一对一答疑，线下或 Zoom'),
+LIVE_FEATS = [Z('6 months of the Membership included', '包含 6 个月会员'), Z('A class every month: in person, or on an exclusive Zoom', '每月一堂课：线下，或专属 Zoom'),
+              Z('Learn together in a group of 20 to 50', '20 到 50 人一起上课'), Z('Guides on hand to help you step by step', '现场有助教一步步带你'),
               Z('Every AI tool, the course library and replays', '所有 AI 工具、课程库和回放'), Z('100% refund promise', '100% 退款承诺')]
 CMP_ROWS = [
     (Z('Every AI tool (Scan Buddy, AI Video)', '所有 AI 工具（Scan Buddy、AI Video）'), True, True),
     (Z('Course library and replays', '课程库与回放'), True, True),
     (Z('Monthly livestream with Q&A', '每月直播与问答'), True, True),
-    (Z('A class every month, in person or on Zoom', '每月一堂课，线下或 Zoom'), False, True),
-    (Z('Trainer teaches you face to face', '导师面对面教你'), False, True),
-    (Z('1-to-1 Q&A, in person or on Zoom', '一对一答疑，线下或 Zoom'), False, True),
+    (Z('A class every month, in person', '每月一堂线下课'), False, True),
+    (Z('Exclusive Zoom class for Live Class members', '实战班专属 Zoom 课'), False, True),
+    (Z('Guides who help you step by step in class', '课堂上有助教一步步带你'), False, True),
 ]
 
 
@@ -243,5 +243,5 @@ def compare_table():
     rows += (f'<tr class="cmp-price"><th scope="row">{esc(Z("Price", "价格"))}</th><td>{esc(Z("RM350 a month, or RM250 a month yearly", "每月 RM350，年付每月 RM250"))}</td>'
              f'<td>{esc(Z("RM2,500 for 6 months, then the Membership", "RM2,500 包 6 个月，之后续订会员"))}</td></tr>')
     return f'''<div class="cmp" data-rv><table>
-          <thead><tr><th></th><th scope="col">{esc(Z('Membership', '会员'))}<small>{esc(Z('Learn online, at your pace', '线上自学'))}</small></th><th scope="col" class="cmp-live">{esc(Z('Live Class', '线下实战班'))}<small>{esc(Z('Offline + Zoom, with a trainer', '线下 + Zoom，导师带你'))}</small></th></tr></thead>
+          <thead><tr><th></th><th scope="col">{esc(Z('Membership', '会员'))}<small>{esc(Z('Learn online, at your pace', '线上自学'))}</small></th><th scope="col" class="cmp-live">{esc(Z('Live Class', '线下实战班'))}<small>{esc(Z('Offline + exclusive Zoom, with guides', '线下 + 专属 Zoom，有助教带'))}</small></th></tr></thead>
           <tbody>{rows}</tbody></table></div>'''

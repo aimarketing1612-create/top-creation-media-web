@@ -1171,8 +1171,8 @@ MEM_FAQ = [
     ('How much is the TCM Membership?', 'RM350 a month, or RM250 a month when you sign up for a year (RM3,000 billed yearly). The yearly plan saves you RM1,200.'),
     ('How do I log in after I pay?', 'WhatsApp us after payment. Our admin sends your personal invite code, and you use it to log in and start.'),
     ('Will the trainer disappear after a few lessons?', 'No. We go live every month with the newest tools and tactics, answer your questions and guide you step by step until your marketing runs.'),
-    ('What is the difference between the Membership and the Live Class?', 'The Membership is online: every AI tool, the course library and replays, and a monthly livestream. The Live Class adds a class every month in person or on Zoom, trainers who teach you face to face, and 1-to-1 Q&A.'),
-    ('How does the RM2,500 Live Class work?', 'One payment of RM2,500 covers 6 months. It includes 6 months of the Membership, so you use every tool and lesson from day one, plus a class every month, in person or on Zoom. After 6 months you can continue with the Membership.'),
+    ('What is the difference between the Membership and the Live Class?', 'The Membership is online: every AI tool, the course library and replays, and a monthly livestream. The Live Class adds a class every month in person, in a group of 20 to 50, or on an exclusive Zoom for Live Class members, with guides who help you step by step.'),
+    ('How does the RM2,500 Live Class work?', 'One payment of RM2,500 covers 6 months. It includes 6 months of the Membership, so you use every tool and lesson from day one, plus a class every month, in person or on an exclusive Zoom. After 6 months you can continue with the Membership.'),
     ('What if I cannot learn it?', 'Follow the classes, do the practice tasks, and if you still cannot do it, we refund you 100%. Terms and conditions apply; WhatsApp us for the details.'),
 ]
 mem_ld = {'@context': 'https://schema.org', '@graph': [
@@ -1207,7 +1207,7 @@ MEM_FEATS = ['Scan Buddy and AI Video', 'Full marketing and AI course library', 
 MEM_PROMISES = [
     (Z('Not a screen recording', '不是录屏课'), Z('Every lesson is filmed like a show, with several camera angles, on-screen animation and clear steps. You stay awake, and you finish it.', '每一课都像节目一样拍摄：多个机位、画面动画、步骤清楚。你不会看到睡着，而且看得完。')),
     (Z('A live class every month', '每月一堂直播课'), Z('Every month we go live with the newest tools and tactics, and you ask your questions on the spot. You always learn the latest version.', '每个月我们都会开直播，带来最新的工具和做法，你可以当场提问。你学到的永远是最新版本。')),
-    (Z('Help when you get stuck', '卡住时有人帮你'), Z('Ask your questions in the monthly livestream, or choose the Live Class for face-to-face teaching and 1-to-1 Q&A. No paying for a few lessons and watching the trainer disappear.', '在每月直播里提问，或选择线下实战班，导师面对面教你、一对一答疑。不会付了钱、上几堂课，导师就不见了。')),
+    (Z('Help when you get stuck', '卡住时有人帮你'), Z('Ask your questions in the monthly livestream, or choose the Live Class to learn in person with guides beside you. No paying for a few lessons and watching the trainer disappear.', '在每月直播里提问，或选择线下实战班，到现场上课，有助教在旁边带你。不会付了钱、上几堂课，导师就不见了。')),
     (Z('Marketing on autopilot', '营销自动化'), Z('Our goal is your marketing running with AI: content, replies and follow-ups set up and working for you.', '我们的目标是让你的营销用 AI 跑起来：内容、回复和跟进都设置好，替你工作。')),
 ]
 mem_promises = ''.join(f'<li data-rv><b>{i:02d}</b><div><h3>{esc(t)}</h3><p>{esc(d)}</p></div></li>' for i, (t, d) in enumerate(MEM_PROMISES, 1))
@@ -1251,7 +1251,7 @@ mem_body = f'''    <section class="hero">
         <div class="plans three">
           {price_plan(Z('Monthly', '月付'), MEM['m'], Z('/month', '/月'), esc(Z('Billed monthly. Cancel anytime.', '按月付款，随时可以取消。')), MEM_FEATS2, MEM_M, Z('Subscribe monthly', '订阅月付'), pay='mem_m')}
           {price_plan(Z('Yearly', '年付'), MEM['y'], Z('/month', '/月'), esc(Z('RM' + MEM['ytotal'] + ' billed yearly.', '每年付 RM' + MEM['ytotal'] + '。')) + f' <s>RM{MEM["full"]}</s>', MEM_FEATS2, MEM_Y, Z('Subscribe yearly', '订阅年付'), flag=Z('Save RM' + MEM['save'], '省 RM' + MEM['save']), best=True, pay='mem_y')}
-          {price_plan(Z('Live Class · Offline + Zoom', '线下实战班 · 线下 + Zoom'), LIVE['price'], Z('/6 months', '/6 个月'), esc(Z('One payment. Includes 6 months of the Membership (worth RM' + LIVE['worth'] + ').', '一次付清，已包含 6 个月会员（价值 RM' + LIVE['worth'] + '）。')), LIVE_FEATS, LIVE_MSG, Z('Join the Live Class', '报名线下实战班'), flag=Z('Face to face', '面对面教学'), pay='live', cls='plan-live')}
+          {price_plan(Z('Live Class · Offline + Zoom', '线下实战班 · 线下 + Zoom'), LIVE['price'], Z('/6 months', '/6 个月'), esc(Z('One payment. Includes 6 months of the Membership (worth RM' + LIVE['worth'] + ').', '一次付清，已包含 6 个月会员（价值 RM' + LIVE['worth'] + '）。')), LIVE_FEATS, LIVE_MSG, Z('Join the Live Class', '报名线下实战班'), flag=Z('In person', '线下上课'), pay='live', cls='plan-live')}
         </div>
         {compare_table()}
         <p class="cmp-note" data-rv>{esc(Z('After the 6 months of the Live Class, continue learning online with the Membership, from RM250 a month.', '线下实战班的 6 个月结束后，可以续订会员继续线上学习，每月 RM250 起。'))}</p>
@@ -1541,7 +1541,7 @@ def build_seo_files(pages):
 - Social: {", ".join(SOCIAL)}
 - Two ways to work with TCM: Done-For-You marketing services, or learn it yourself in the Marketing Academy and AI Academy
 - TCM Membership: RM350 a month, or RM250 a month on the yearly plan (RM3,000 a year, save RM1,200). Online: every TCM AI tool (Scan Buddy, AI Video), the full course library and replays, and a monthly livestream with Q&A. After payment, members get an invite code on WhatsApp to log in.
-- TCM Live Class (offline + Zoom): RM2,500 for 6 months, one payment. Includes 6 months of the Membership, plus a class every month in person or on Zoom, face-to-face teaching and 1-to-1 Q&A. After 6 months, continue with the Membership.
+- TCM Live Class (offline + Zoom): RM2,500 for 6 months, one payment. Includes 6 months of the Membership, plus a class every month in person (groups of 20 to 50) or on an exclusive Zoom for Live Class members, with guides who help step by step. After 6 months, continue with the Membership.
 - Scan Buddy alone: RM150 a month (trial), or RM999 a year (save RM801). Covers Google, Xiaohongshu, Facebook and Dianping reviews.
 - Courses: beginner-friendly, no coding needed, taught hands-on on your own accounts; full refund if you follow the class and still cannot do it (terms apply)
 - In-house video and livestream studio
