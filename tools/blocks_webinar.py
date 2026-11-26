@@ -22,6 +22,13 @@ WEBINAR = dict(
 WB_TITLE = Z('Free AI Marketing Class for Business Owners | Top Creation Media', '免费 AI 营销分享会：写给老板 | Top Creation Media')
 WB_DESC = Z('A free online class for business owners in Malaysia: how to use AI to make content, run ads and follow up leads, with live Q&A. Pick a session and save your seat.',
             '写给马来西亚老板的免费线上分享会：怎样用 AI 做内容、投广告、跟进顾客，最后有真人问答。选一个场次，立即预留位子。')
+WB_LEARN_IMG = {'sparkles': ('/assets/samples/poster-boba.webp', Z('AI-made poster for a bubble tea promotion', 'AI 制作的奶茶促销海报')),
+                'target': ('/assets/meta-dashboard.webp', Z('Meta Ads Manager showing campaign results', 'Meta 广告管理工具里的活动成效')),
+                'zap': ('/assets/samples/flow-wa.webp', Z('WhatsApp AI auto-reply booking a customer', 'WhatsApp AI 自动回复帮顾客预约'))}
+WB_AGENDA = [('0–10', Z('Where AI saves you the most time', 'AI 最能帮你省时间的地方')), ('10–40', Z('Live demo: content, ads and follow-up', '现场示范：内容、广告与跟进')),
+             ('40–60', Z('Q&A with our trainers', '导师真人问答'))]
+WB_TEAM = [('emma', 'Emma', Z('AI & Marketing Director', 'AI 与营销总监')), ('mac', 'Mac', Z('SEO & AI Strategist', 'SEO 与 AI 策略师')),
+           ('jess', 'Jess', Z('HR & Media Advertising Manager', '人事与媒体广告经理')), ('marcus', 'Marcus', Z('Planning & Operation Consultant', '策划与营运顾问'))]
 WB_LEARN = [
     ('sparkles', Z('Make a month of content in one afternoon', '一个下午做完一个月的内容'), Z('The prompts and tools we use to plan posts, write captions and make videos with AI.', '我们用来规划贴文、写文案、做视频的 AI 指令和工具。')),
     ('target', Z('Ads that bring enquiries, not just likes', '带来询问的广告，不只是点赞'), Z('How to set up a Meta ad that sends people to your WhatsApp, and which numbers to watch.', '怎样设置把人带到 WhatsApp 的 Meta 广告，以及要看哪几个数字。')),
@@ -66,7 +73,9 @@ def webinar_body():
         msg=Z('Hi, I signed up for the free AI marketing class.', '你好，我报名了免费 AI 营销分享会。'),
         sess=Z('Session', '场次'), nm=Z('Name', '名字'),
     ).items()}
-    learn = ''.join(f'<div class="wb-card" data-rv><i>{_wb_ic(k)}</i><h3>{esc(t)}</h3><p>{esc(d)}</p></div>' for k, t, d in WB_LEARN)
+    learn = ''.join(f'<div class="wb-card" data-rv><div class="wb-card-img"><img src="{WB_LEARN_IMG[k][0]}" alt="{esc(WB_LEARN_IMG[k][1])}" loading="lazy"></div><div class="wb-card-body"><i>{_wb_ic(k)}</i><h3>{esc(t)}</h3><p>{esc(d)}</p></div></div>' for k, t, d in WB_LEARN)
+    agenda = ''.join(f'<li data-rv><b>{a}<small>{esc(Z("min", "分钟"))}</small></b><span>{esc(t)}</span></li>' for a, t in WB_AGENDA)
+    team = ''.join(f'<figure class="wb-tr" data-rv><img src="/assets/video/team-{k}-cover.jpg" alt="{esc(n)}, {esc(r)}" loading="lazy"><figcaption><b>{n}</b><span>{esc(r)}</span></figcaption></figure>' for k, n, r in WB_TEAM)
     community = W['community'] or wa(Z('Hi, please add me to the TCM WhatsApp Community.', '你好，请把我加入 TCM 的 WhatsApp 社群。'))
     data = (f'data-weekday="{W["weekday"]}" data-time="{W["time"]}" data-minutes="{W["minutes"]}" data-show="{W["show"]}" '
             f'data-endpoint="{esc(W["lead_endpoint"])}" data-phone="{PHONE}" data-community="{esc(community)}"')
@@ -93,6 +102,7 @@ def webinar_body():
           </div>'''
     faq = ''.join(f'<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>' for q, a in WB_FAQ)
     return f'''    <section class="wb-hero">
+      <div class="wb-hero-bg" aria-hidden="true"></div>
       <div class="wb-grid">
         <div class="wb-copy">
           <div class="crumbs rise"><a href="/">Home</a> / {esc(Z('Free class', '免费分享会'))}</div>
@@ -111,6 +121,14 @@ def webinar_body():
       <div class="wrap">
         {head(esc(Z('What you will learn', '你会学到什么')), esc(Z('In one hour', '一个小时')))}
         <div class="wb-cards">{learn}</div>
+        <ol class="wb-agenda">{agenda}</ol>
+      </div>
+    </section>
+
+    <section class="tile tile-dark">
+      <div class="wrap">
+        {head(esc(Z('Meet your trainers', '认识你的导师')), esc(Z('Live Q&A', '真人问答')), esc(Z('The team that runs marketing for 500+ clients answers your questions at the end.', '为 500 多个客户操盘营销的团队，最后亲自回答你的问题。')))}
+        <div class="wb-team">{team}</div>
       </div>
     </section>
 
@@ -131,6 +149,12 @@ def webinar_body():
         {head(esc(Z('Questions, answered.', '常见问题')), 'FAQ')}
         <div class="faq" data-rv>{faq}</div>
       </div>
+    </section>
+
+    <section class="cta wb-cta">
+      <h2 class="h2" data-rv>{esc(Z('One hour can change how you market.', '一个小时，改变你做营销的方式。'))}</h2>
+      <p class="lede" data-rv>{esc(Z('Free, online, with live Q&A. Seats for each session are limited.', '免费、线上、有真人问答。每一场名额有限。'))}</p>
+      <div class="btn-row" data-rv><a class="btn btn-primary btn-lg" href="#seat">{L['seat']} {ARROW}</a></div>
     </section>
 '''
 
