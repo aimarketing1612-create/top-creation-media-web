@@ -99,7 +99,7 @@ class Tr(HTMLParser):
                 continue
             if tag == 'html' and k == 'lang':
                 v = 'zh-Hans'
-            elif k in TEXT_ATTRS:
+            elif k in TEXT_ATTRS or k.startswith('data-l-'):   # data-l-*: text labels used by page scripts
                 v = tr(v)
             elif k == 'content' and meta_text:
                 v = tr(v)
