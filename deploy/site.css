@@ -1290,3 +1290,12 @@ html[lang^="zh"] :is(.wb-form-head b,.wb-card h3,.wb-done h2){font-family:var(--
 html[lang^="zh"] :is(.wb-pain h3,.wb-turn .h2){font-family:var(--zh-serif)}
 @media (max-width:1000px){.wb-pains{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:760px){.wb-pains,.wb-turn{grid-template-columns:minmax(0,1fr)}.wb-why-in{grid-template-columns:repeat(2,minmax(0,1fr))}.wb-why-in li:nth-child(3){border-left:0}.wb-why-in li:nth-child(n+3){border-top:1px solid rgba(255,255,255,.1)}.wb-turn{text-align:center}}
+/* Pain cards: five cards (3 + 2), highlighted key words and a glowing outline */
+.wb-pains{grid-template-columns:repeat(6,minmax(0,1fr))}
+.wb-pain{grid-column:span 2;border:1.5px solid transparent;background:linear-gradient(180deg,#1D1442,#160E36) padding-box,linear-gradient(135deg,rgba(255,122,240,.55),rgba(138,107,255,.35) 50%,rgba(53,196,240,.45)) border-box;box-shadow:0 18px 40px -26px rgba(255,122,240,.55)}
+.wb-pain:nth-child(4),.wb-pain:nth-child(5){grid-column:span 3}
+.wb-pain:hover{border-color:transparent;box-shadow:0 0 0 1px rgba(255,122,240,.35),0 24px 50px -24px rgba(255,122,240,.7)}
+.wb-pain h3 mark{background:linear-gradient(90deg,#FF8AD8,#C084FC 55%,#7FE3FF);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 0 10px rgba(255,122,240,.35));padding:0}
+.wb-pain h3{font-size:clamp(20px,1.65vw,24px)}
+@media (max-width:1000px){.wb-pains{grid-template-columns:repeat(2,minmax(0,1fr))}.wb-pain,.wb-pain:nth-child(4),.wb-pain:nth-child(5){grid-column:auto}.wb-pain:nth-child(5){grid-column:1/-1}}
+@media (max-width:760px){.wb-pains{grid-template-columns:minmax(0,1fr)}.wb-pain:nth-child(5){grid-column:auto}}
