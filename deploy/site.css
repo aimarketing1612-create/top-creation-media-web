@@ -1256,3 +1256,37 @@ html[lang^="zh"] :is(.wb-form-head b,.wb-card h3,.wb-done h2){font-family:var(--
 .wb-tr b{display:block;font-family:'Outfit',var(--font);font-size:20px;color:#fff}
 .wb-tr span{display:block;margin-top:2px;font-size:13.5px;color:var(--ink-3)}
 @media (max-width:900px){.wb-agenda{grid-template-columns:minmax(0,1fr)}.wb-agenda li+li{border-left:0;border-top:1px solid rgba(255,255,255,.1)}.wb-team{grid-template-columns:repeat(2,minmax(0,1fr))}.wb-hero-bg{-webkit-mask:linear-gradient(180deg,#000,transparent 70%);mask:linear-gradient(180deg,#000,transparent 70%)}}
+
+/* Webinar v3: pain points, transformation, proof strip, larger type */
+.wb-copy .lede{font-size:clamp(18px,1.55vw,23px);line-height:1.6}
+.wb-facts b{font-size:32px}.wb-facts span{font-size:15px}
+.wb-form-head span,.wb-slot,.wb-field span{font-size:16px}
+.wb-pains{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.wb-pain{display:flex;gap:18px;align-items:flex-start;padding:26px;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.1);transition:border-color .3s,transform .4s var(--ease-out)}
+.wb-pain:hover{border-color:rgba(255,122,240,.45);transform:translateY(-3px)}
+.wb-pain i{flex:none;display:grid;place-items:center;width:52px;height:52px;border-radius:16px;background:rgba(255,92,140,.12);border:1px solid rgba(255,122,160,.35)}
+.wb-pain svg{width:26px;height:26px;fill:none;stroke:#FFA3C4;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.wb-pain h3{font-family:'Outfit',var(--font);font-size:clamp(19px,1.55vw,23px);line-height:1.25;color:#fff}
+.wb-pain p{margin-top:8px;font-size:16px;line-height:1.6;color:var(--ink-2)}
+.wb-turn{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(24px,4vw,64px);align-items:center;margin-top:40px;padding:clamp(28px,3.5vw,52px);border-radius:28px;border:1.5px solid transparent;background:radial-gradient(70% 90% at 0% 0%,rgba(180,85,255,.25),transparent 60%) padding-box,linear-gradient(#1C1344,#150D35) padding-box,linear-gradient(135deg,#FF7AF0,#8A6BFF 50%,#35C4F0) border-box;box-shadow:0 40px 90px -45px rgba(138,107,255,.8)}
+.wb-turn .h2{margin:12px 0 26px;font-size:clamp(30px,3.2vw,48px)}
+.wb-after{list-style:none;display:grid;gap:14px}
+.wb-after li{position:relative;padding:16px 18px 16px 58px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:clamp(16.5px,1.3vw,19px);font-weight:600;line-height:1.45;color:#fff}
+.wb-after li::before{content:"";position:absolute;left:16px;top:50%;width:28px;height:28px;margin-top:-14px;border-radius:50%;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><path d='M5 12.5l4.5 4.5L19 7.5'/></svg>") center/15px no-repeat,linear-gradient(135deg,#B455FF,#35C4F0);box-shadow:0 0 14px rgba(53,196,240,.5)}
+.wb-why{padding:0 24px}
+.wb-why-in{list-style:none;max-width:1100px;margin:-10px auto 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-radius:24px;overflow:hidden;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03)}
+.wb-why-in li{padding:26px 18px;text-align:center}
+.wb-why-in li+li{border-left:1px solid rgba(255,255,255,.1)}
+.wb-why-in b{display:block;font-family:'Outfit',var(--font);font-size:clamp(34px,3.4vw,50px);line-height:1;background:var(--flow);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent}
+.wb-why-in span{display:block;margin-top:8px;font-size:15.5px;color:var(--ink-2)}
+.wb-card h3{font-size:clamp(21px,1.8vw,26px)}.wb-card p{font-size:17px}
+.wb-agenda li{padding:24px 26px;gap:18px}
+.wb-agenda b{font-size:clamp(28px,2.4vw,36px)}
+.wb-agenda b small{font-size:12.5px}
+.wb-agenda span{font-size:clamp(16.5px,1.35vw,19.5px);line-height:1.4}
+.wb-tr b{font-size:22px}.wb-tr span{font-size:15px}
+.wb-split .ticks li{font-size:clamp(17px,1.35vw,20px)}
+.wb-cta .h2{font-size:clamp(32px,3.6vw,54px)}
+html[lang^="zh"] :is(.wb-pain h3,.wb-turn .h2){font-family:var(--zh-serif)}
+@media (max-width:1000px){.wb-pains{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.wb-pains,.wb-turn{grid-template-columns:minmax(0,1fr)}.wb-why-in{grid-template-columns:repeat(2,minmax(0,1fr))}.wb-why-in li:nth-child(3){border-left:0}.wb-why-in li:nth-child(n+3){border-top:1px solid rgba(255,255,255,.1)}.wb-turn{text-align:center}}

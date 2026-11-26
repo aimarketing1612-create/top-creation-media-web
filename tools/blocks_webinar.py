@@ -34,6 +34,28 @@ WB_LEARN = [
     ('target', Z('Ads that bring enquiries, not just likes', '带来询问的广告，不只是点赞'), Z('How to set up a Meta ad that sends people to your WhatsApp, and which numbers to watch.', '怎样设置把人带到 WhatsApp 的 Meta 广告，以及要看哪几个数字。')),
     ('zap', Z('Follow up every lead, even while you sleep', '睡觉时也能跟进每一个顾客'), Z('A simple AI flow that replies on WhatsApp and reminds you who to call back.', '一个简单的 AI 流程，自动在 WhatsApp 回复，并提醒你该回电给谁。')),
 ]
+WB_PAINS = [
+    ('money', Z('You pay for ads, but the enquiries do not come', '广告费一直在烧，询问却没有进来'), Z('Boosting posts and hoping for the best. Money gone, and you cannot tell what worked.', '一直 Boost 贴文碰运气，钱花了，却不知道哪一个有效。')),
+    ('clock', Z('Thinking of content every day is exhausting', '每天想内容想到头痛'), Z('You know you should post more, but there is no time between running the business.', '知道要多发内容，可是忙着做生意，根本没时间。')),
+    ('people', Z('Good marketing staff are hard to hire and keep', '好的营销人员请不到、也留不住'), Z('Agencies cost thousands a month, and staff leave with everything they learned.', '外包代理每月几千块，员工一走，经验也跟着带走。')),
+    ('chat', Z('Customers ask on WhatsApp, and no one replies in time', '顾客在 WhatsApp 问了，没人及时回'), Z('A late reply is a lost sale. At night and on weekends, leads go cold.', '回慢一点，生意就跑了。晚上和周末的询问，很多都流失了。')),
+    ('ai', Z('Everyone talks about AI, but where do you start?', '大家都在讲 AI，可是要从哪里开始？'), Z('Too many tools, too many videos, and none of it is about your business.', '工具太多、教学太杂，没有一个是针对你的生意。')),
+    ('down', Z('Competitors are getting faster and cheaper', '同行越做越快、越做越便宜'), Z('They already use AI to post daily and reply instantly. Waiting costs you customers.', '他们已经用 AI 天天发内容、秒回顾客。再等下去，顾客就被抢走。')),
+]
+WB_AFTER = [Z('Know which AI tool to use for each job, and which to skip', '知道每件事该用哪个 AI 工具，哪些不用浪费时间'),
+            Z('A clear way to make a month of content in one afternoon', '一套一个下午做完一个月内容的方法'),
+            Z('A simple ad setup that sends enquiries to your WhatsApp', '一个把询问带到 WhatsApp 的简单广告设置'),
+            Z('A follow-up flow so no customer is left waiting', '一个让每位顾客都不会等太久的跟进流程'),
+            Z('Answers to your own questions, from people who do this every day', '每天在做营销的导师，直接回答你自己的问题')]
+WB_WHY = [('8+', Z('years running marketing', '年营销实战经验')), ('500+', Z('clients served', '服务过的客户')), ('3,000+', Z('videos produced', '支制作过的视频')), ('RM0', Z('to join, no card needed', '免费参加，不需要信用卡'))]
+WB_PIC = {
+    'money': '<circle cx="12" cy="12" r="8.5"/><path d="M14.8 9.2c-.5-1-1.6-1.5-2.8-1.5-1.6 0-2.8.9-2.8 2.1 0 2.9 5.8 1.4 5.8 4.3 0 1.2-1.3 2.2-3 2.2-1.3 0-2.5-.6-3-1.6M12 6v1.7M12 16.3V18"/>',
+    'clock': '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+    'people': '<circle cx="9" cy="8" r="3"/><path d="M3.5 19a5.5 5.5 0 0111 0"/><path d="M16 5.5a3 3 0 010 5.6M17.5 13.5a5 5 0 013 5.5"/>',
+    'chat': '<path d="M20 11.5a7.5 7.5 0 01-11.1 6.6L4 19.5l1.4-4.6A7.5 7.5 0 1120 11.5z"/><path d="M9 10.5h6M9 13.5h4"/>',
+    'ai': '<rect x="6" y="6" width="12" height="12" rx="3"/><path d="M9.5 14.5l1.5-5 1.5 5M10 13h2M15 9.5v5M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/>',
+    'down': '<path d="M3 7l6.5 6.5 4-4L21 17"/><path d="M21 11v6h-6"/>',
+}
 WB_FOR = [Z('Business owners who want more customers without hiring more staff', '想多一些顾客、又不想多请人的老板'),
           Z('Marketing teams that want to work faster with AI', '想用 AI 提高效率的营销团队'),
           Z('Beginners: no coding or design skills needed', '零基础：不需要会写程式或设计')]
@@ -74,6 +96,9 @@ def webinar_body():
         sess=Z('Session', '场次'), nm=Z('Name', '名字'),
     ).items()}
     learn = ''.join(f'<div class="wb-card" data-rv><div class="wb-card-img"><img src="{WB_LEARN_IMG[k][0]}" alt="{esc(WB_LEARN_IMG[k][1])}" loading="lazy"></div><div class="wb-card-body"><i>{_wb_ic(k)}</i><h3>{esc(t)}</h3><p>{esc(d)}</p></div></div>' for k, t, d in WB_LEARN)
+    pains = ''.join(f'<div class="wb-pain" data-rv><i><svg viewBox="0 0 24 24" aria-hidden="true">{WB_PIC[k]}</svg></i><div><h3>{esc(t)}</h3><p>{esc(d)}</p></div></div>' for k, t, d in WB_PAINS)
+    after = ''.join(f'<li>{esc(t)}</li>' for t in WB_AFTER)
+    why = ''.join(f'<li data-rv><b>{n}</b><span>{esc(t)}</span></li>' for n, t in WB_WHY)
     agenda = ''.join(f'<li data-rv><b>{a}<small>{esc(Z("min", "分钟"))}</small></b><span>{esc(t)}</span></li>' for a, t in WB_AGENDA)
     team = ''.join(f'<figure class="wb-tr" data-rv><img src="/assets/video/team-{k}-cover.jpg" alt="{esc(n)}, {esc(r)}" loading="lazy"><figcaption><b>{n}</b><span>{esc(r)}</span></figcaption></figure>' for k, n, r in WB_TEAM)
     community = W['community'] or wa(Z('Hi, please add me to the TCM WhatsApp Community.', '你好，请把我加入 TCM 的 WhatsApp 社群。'))
@@ -116,6 +141,20 @@ def webinar_body():
         <div class="wb-panel rise" style="animation-delay:.2s">{form}</div>
       </div>
     </section>
+
+    <section class="tile tile-dark wb-pains-sec">
+      <div class="wrap">
+        {head(esc(Z('Does this sound like', '这是不是')) + ' <span class="accent">' + esc(Z('your business?', '你的生意？')) + '</span>', esc(Z('Sound familiar?', '你也遇到吗？')), esc(Z('Most business owners we meet tell us the same six things.', '我们见过的老板，几乎都在为这六件事烦恼。')))}
+        <div class="wb-pains">{pains}</div>
+        <div class="wb-turn" data-rv>
+          <div class="wb-turn-copy"><div class="eyebrow">{esc(Z('After one hour', '一个小时之后'))}</div><h2 class="h2">{esc(Z('You leave with a plan,', '你带走的是一套方法，'))} <span class="accent">{esc(Z('not just ideas.', '不只是灵感。'))}</span></h2>
+            <a class="btn btn-primary btn-lg" href="#seat">{L['seat']} {ARROW}</a></div>
+          <ul class="wb-after">{after}</ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="wb-why"><ul class="wb-why-in">{why}</ul></section>
 
     <section class="tile tile-raise">
       <div class="wrap">
