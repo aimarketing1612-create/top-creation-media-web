@@ -12,13 +12,13 @@ KONGSIKAN = 'https://kongsikan.cfd/'
 # In Stripe, set each link's "after payment" redirect to https://www.topcreationmedia.com/thank-you
 PAY = {'mem_m': '', 'mem_y': '', 'sb_m': '', 'sb_y': '', 'live': ''}
 LIVE = dict(price='2,500', months=6, worth='{:,}'.format(MEM['m'] * 6))
-LIVE_MSG = "Hi, I'd like to join the TCM Live Class (offline + Zoom, RM2,500)."
+LIVE_MSG = "Hi, I'd like to join the TCM Live Class (6 months of offline classes, RM2,500)."
 MEM_M = f"Hi, I'd like to subscribe to the TCM Membership, monthly plan (RM{MEM['m']}/month)."
 MEM_Y = f"Hi, I'd like to subscribe to the TCM Membership, yearly plan (RM{MEM['ytotal']}/year)."
 SB_M = f"Hi, I'd like to try Scan Buddy, monthly plan (RM{SB['m']}/month)."
 SB_Y = f"Hi, I'd like to subscribe to Scan Buddy, yearly plan (RM{SB['y']}/year)."
 for _en, _zh in [(MEM_M, f"你好，我想订阅 TCM 会员月付配套（每月 RM{MEM['m']}）。"), (MEM_Y, f"你好，我想订阅 TCM 会员年付配套（每年 RM{MEM['ytotal']}）。"),
-                 (LIVE_MSG, '你好，我想报名 TCM 线下实战班（线下 + Zoom，RM2,500）。'), (SB_M, f"你好，我想试用 Scan Buddy 月付配套（每月 RM{SB['m']}）。"), (SB_Y, f"你好，我想订阅 Scan Buddy 年付配套（每年 RM{SB['y']}）。")]:
+                 (LIVE_MSG, '你好，我想报名 TCM 线下实战班（半年线下课程，RM2,500）。'), (SB_M, f"你好，我想试用 Scan Buddy 月付配套（每月 RM{SB['m']}）。"), (SB_Y, f"你好，我想订阅 Scan Buddy 年付配套（每年 RM{SB['y']}）。")]:
     Z(_en, _zh)
 
 
@@ -224,17 +224,15 @@ def tool_extra(key):
 # ------------------------------------------------ Membership vs Live Class (offline + Zoom)
 MEM_FEATS2 = [Z('Scan Buddy (AI Video coming soon)', 'Scan Buddy（AI Video 即将推出）'), Z('Full course library and replays', '完整课程库与回放'), Z('A monthly online livestream with Q&A', '每月一场线上直播与问答'),
               Z('Templates, checklists and prompts', '模板、清单和提示词'), Z('100% refund promise', '100% 退款承诺')]
-LIVE_FEATS = [Z('Our trainers teach every tool live, in front of you', '导师在你面前现场示范每一个工具'), Z('A real class every month, in person', '每月一堂真实的线下课'),
-              Z('Exclusive Zoom classes when you cannot come', '来不了时有专属 Zoom 课'), Z('Guides beside you, step by step, while you practise', '你动手练习时，助教在旁一步步带'),
-              Z('Classmates to learn with: groups of 20 to 50', '和 20 到 50 位同学一起学'), Z('6 months of the Membership included', '包含 6 个月会员')]
+LIVE_FEATS = [Z('6 months of offline classes', '半年线下课程'), Z('Trainers teach every tool in front of you', '导师现场示范每一个工具'),
+              Z('Guides help you practise, step by step', '助教一步步带你练习'), Z('6 months of the Membership included', '包含 6 个月会员')]
 CMP_ROWS = [
     ('tool', Z('AI tools (Scan Buddy, AI Video coming soon)', 'AI 工具（Scan Buddy，AI Video 即将推出）'), True, True),
     ('play', Z('Course library and replays', '课程库与回放'), True, True),
     ('live', Z('Monthly online livestream with Q&A', '每月线上直播与问答'), True, True),
-    ('class', Z('A real class every month, in person', '每月一堂真实的线下课'), False, True),
-    ('trainer', Z('Trainers teach every tool live, in front of you', '导师在你面前现场示范'), False, True),
-    ('guide', Z('Guides beside you while you practise', '练习时助教在旁带你'), False, True),
-    ('zoom', Z('Exclusive Zoom classes', '专属 Zoom 课'), False, True),
+    ('class', Z('6 months of offline classes', '半年线下课程'), False, True),
+    ('trainer', Z('Trainers teach in front of you', '导师现场教学'), False, True),
+    ('guide', Z('Guides help you practise', '助教带你练习'), False, True),
 ]
 
 
@@ -259,7 +257,7 @@ def compare_table():
           <div class="cx-head">
             <div class="cx-intro"><b>{esc(Z('What is the difference?', '有什么不同？'))}</b><span>{esc(Z('Both include every lesson online. The Live Class puts a trainer in the room with you.', '两者都包含所有线上课程。线下实战班让导师和你在同一个教室。'))}</span></div>
             <div class="cx-col"><small>{esc(Z('Membership', '会员'))}</small><b>{esc(Z('Online only', '纯线上'))}</b><span>{esc(Z('Videos, replays and a monthly livestream', '视频、回放与每月直播'))}</span></div>
-            <div class="cx-col cx-livehead"><em>{esc(Z('Real classroom', '真实课堂'))}</em><small>{esc(Z('Live Class', '线下实战班'))}</small><b>{esc(Z('Offline + Zoom', '线下 + Zoom'))}</b><span>{esc(Z('A trainer teaches you in person', '导师现场教你'))}</span></div>
+            <div class="cx-col cx-livehead"><em>{esc(Z('Real classroom', '真实课堂'))}</em><small>{esc(Z('Live Class', '线下实战班'))}</small><b>{esc(Z('Offline classes', '线下课程'))}</b><span>{esc(Z('A trainer teaches you in person', '导师现场教你'))}</span></div>
           </div>
           {rows}
           <div class="cx-row cx-price"><div class="cx-label">{esc(Z('Price', '价格'))}</div><div class="cx-cell"><b>RM250–350</b><span>{esc(Z('a month', '每月'))}</span></div><div class="cx-cell cx-livecell"><b>RM2,500</b><span>{esc(Z('for 6 months', '6 个月'))}</span></div></div>
