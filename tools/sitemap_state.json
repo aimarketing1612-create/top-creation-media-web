@@ -51,6 +51,10 @@
   "03661e22899bdec98f1964b7a771e1fafca80064",
   "2026-11-26"
  ],
+ "webinar.html": [
+  "2ffc985fef5208bcec8a6a4daabd806b2ca1d4e6",
+  "2026-11-26"
+ ],
  "zh/ai-classes.html": [
   "528a5653242a14d3e810875910208b07859f7785",
   "2026-11-26"
@@ -64,7 +68,7 @@
   "2026-11-26"
  ],
  "zh/index.html": [
-  "fc1a32bd3f9065749095c4cdd99b3142ac82be8b",
+  "b0a2839465b1bc417e5b7fe875727d96393ffd9f",
   "2026-11-26"
  ],
  "zh/insights.html": [
@@ -101,6 +105,10 @@
  ],
  "zh/scan-buddy.html": [
   "c127fc771c1a4b68fb2935d5e86c0b286934cc28",
+  "2026-11-26"
+ ],
+ "zh/webinar.html": [
+  "01117220a79f7a08fe50708dd2ac3fb5678c8a50",
   "2026-11-26"
  ]
 }

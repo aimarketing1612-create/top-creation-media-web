@@ -127,6 +127,20 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.topcreationmedia.com/membership"/>
   </url>
   <url>
+    <loc>https://www.topcreationmedia.com/webinar</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.topcreationmedia.com/webinar"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://www.topcreationmedia.com/zh/webinar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.topcreationmedia.com/webinar"/>
+  </url>
+  <url>
+    <loc>https://www.topcreationmedia.com/zh/webinar</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.topcreationmedia.com/webinar"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://www.topcreationmedia.com/zh/webinar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.topcreationmedia.com/webinar"/>
+  </url>
+  <url>
     <loc>https://www.topcreationmedia.com/insights</loc>
     <lastmod>2026-11-26</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.topcreationmedia.com/insights"/>

@@ -490,6 +490,7 @@ RES_GG = ('google-dashboard.webp', 'Google Search Console dashboard showing orga
 
 # =================================================================== HOME
 exec(open(os.path.join(ROOT, 'tools', 'blocks_v2.py'), encoding='utf8').read())
+exec(open(os.path.join(ROOT, 'tools', 'blocks_webinar.py'), encoding='utf8').read())
 
 HOME_FAQ = [
     ('Do you work with large companies and franchise brands in Malaysia?', 'Yes. We run marketing for multi-outlet and franchise brands and for companies with 50+ staff: one strategy for the whole brand, local ads for each outlet, and training so your in-house team can run the day-to-day work.'),
@@ -1585,7 +1586,7 @@ PAGES = [
     ('membership.html', 'membership', 'TCM Membership | AI Tools & Marketing Courses from RM250/mo',
      'TCM Membership: every AI tool, the full course library and a live class every month with a coach. RM350/month, or RM250/month yearly. 100% refund promise.',
      'member', mem_ld, mem_body, ()),
-] + INSIGHT_PAGES
+] + [('webinar.html', 'webinar', WB_TITLE, WB_DESC, 'webinar', webinar_ld(), webinar_body(), ('/webinar.js',))] + INSIGHT_PAGES
 
 NOT_FOUND_LINKS = [
     ('/', 'Home', '首页'),
