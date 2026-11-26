@@ -10,13 +10,15 @@ SB = dict(m=150, y=999, full='1,800', save=801, pct=44)
 KONGSIKAN = 'https://kongsikan.cfd/'
 # Stripe Payment Links. While a value is empty, that plan's button opens WhatsApp instead.
 # In Stripe, set each link's "after payment" redirect to https://www.topcreationmedia.com/thank-you
-PAY = {'mem_m': '', 'mem_y': '', 'sb_m': '', 'sb_y': ''}
+PAY = {'mem_m': '', 'mem_y': '', 'sb_m': '', 'sb_y': '', 'live': ''}
+LIVE = dict(price='2,500', months=6, worth='{:,}'.format(MEM['m'] * 6))
+LIVE_MSG = "Hi, I'd like to join the TCM Live Class (6 months of offline classes, RM2,500)."
 MEM_M = f"Hi, I'd like to subscribe to the TCM Membership, monthly plan (RM{MEM['m']}/month)."
 MEM_Y = f"Hi, I'd like to subscribe to the TCM Membership, yearly plan (RM{MEM['ytotal']}/year)."
 SB_M = f"Hi, I'd like to try Scan Buddy, monthly plan (RM{SB['m']}/month)."
 SB_Y = f"Hi, I'd like to subscribe to Scan Buddy, yearly plan (RM{SB['y']}/year)."
 for _en, _zh in [(MEM_M, f"你好，我想订阅 TCM 会员月付配套（每月 RM{MEM['m']}）。"), (MEM_Y, f"你好，我想订阅 TCM 会员年付配套（每年 RM{MEM['ytotal']}）。"),
-                 (SB_M, f"你好，我想试用 Scan Buddy 月付配套（每月 RM{SB['m']}）。"), (SB_Y, f"你好，我想订阅 Scan Buddy 年付配套（每年 RM{SB['y']}）。")]:
+                 (LIVE_MSG, '你好，我想报名 TCM 线下实战班（半年线下课程，RM2,500）。'), (SB_M, f"你好，我想试用 Scan Buddy 月付配套（每月 RM{SB['m']}）。"), (SB_Y, f"你好，我想订阅 Scan Buddy 年付配套（每年 RM{SB['y']}）。")]:
     Z(_en, _zh)
 
 
@@ -166,11 +168,11 @@ def module_samples():
 
 
 # ------------------------------------------------ plans
-def price_plan(name, price, unit, note, feats, msg, label, flag='', best=False, pay=''):
+def price_plan(name, price, unit, note, feats, msg, label, flag='', best=False, pay='', cls=''):
     href = PAY.get(pay) or wa(msg)
     secure = f'<p class="plan-secure">{esc(Z("Secure checkout by Stripe: card, FPX or GrabPay", "由 Stripe 安全结账：信用卡、FPX 或 GrabPay"))}</p>' if PAY.get(pay) else ''
     fl = f'<span class="plan-flag">{esc(flag)}</span>' if flag else ''
-    return f'''<div class="plan{' plan-best' if best else ''}" data-rv>
+    return f'''<div class="plan{' plan-best' if best else ''}{' ' + cls if cls else ''}" data-rv>
             <div class="plan-top"><span class="plan-name">{esc(name)}</span>{fl}</div>
             <div class="plan-price"><span class="plan-cur">RM</span>{price}<span class="plan-unit">{esc(unit)}</span></div>
             <p class="plan-note">{note}</p>
@@ -217,3 +219,47 @@ def sb_plans():
 
 def tool_extra(key):
     return sb_plans() if key == 'scan-buddy' else av_samples()
+
+
+# ------------------------------------------------ Membership vs Live Class (offline + Zoom)
+MEM_FEATS2 = [Z('Scan Buddy (AI Video coming soon)', 'Scan Buddy（AI Video 即将推出）'), Z('Full course library and replays', '完整课程库与回放'), Z('A monthly online livestream with Q&A', '每月一场线上直播与问答'),
+              Z('Templates, checklists and prompts', '模板、清单和提示词'), Z('100% refund promise', '100% 退款承诺')]
+LIVE_FEATS = [Z('6 months of offline classes', '半年线下课程'), Z('Trainers teach every tool in front of you', '导师现场示范每一个工具'),
+              Z('Guides help you practise, step by step', '助教一步步带你练习'), Z('6 months of the Membership included', '包含 6 个月会员')]
+CMP_ROWS = [
+    ('tool', Z('AI tools (Scan Buddy, AI Video coming soon)', 'AI 工具（Scan Buddy，AI Video 即将推出）'), True, True),
+    ('play', Z('Course library and replays', '课程库与回放'), True, True),
+    ('live', Z('Monthly online livestream with Q&A', '每月线上直播与问答'), True, True),
+    ('class', Z('6 months of offline classes', '半年线下课程'), False, True),
+    ('trainer', Z('Trainers teach in front of you', '导师现场教学'), False, True),
+    ('guide', Z('Guides help you practise', '助教带你练习'), False, True),
+]
+
+
+CMP_IC = {
+    'tool': '<path d="M12 3l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 8.7l5.4-.8z"/>',
+    'play': '<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.5l5 2.5-5 2.5z"/>',
+    'live': '<circle cx="12" cy="12" r="2.5"/><path d="M7.5 7.5a6.4 6.4 0 000 9M16.5 7.5a6.4 6.4 0 010 9M4.6 4.6a10.5 10.5 0 000 14.8M19.4 4.6a10.5 10.5 0 010 14.8"/>',
+    'class': '<path d="M3 9l9-5 9 5-9 5z"/><path d="M7 11.5V16c0 1.4 2.2 3 5 3s5-1.6 5-3v-4.5"/>',
+    'trainer': '<circle cx="9" cy="7" r="3"/><path d="M3.5 20a5.5 5.5 0 0111 0"/><path d="M15 5h6v7h-4"/>',
+    'guide': '<path d="M12 21s-7-4.4-7-10a7 7 0 0114 0c0 5.6-7 10-7 10z"/><path d="M9.2 11l2 2 3.6-3.8"/>',
+    'zoom': '<rect x="3" y="7" width="12" height="10" rx="2.5"/><path d="M15 11l6-3.5v9L15 13"/>',
+}
+
+
+def compare_table():
+    def ic(k):
+        return f'<svg viewBox="0 0 24 24" aria-hidden="true">{CMP_IC[k]}</svg>'
+    yes = '<span class="cx-y" role="img" aria-label="Included"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>'
+    no = '<span class="cx-n" role="img" aria-label="Not included"></span>'
+    rows = ''.join(f'''<div class="cx-row{' cx-only' if not a else ''}"><div class="cx-label"><i>{ic(k)}</i>{esc(t)}</div><div class="cx-cell">{yes if a else no}</div><div class="cx-cell cx-livecell">{yes if b else no}</div></div>''' for k, t, a, b in CMP_ROWS)
+    return f'''<div class="cx" data-rv>
+          <div class="cx-head">
+            <div class="cx-intro"><b>{esc(Z('What is the difference?', '有什么不同？'))}</b><span>{esc(Z('Both include every lesson online. The Live Class puts a trainer in the room with you.', '两者都包含所有线上课程。线下实战班让导师和你在同一个教室。'))}</span></div>
+            <div class="cx-col"><small>{esc(Z('Membership', '会员'))}</small><b>{esc(Z('Online only', '纯线上'))}</b><span>{esc(Z('Videos, replays and a monthly livestream', '视频、回放与每月直播'))}</span></div>
+            <div class="cx-col cx-livehead"><em>{esc(Z('Real classroom', '真实课堂'))}</em><small>{esc(Z('Live Class', '线下实战班'))}</small><b>{esc(Z('Offline classes', '线下课程'))}</b><span>{esc(Z('A trainer teaches you in person', '导师现场教你'))}</span></div>
+          </div>
+          {rows}
+          <div class="cx-row cx-price"><div class="cx-label">{esc(Z('Price', '价格'))}</div><div class="cx-cell"><b>RM250–350</b><span>{esc(Z('a month', '每月'))}</span></div><div class="cx-cell cx-livecell"><b>RM2,500</b><span>{esc(Z('for 6 months', '6 个月'))}</span></div></div>
+          <div class="cx-row cx-cta"><div class="cx-label"></div><div class="cx-cell"><a class="btn btn-ghost btn-sm" href="{wa(MEM_Y)}" target="_blank" rel="noopener">{esc(Z('Subscribe', '订阅会员'))}</a></div><div class="cx-cell cx-livecell"><a class="btn btn-primary btn-sm cx-livebtn" href="{PAY.get('live') or wa(LIVE_MSG)}" target="_blank" rel="noopener">{esc(Z('Join the Live Class', '报名线下实战班'))}</a></div></div>
+        </div>'''
