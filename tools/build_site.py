@@ -95,7 +95,7 @@ def nav(cur, slug=''):
           <a href="/ai-tools"{on(cur in TOOL_KEYS)}>AI Tools</a>
           <div class="dd-menu">
             <a href="/scan-buddy">Scan Buddy<small>One QR code for followers and reviews</small></a>
-            <a href="/ai-video">AI Video<small>Product photo to video ads</small></a>
+            <a href="/ai-video">AI Video<small>Coming soon: product photo to video ads</small></a>
           </div>
         </div>
         <a href="/insights"{on(cur == 'insights')}>Insights</a>
@@ -501,7 +501,7 @@ HOME_FAQ = [
     ('Are you a social media agency for TikTok, Facebook, Instagram and Xiaohongshu?', 'Yes. We run all four in-house: content, ads, TikTok Live and Shop, Xiaohongshu notes and creator seeding, plus Google. You get one plan and one report instead of four agencies.'),
     ('Do you work with KOLs and influencers in Malaysia?', 'Yes. We shortlist KOLs and KOCs by audience fit, engagement quality and real followers, then manage the brief, approvals and results, so every collaboration is measured in reach and sales.'),
     ('Do you do video production and livestreaming in Malaysia?', 'Yes. Our in-house studio shoots short videos, product films and brand films, and runs TikTok and Facebook livestreams with hosts, scripts and live offers.'),
-    ('What is the TCM Membership?', 'Every TCM AI tool (Scan Buddy and AI Video), the full video course library, our marketing resources and a live class every month, with a coach who guides you step by step. It is RM350 a month, or RM250 a month on the yearly plan (RM3,000 a year, save RM1,200). Cannot learn it? 100% refund (terms apply).'),
+    ('What is the TCM Membership?', 'Our AI tools (Scan Buddy now, AI Video coming soon), the full video course library and replays, our marketing resources and a monthly online livestream. It is RM350 a month, or RM250 a month on the yearly plan (RM3,000 a year, save RM1,200). Want to learn in a real classroom? The Live Class adds a class every month with our trainers in person. Cannot learn it? 100% refund (terms apply).'),
 ]
 home_ld = {'@context': 'https://schema.org', '@graph': [
     {'@type': 'ProfessionalService', 'name': 'Top Creation Media', 'url': SITE, 'logo': SITE + 'assets/tcm-logo.jpg',
@@ -538,7 +538,7 @@ INDEX = [
     ('AI tools & proof', [
         ('AI tools for marketing', '/ai-tools'),
         ('Scan Buddy: Google review QR code', '/scan-buddy'),
-        ('AI Video: product photo to video', '/ai-video'),
+        ('AI Video (coming soon)', '/ai-video'),
         ('Portfolio & campaign results', '/portfolio'),
         ('Insights: AI & marketing guides', '/insights'),
     ]),
@@ -1027,10 +1027,10 @@ def steps(rows):
 
 def tool_body(key, h1, lede, wa_msg, video_label, step_rows, feat_h2, feats, extra, faq, cta_h2, cta_lede, feat_icons=None):
     sw = tool_switch('scan' if key == 'scan-buddy' else 'aivideo')
-    tag_txt = f'From RM{SB["m"]} a month' if key == 'scan-buddy' else 'Included in the TCM Membership'
+    tag_txt = f'From RM{SB["m"]} a month' if key == 'scan-buddy' else 'Coming soon · Join the waitlist'
     tag = f'<div class="rise" style="margin-bottom:24px"><a class="tag" href="{"#plans" if key == "scan-buddy" else "/membership"}">{tag_txt}</a></div>'
     return f'''{hero([("Home", "/"), ("AI Tools", "/ai-tools"), (h1.split(':')[0], "")], h1, lede,
-       btns(('See plans', '#plans' if key == 'scan-buddy' else '/membership#plans'), ('How it works', '#how')), sw + video(key, video_label)).replace('<div class="crumbs', tag + '<div class="crumbs', 1)}
+       btns(('See plans', '#plans') if key == 'scan-buddy' else ('Join the waitlist', wa("Hi, I'd like to join the AI Video waitlist.")), ('How it works', '#how')), sw + video(key, video_label)).replace('<div class="crumbs', tag + '<div class="crumbs', 1)}
 
     <section class="tile tile-raise" id="how">
       <div class="wrap">
@@ -1148,7 +1148,7 @@ AV_FAQ = [
     ('How is TCM AI Video different from a free AI video generator?', 'It is built for selling: ad-ready formats, hooks and captions in English, 中文 and Bahasa, and our team to help when a video needs polish.'),
     ('What kind of videos can I make?', 'Product showcases, new scenes, AI model try-ons, UGC-style clips and short ads, in 9:16, 1:1 and 16:9.'),
     ('What photos work best?', 'Clear, well-lit product photos on a plain background give the best results.'),
-    ('How do I get AI Video?', 'AI Video is included in the TCM Membership: RM350 a month, or RM250 a month on the yearly plan, together with Scan Buddy and the full course library.'),
+    ('When will AI Video be available?', 'AI Video is coming soon. WhatsApp us to join the waitlist and we will tell you first. Members will get it as part of the TCM Membership.'),
 ]
 av_body = tool_body(
     'ai-video', 'AI Video: <span class="accent">your product, made into ads.</span>',
@@ -1163,11 +1163,11 @@ av_body = tool_body(
      ('UGC-style clips', 'Natural, creator-style videos that feel native on TikTok and Reels.'),
      ('Captions that sell', 'Hook, body and call to action written for you, in English, 中文 or Bahasa.'),
      ('Every format', '9:16 for TikTok and Reels, 1:1 for feeds, 16:9 for YouTube and websites.')],
-    av_mockup(), AV_FAQ, 'Make your next ad in minutes.', 'WhatsApp us to get AI Video for your business.', ['video', 'layers', 'users', 'sparkles', 'pen', 'zap'])
+    av_mockup(), AV_FAQ, 'AI Video is coming soon.', 'Join the waitlist and be the first to make product ads in minutes.', ['video', 'layers', 'users', 'sparkles', 'pen', 'zap'])
 
 # =================================================================== MEMBERSHIP
 MEM_FAQ = [
-    ('What is included in the TCM Membership?', 'Every TCM AI tool (Scan Buddy and AI Video), the full video course library, our marketing resources (templates, checklists and prompts) and a live class every month. A coach guides you step by step and checks your progress.'),
+    ('What is included in the TCM Membership?', 'Scan Buddy (AI Video is coming soon), the full video course library and replays, our marketing resources (templates, checklists and prompts) and a monthly online livestream with Q&A.'),
     ('How much is the TCM Membership?', 'RM350 a month, or RM250 a month when you sign up for a year (RM3,000 billed yearly). The yearly plan saves you RM1,200.'),
     ('How do I log in after I pay?', 'WhatsApp us after payment. Our admin sends your personal invite code, and you use it to log in and start.'),
     ('Will the trainer disappear after a few lessons?', 'No. We go live every month with the newest tools and tactics, answer your questions and guide you step by step until your marketing runs.'),
@@ -1185,7 +1185,7 @@ mem_ld = {'@context': 'https://schema.org', '@graph': [
 MEM_C = "Hi, I joined a TCM offline course and would like my 6 free months of the Membership."
 MEM_MSG = MEM_Y
 MEM_INSIDE = [
-    ('Every AI tool', 'Scan Buddy for reviews and followers, AI Video for product ads, and every new tool we release.', '/ai-tools', 'photo', 'mem-tools', 'Customer scanning a review QR code at a counter beside a laptop running an AI video tool'),
+    ('Every AI tool', 'Scan Buddy for reviews and followers now, AI Video for product ads coming soon, and every new tool we release.', '/ai-tools', 'photo', 'mem-tools', 'Customer scanning a review QR code at a counter beside a laptop running an AI video tool'),
     ('The full course library', 'Every marketing platform and all 7 AI modules, in short episodes you can finish.', '/ai-classes', 'photo', 'mem-library', 'Member browsing a library of video lessons on a monitor'),
     ('Marketing resources', 'The checklists, calendars and prompts we use for our own clients.', '#plans', 'photo', 'mem-resources', 'Campaign checklist, content calendar and ad copy prompts on a desk'),
 ]
@@ -1271,10 +1271,10 @@ mem_body = f'''    <section class="hero">
 
 # =================================================================== AI TOOLS HUB
 TOOLS_FAQ = [
-    ('What AI tools does TCM offer?', 'Two so far. Scan Buddy is a smart QR code that turns offline customers into followers, WhatsApp chats and Google reviews. AI Video turns a product photo into ready-to-post video ads.'),
+    ('What AI tools does TCM offer?', 'Scan Buddy is live: a smart QR code that turns offline customers into followers, WhatsApp chats and reviews. AI Video, which turns a product photo into ready-to-post video ads, is coming soon.'),
     ('Do I need technical skills to use them?', 'No. If you can use WhatsApp, you can use both. Add your links or upload a photo, and the tool does the rest.'),
-    ('How much do the AI tools cost?', 'Scan Buddy alone is RM150 a month, or RM999 a year. Both tools and every course are included in the TCM Membership: RM350 a month, or RM250 a month on the yearly plan.'),
-    ('Which tool should I start with?', 'Have a shop, a booth or packaging? Start with Scan Buddy. Sell products online and need more content? Start with AI Video.'),
+    ('How much do the AI tools cost?', 'Scan Buddy alone is RM150 a month, or RM999 a year. Scan Buddy and every course are included in the TCM Membership (RM350 a month, or RM250 a month yearly), and members get AI Video when it launches.'),
+    ('Which tool should I start with?', 'Start with Scan Buddy if you have a shop, a booth or packaging. AI Video is coming soon; WhatsApp us to join the waitlist.'),
     ('Will you add more tools?', 'Yes. Members get every new tool we release at no extra cost.'),
 ]
 tools_ld = {'@context': 'https://schema.org', '@graph': [faq_ld(TOOLS_FAQ)]}
@@ -1297,14 +1297,14 @@ tools_body = f'''{hero([("Home", "/"), ("AI Tools", "")], 'AI tools that <span c
           <div class="way tool" data-rv>
             <div class="tool-art">{av_clips()}</div>
             <div class="way-k">Photo to video</div>
-            <div class="way-t">AI Video</div>
+            <div class="way-t">AI Video <span class="soon">Coming soon</span></div>
             <p class="way-d">Upload a product photo. Get ready-to-post video ads.</p>
             {ticks(['No filming, no editing', 'Showcase, lifestyle and UGC styles', 'Captions in English, 中文 and Bahasa', 'Every format: 9:16, 1:1, 16:9'])}
-            <a class="btn btn-primary" href="/ai-video">Explore AI Video</a>
+            <a class="btn btn-ghost" href="/ai-video">Preview AI Video</a>
           </div>
         </div>
         <div class="offer" data-rv style="max-width:none;margin-top:20px">
-          <div><b>Both tools are included in the Membership.</b><span>RM350 a month, or RM250 a month on the yearly plan. Every class is included too.</span></div>
+          <div><b>Scan Buddy is included in the Membership.</b><span>RM350 a month, or RM250 a month on the yearly plan. Members get AI Video when it launches.</span></div>
           <a class="btn btn-ghost btn-sm" href="/membership">See plans</a>
         </div>
       </div>
@@ -1485,7 +1485,7 @@ def app_ld(name, desc, slug):
             'operatingSystem': 'Web', 'publisher': {'@id': ORG_ID},
             'offers': {'@type': 'Offer', 'price': '350', 'priceCurrency': 'MYR', 'description': 'Included in the TCM Membership (RM350 a month)', 'url': SITE + 'membership'}}
 SB_APP = app_ld('Scan Buddy', 'One smart QR code that turns offline customers into followers, WhatsApp chats and Google reviews, with scan tracking.', 'scan-buddy')
-AV_APP = app_ld('AI Video', 'Turns a product photo into ready-to-post marketing videos: showcases, new backgrounds, model try-ons, UGC-style clips and captions.', 'ai-video')
+AV_APP = app_ld('AI Video', 'Coming soon. Turns a product photo into ready-to-post marketing videos: showcases, new backgrounds, model try-ons, UGC-style clips and captions.', 'ai-video')
 tools_ld['@graph'].insert(0, {'@type': 'ItemList', 'name': 'TCM AI tools', 'itemListElement': [
     {'@type': 'ListItem', 'position': 1, 'item': SB_APP}, {'@type': 'ListItem', 'position': 2, 'item': AV_APP}]})
 
@@ -1540,7 +1540,7 @@ def build_seo_files(pages):
 - Website: {SITE} (Chinese: {SITE}zh/)
 - Social: {", ".join(SOCIAL)}
 - Two ways to work with TCM: Done-For-You marketing services, or learn it yourself in the Marketing Academy and AI Academy
-- TCM Membership: RM350 a month, or RM250 a month on the yearly plan (RM3,000 a year, save RM1,200). Online: every TCM AI tool (Scan Buddy, AI Video), the full course library and replays, and a monthly livestream with Q&A. After payment, members get an invite code on WhatsApp to log in.
+- TCM Membership: RM350 a month, or RM250 a month on the yearly plan (RM3,000 a year, save RM1,200). Online: Scan Buddy (AI Video coming soon), the full course library and replays, and a monthly livestream with Q&A. After payment, members get an invite code on WhatsApp to log in.
 - TCM Live Class (offline + Zoom): RM2,500 for 6 months, one payment. Includes 6 months of the Membership, plus a class every month in person (groups of 20 to 50) or on an exclusive Zoom for Live Class members, with guides who help step by step. After 6 months, continue with the Membership.
 - Scan Buddy alone: RM150 a month (trial), or RM999 a year (save RM801). Covers Google, Xiaohongshu, Facebook and Dianping reviews.
 - Courses: beginner-friendly, no coding needed, taught hands-on on your own accounts; full refund if you follow the class and still cannot do it (terms apply)
@@ -1577,10 +1577,10 @@ PAGES = [
      'Scan Buddy: one smart QR code for Google, Xiaohongshu, Facebook and Dianping reviews, followers and WhatsApp chats. RM150/month or RM999/year.',
      'scan', {'@context': 'https://schema.org', '@graph': [SB_APP, faq_ld(SB_FAQ)]}, sb_body, ()),
     ('ai-tools.html', 'ai-tools', 'AI Tools for Business Malaysia | Scan Buddy & AI Video | TCM',
-     'TCM AI tools for Malaysian businesses: Scan Buddy smart QR codes and AI Video, which turns product photos into video ads. Included in the Membership.',
+     'TCM AI tools for Malaysian businesses: Scan Buddy smart QR codes, available now, and AI Video, coming soon. Scan Buddy is included in the Membership.',
      'tools', tools_ld, tools_body, ()),
-    ('ai-video.html', 'ai-video', 'AI Video | Turn Product Photos into Video Ads | TCM',
-     'AI Video turns a product photo into ready-to-post marketing videos: showcases, new backgrounds, model try-ons, UGC-style clips and captions.',
+    ('ai-video.html', 'ai-video', 'AI Video (Coming Soon) | Product Photos into Video Ads | TCM',
+     'Coming soon: AI Video turns a product photo into ready-to-post marketing videos, from showcases and new backgrounds to UGC-style clips. Join the waitlist.',
      'aivideo', {'@context': 'https://schema.org', '@graph': [AV_APP, faq_ld(AV_FAQ)]}, av_body, ()),
     ('membership.html', 'membership', 'TCM Membership | AI Tools & Marketing Courses from RM250/mo',
      'TCM Membership: every AI tool, the full course library and a live class every month with a coach. RM350/month, or RM250/month yearly. 100% refund promise.',

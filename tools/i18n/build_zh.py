@@ -127,7 +127,13 @@ class Tr(HTMLParser):
             self.stack.append(tag)
 
     def handle_startendtag(self, tag, attrs):
+        # Self-closing tags (SVG <path/>, <circle/>, <rect/>) must stay self-closing, or later shapes
+        # become children of the first one and are not drawn.
         self.handle_starttag(tag, attrs)
+        if tag not in VOID:
+            self.out[-1] = self.out[-1][:-1] + '/>'
+            if self.stack and self.stack[-1] == tag:
+                self.stack.pop()
 
     def handle_endtag(self, tag):
         if tag == 'head' and os.path.exists(os.path.join(OUT, 'assets', 'fonts', FONT_FILE)):
