@@ -595,7 +595,7 @@ html[lang^="zh"] :is(.lede,.card-d,.col-d,.mod-d,.way-d,.list span,.faq details 
 .subnav a[aria-current="page"]{box-shadow:inset 0 -2px 0 #5C8DFF}
 html[lang^="zh"] .nav-links > a:not(.btn):not(.lang),html[lang^="zh"] .dd > a{font-family:var(--zh-serif);font-size:15.5px;letter-spacing:.16em;font-weight:700}
 /* English headings in a geometric face close to the logo's lettering */
-html:not([lang^="zh"]) :is(.h1,.h2,.h3,.way-t,.card-t,.col-t,.mod-t,.plan-price,.member figcaption b){font-family:'Outfit',var(--font)}
+html:not([lang^="zh"]) :is(.h1,.h2,.h3,.way-t,.card-t,.col-t,.mod-t,.plan-price){font-family:'Outfit',var(--font)}
 html:not([lang^="zh"]) .h1{font-weight:700;letter-spacing:-.025em}
 html:not([lang^="zh"]) .h2{font-weight:700;letter-spacing:-.02em}
 html:not([lang^="zh"]) .eyebrow{font-family:'Outfit',var(--font);font-weight:600;letter-spacing:.28em}
@@ -1097,3 +1097,19 @@ html:not([lang^="zh"]) .result .split-k{font-size:clamp(16px,1.35vw,21px)}
 html:not([lang^="zh"]) .result .h3{font-size:clamp(34px,3.6vw,60px)}
 html:not([lang^="zh"]) .result .ticks li{font-size:clamp(20px,1.95vw,30px);padding-left:46px}
 html:not([lang^="zh"]) .result .ticks li::before{width:31px;height:31px}
+
+/* =================== Team: neon signature names (like the signature in the team videos) =================== */
+.member figcaption{gap:2px;padding-top:22px}
+.member figcaption b{position:relative;display:inline-block;font-family:'Mrs Saint Delafield',cursive;font-weight:400;font-size:clamp(62px,5.6vw,90px);line-height:1.1;letter-spacing:0;padding:.42em .5em .5em .42em;margin:-.42em -.5em -.5em -.48em;
+  background:linear-gradient(95deg,#FFB8F4 0%,#D46BFF 28%,#8A6BFF 55%,#5C8DFF 78%,#7FE3FF 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 1.5px rgba(255,255,255,.85)) drop-shadow(0 0 7px rgba(196,92,255,.85)) drop-shadow(0 0 18px rgba(92,141,255,.65))}
+.member figcaption b::after{content:"";position:absolute;left:34%;right:8%;bottom:.66em;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,#E9A6FF 20%,#8A6BFF 60%,#7FE3FF 92%,transparent);box-shadow:0 0 8px #B455FF,0 0 16px rgba(92,141,255,.8);transform:rotate(-2.5deg);transform-origin:left}
+.member figcaption span{margin-top:-4px}
+html[lang^="zh"] .member figcaption b{font-family:'Mrs Saint Delafield',cursive;letter-spacing:0}
+/* Written on: the name is revealed left to right as the card appears, then glows gently */
+.js .member[data-rv] figcaption b{clip-path:inset(0 100% 0 0)}
+.js .member[data-rv].in figcaption b{clip-path:none;animation:writeon 1.5s cubic-bezier(.65,0,.35,1) calc(var(--i) * .18s + .7s) backwards,neonhum 4.5s ease-in-out calc(var(--i) * .18s + 2.4s) infinite}
+@keyframes writeon{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes neonhum{0%,100%{filter:drop-shadow(0 0 1.5px rgba(255,255,255,.85)) drop-shadow(0 0 7px rgba(196,92,255,.85)) drop-shadow(0 0 18px rgba(92,141,255,.65))}50%{filter:drop-shadow(0 0 2px rgba(255,255,255,.95)) drop-shadow(0 0 11px rgba(214,107,255,1)) drop-shadow(0 0 26px rgba(92,141,255,.85))}}
+@media (prefers-reduced-motion:reduce){.js .member[data-rv] figcaption b,.js .member[data-rv].in figcaption b{clip-path:none;animation:none}}
+@media (max-width:560px){.member figcaption b{font-size:66px}}
