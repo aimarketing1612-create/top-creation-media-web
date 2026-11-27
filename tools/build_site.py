@@ -267,11 +267,20 @@ def banner(src, alt):
 PHOTO_POS = {'mission.jpg': '70% 50%'}
 
 
+def _webp(file):
+    w = file.rsplit('.', 1)[0] + '.webp'
+    return w if os.path.exists(os.path.join(OUT, 'assets', 'bts', w)) else file
+
+
+def _bts_dims(file):
+    return Image.open(os.path.join(OUT, 'assets', 'bts', _webp(file))).size
+
+
 def photo(file, alt):
     pos = f' style="--pos:{PHOTO_POS[file]}"' if file in PHOTO_POS else ''
     return f'''<figure class="photo"{pos} data-rv>
           <div class="photo-ph"><b>Behind the scenes</b>Top Creation Media studio</div>
-          <img src="/assets/bts/{file}" alt="{esc(alt)}" loading="lazy" onerror="this.remove()">
+          <img src="/assets/bts/{_webp(file)}" alt="{esc(alt)}" width="{_bts_dims(file)[0]}" height="{_bts_dims(file)[1]}" loading="lazy" onerror="this.remove()">
         </figure>'''
 
 

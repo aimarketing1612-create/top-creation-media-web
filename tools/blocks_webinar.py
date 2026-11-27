@@ -95,14 +95,14 @@ def webinar_body():
         msg=Z('Hi, I signed up for the free AI marketing class.', '你好，我报名了免费 AI 营销分享会。'),
         sess=Z('Session', '场次'), nm=Z('Name', '名字'),
     ).items()}
-    learn = ''.join(f'<div class="wb-card" data-rv><div class="wb-card-img"><img src="{WB_LEARN_IMG[k][0]}" alt="{esc(WB_LEARN_IMG[k][1])}" loading="lazy"></div><div class="wb-card-body"><i>{_wb_ic(k)}</i><h3>{esc(t)}</h3><p>{esc(d)}</p></div></div>' for k, t, d in WB_LEARN)
+    learn = ''.join(f'<div class="wb-card" data-rv><div class="wb-card-img"><img src="{WB_LEARN_IMG[k][0]}" alt="{esc(WB_LEARN_IMG[k][1])}" width="1200" height="750" loading="lazy"></div><div class="wb-card-body"><i>{_wb_ic(k)}</i><h3>{esc(t)}</h3><p>{esc(d)}</p></div></div>' for k, t, d in WB_LEARN)
     def _pt(a, hl, b):
         return ((esc(a) + ' ') if a else '') + f'<mark>{esc(hl)}</mark>' + ((' ' + esc(b)) if b else '')
     pains = ''.join(f'<div class="wb-pain" data-rv><i><svg viewBox="0 0 24 24" aria-hidden="true">{WB_PIC[k]}</svg></i><div><h3>{_pt(a, hl, b)}</h3><p>{esc(d)}</p></div></div>' for k, a, hl, b, d in WB_PAINS)
     after = ''.join(f'<li>{esc(t)}</li>' for t in WB_AFTER)
     why = ''.join(f'<li data-rv><b>{n}</b><span>{esc(t)}</span></li>' for n, t in WB_WHY)
     agenda = ''.join(f'<li data-rv><b>{a}<small>{esc(Z("min", "分钟"))}</small></b><span>{esc(t)}</span></li>' for a, t in WB_AGENDA)
-    team = ''.join(f'<figure class="wb-tr" data-rv><img src="/assets/video/team-{k}-cover.jpg" alt="{esc(n)}, {esc(r)}" loading="lazy"><figcaption><b>{n}</b><span>{esc(r)}</span></figcaption></figure>' for k, n, r in WB_TEAM)
+    team = ''.join(f'<figure class="wb-tr" data-rv><img src="/assets/video/team-{k}-cover.jpg" alt="{esc(n)}, {esc(r)}" width="1280" height="720" loading="lazy"><figcaption><b>{n}</b><span>{esc(r)}</span></figcaption></figure>' for k, n, r in WB_TEAM)
     community = W['community'] or wa(Z('Hi, please add me to the TCM WhatsApp Community.', '你好，请把我加入 TCM 的 WhatsApp 社群。'))
     data = (f'data-weekday="{W["weekday"]}" data-time="{W["time"]}" data-minutes="{W["minutes"]}" data-show="{W["show"]}" '
             f'data-endpoint="{esc(W["lead_endpoint"])}" data-phone="{PHONE}" data-community="{esc(community)}"')
